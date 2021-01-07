@@ -1,8 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import art from './slices/artSlice'
-
+import marker from 'store/slices/markerSlice'
 const rootReducer = combineReducers({
-	art
+	marker
 })
 
 export type RootState = ReturnType<typeof rootReducer>

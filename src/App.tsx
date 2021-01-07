@@ -3,7 +3,7 @@ import './styles/App.css'
 import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
-import Board from 'components/Board'
+import Map from 'components/Map'
 // import { useMediaQuery } from 'react-responsive'
 
 import store from 'store'
@@ -18,7 +18,7 @@ function App() {
 		<div className="App">
 			<Provider store={store}>
 				<PersistGate loading={null} persistor={persistor}>
-					<Board />
+					<Map />
 				</PersistGate>
 			</Provider>
 		</div>
