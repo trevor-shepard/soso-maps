@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import GoogleMapReact from 'google-map-react'
-
+import {MarkerIcon} from 'assets/icons'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { subscribeToMarkers, createMarker } from 'store/slices/markerSlice'
 
 export default function Map() {
+
 	const [Currentlat, setCurrentLat] = useState(29.94639419721249)
 	const [Currentlng, setCurrentLng] = useState(-90.07472171802686)
 	const markers = useSelector((state: RootState) => state.marker)
@@ -17,8 +18,6 @@ export default function Map() {
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
 			({ coords: { latitude, longitude } }) => {
-				console.log('lat', latitude)
-				console.log('lat', longitude)
 				setCurrentLat(latitude)
 				setCurrentLng(longitude)
 			}
@@ -26,15 +25,18 @@ export default function Map() {
 	}, [])
 
 	const markerComponents = Object.values(markers).map(
-		({ lat, lng, title }, i) => (
+		({ lat, lng, title, date }, i) => (
 			<Tag
+				key={`marker-${i}-date-${date}`}
 				// @ts-ignore
 				lat={lat}
 				// @ts-ignore
 				lng={lng}
 				name={`marker-${i}`}
+				src={Marker}
 			>
-				{title}
+				<Marker src={MarkerIcon} />
+				<Title>{ new Date(date).toLocaleString("en-US", {day: 'numeric', month: 'short', year: 'numeric'}) }</Title>
 			</Tag>
 		)
 	)
@@ -46,7 +48,7 @@ export default function Map() {
 			<GoogleMapReact
 				onClick={({ lat, lng }) => {
 					
-					dispatch(createMarker(lat, lng, 'new marker'))
+					dispatch(createMarker(lat, lng, 'new marker', Date.now()))
 				}}
 				bootstrapURLKeys={{
 					key: process.env.REACT_APP_FIREBASE_API_KEY as string
@@ -66,7 +68,7 @@ export default function Map() {
 				>
 					Current Location
 				</Tag>
-				{markerComponents}
+					{markerComponents}
 			</GoogleMapReact>
 		</Container>
 	)
@@ -77,4 +79,23 @@ const Container = styled.div`
 	width: 100%;
 `
 
-const Tag = styled.div``
+const Tag = styled.div`
+	font-family: 'Amiri';
+	font-weight: bold;
+	position: relative;
+`
+
+const Marker = styled.img`
+	width: 30px;
+	position: absolute;
+	left: -15px;
+	top: -45px;
+`
+
+const Title = styled.div`
+	position: absolute;
+	width: 50px;
+	height: auto;
+	left: -25px;
+	line-height: 1.2;
+`

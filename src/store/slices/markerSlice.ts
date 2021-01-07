@@ -47,19 +47,21 @@ export const subscribeToMarkers = (dispatch: Dispatch<any>) => {
 export const createMarker = (
 	lat: number,
 	lng: number,
-	title: string
+	title: string,
+	date: number
 ): AppThunk => async dispatch => {
 	try {
 		const ref = await db.collection('markers').doc()
 
-		const art = {
+		const marker = {
 			lat,
 			lng,
 			title,
+			date,
 			id: ref.id
 		}
 
-		await ref.set(art)
+		await ref.set(marker)
 	} catch (error) {
 
 		console.log('error creating marker', error)
