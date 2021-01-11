@@ -23,7 +23,6 @@
     "firebase": "^7.21.0",
     "google-map-react": "^2.1.9",
     "lodash-es": "^4.17.15",
-    "moment": "^2.29.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",

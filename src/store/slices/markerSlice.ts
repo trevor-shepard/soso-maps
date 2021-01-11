@@ -57,13 +57,13 @@ export const createMarker = (
 			lat,
 			lng,
 			title,
+			location: `${lat},${lng}`,
 			date,
 			id: ref.id
 		}
 
 		await ref.set(marker)
 	} catch (error) {
-
 		console.log('error creating marker', error)
 	}
 }
