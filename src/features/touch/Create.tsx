@@ -91,7 +91,7 @@ export default function Create() {
 
 	return (
 		<FlexContainer>
-			<PageTitle>Create a Touch</PageTitle>
+			<PageTitle>Create A Touch</PageTitle>
 			<PageSubTitle>{location}</PageSubTitle>
 			{error !== '' && <Error>{error}</Error>}
 
