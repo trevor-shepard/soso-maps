@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, FormEvent } from 'react'
+import styled from '@emotion/styled'
 import { useDispatch } from 'react-redux'
 import {
 	createMarker,
@@ -93,11 +94,15 @@ export default function Create() {
 			<PageTitle>Create a Touch</PageTitle>
 			<PageSubTitle>{location}</PageSubTitle>
 			{error !== '' && <Error>{error}</Error>}
-			<TextInput
-				value={title}
-				label={'title'}
-				handleInput={e => setTitle(e.target.value)}
-			/>
+
+			<InputContainer>
+				<TextInput
+					value={title}
+					label={'title'}
+					handleInput={e => setTitle(e.target.value)}
+				/>
+			</InputContainer>
+			
 			<ImgContainer height={'20%'}>
 				{fileAsImage ? (
 					<Image src={fileAsImage} />
@@ -144,3 +149,7 @@ export default function Create() {
 		</FlexContainer>
 	)
 }
+
+const InputContainer = styled.div`
+	width: 80%;
+`
