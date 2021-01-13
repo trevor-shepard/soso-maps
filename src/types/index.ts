@@ -2,6 +2,8 @@ export interface MarkerState {
 	[id: string]: Marker
 }
 
+export type TagType = 'omv' | 'tentRepair' | 'request' | 'medical' | 'ride' | 'phone' | 'outreach' | 'misc'
+
 export interface Marker {
 	id: string
 	lat: number
@@ -9,6 +11,8 @@ export interface Marker {
 	title: string
 	date: number
 	location: string
+	tags: TagType[]
+	photo?: string | null
 }
 
 export interface User {

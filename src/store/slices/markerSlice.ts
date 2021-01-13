@@ -4,7 +4,7 @@ import { AppThunk } from '..'
 
 import { db, storage } from 'utils/firebase'
 
-import { MarkerState, Marker } from 'types'
+import { MarkerState, Marker, TagType } from 'types'
 
 const initialState: MarkerState = {}
 
@@ -45,21 +45,30 @@ export const subscribeToMarkers = (dispatch: Dispatch<any>) => {
 }
 
 export const createMarker = (
-	lat: number,
-	lng: number,
+	lat: string,
+	lng: string,
 	title: string,
-	date: number
+	tags: TagType[],
+	date: number,
+	photo: string | null = null
+
 ): AppThunk => async dispatch => {
 	try {
 		const ref = await db.collection('markers').doc()
 
-		const marker = {
-			lat,
-			lng,
+		const marker: Marker = {
+			lat: parseFloat(lat),
+			lng: parseFloat(lng),
 			title,
 			location: `${lat},${lng}`,
 			date,
-			id: ref.id
+			tags,
+			id: ref.id,
+			photo
+		}
+
+		if (photo) {
+			marker.photo = photo
 		}
 
 		await ref.set(marker)
