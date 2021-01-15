@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit'
-import marker from 'store/slices/markerSlice'
+import touch from 'store/slices/touchSlice'
 import user from 'store/slices/userSlice'
 const rootReducer = combineReducers({
-	marker,
+	touch,
 	user
 })
 

@@ -4,19 +4,19 @@ import { AppThunk } from '..'
 
 import { db, storage } from 'utils/firebase'
 
-import { MarkerState, Marker, TagType } from 'types'
+import { TouchState, Touch, TagType } from 'types'
 
-const initialState: MarkerState = {}
+const initialState: TouchState = {}
 
-const marker = createSlice({
-	name: 'marker',
+const touch = createSlice({
+	name: 'touch',
 	initialState,
 	reducers: {
-		recieveMarkers(state, action: PayloadAction<MarkerState>) {
-			const markers = action.payload
+		recieveMarkers(state, action: PayloadAction<TouchState>) {
+			const touches = action.payload
 
 			return {
-				...markers
+				...touches
 			}
 		},
 		clear() {
@@ -25,20 +25,20 @@ const marker = createSlice({
 	}
 })
 
-export const { recieveMarkers, clear } = marker.actions
+export const { recieveMarkers, clear } = touch.actions
 
-export default marker.reducer
+export default touch.reducer
 
 export const subscribeToMarkers = (dispatch: Dispatch<any>) => {
-	const unsubscribe = db.collection('markers').onSnapshot(querySnapshot => {
-		const markers: { [id: string]: Marker } = {}
+	const unsubscribe = db.collection('touches').onSnapshot(querySnapshot => {
+		const touches: { [id: string]: Touch } = {}
 
 		querySnapshot.forEach(doc => {
-			const marker = doc.data() as Marker
-			markers[marker.id] = marker
+			const touch = doc.data() as Touch
+			touches[touch.id] = touch
 		})
 
-		dispatch(recieveMarkers(markers))
+		dispatch(recieveMarkers(touches))
 	})
 
 	return unsubscribe
@@ -48,32 +48,34 @@ export const createMarker = (
 	lat: string,
 	lng: string,
 	title: string,
+	notes: string,
 	tags: TagType[],
+	location: string,
 	date: number,
 	photo: string | null = null
-
 ): AppThunk => async dispatch => {
 	try {
-		const ref = await db.collection('markers').doc()
+		const ref = await db.collection('touches').doc()
 
-		const marker: Marker = {
+		const touch: Touch = {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),
 			title,
-			location: `${lat},${lng}`,
+			location,
 			date,
+			notes,
 			tags,
 			id: ref.id,
 			photo
 		}
 
 		if (photo) {
-			marker.photo = photo
+			touch.photo = photo
 		}
 
-		await ref.set(marker)
+		await ref.set(touch)
 	} catch (error) {
-		console.log('error creating marker', error)
+		console.log('error creating touch', error)
 	}
 }
 

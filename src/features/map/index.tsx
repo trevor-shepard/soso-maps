@@ -3,20 +3,23 @@ import styled from '@emotion/styled'
 import GoogleMapReact from 'google-map-react'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store/rootReducer'
-import { subscribeToMarkers } from 'store/slices/markerSlice'
+import { subscribeToMarkers, clear } from 'store/slices/touchSlice'
 import { useHistory } from 'react-router-dom'
-import Marker from './Marker'
+import Marker from './marker'
 import { Tag } from 'components/styled'
 
 export default function Map() {
 	const [lastPress, setlastPress] = useState(0)
 	const [Currentlat, setCurrentLat] = useState(29.94639419721249)
 	const [Currentlng, setCurrentLng] = useState(-90.07472171802686)
-	const markers = useSelector((state: RootState) => state.marker)
+	const touches = useSelector((state: RootState) => state.touch)
 	const dispatch = useDispatch()
 	const history = useHistory()
 
-	useEffect(() => subscribeToMarkers(dispatch), [dispatch])
+	useEffect(() => {
+		dispatch(clear())
+		subscribeToMarkers(dispatch)
+	}, [dispatch])
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -27,19 +30,29 @@ export default function Map() {
 		)
 	}, [])
 
-	const markerComponents = Object.values(markers).map((marker, i) => (
-		<Marker {...marker} key={`marker-${i}`} />
+	const touchComponents = Object.values(touches).map((touch, i) => (
+		<Marker {...touch} key={`touch-${i}`} />
 	))
 
 	return (
 		<Container>
+			<ListButton
+				id="list-view-button"
+				onClick={e => {
+					e.preventDefault()
+					e.stopPropagation()
+					history.push('/touch-list')
+				}}
+			>
+				list
+			</ListButton>
 			<GoogleMapReact
 				onClick={async values => {
 					const { lat, lng } = values
 					const now = Date.now()
 
 					if (now - lastPress < 1000) {
-						history.push(`/create-touch/${lat},${lng}`, {
+						history.push(`/touch-create/${lat},${lng}`, {
 							lat,
 							lng
 						})
@@ -66,7 +79,7 @@ export default function Map() {
 				>
 					Current Location
 				</Tag>
-				{markerComponents}
+				{touchComponents}
 			</GoogleMapReact>
 		</Container>
 	)
@@ -75,4 +88,20 @@ export default function Map() {
 const Container = styled.div`
 	height: 100vh;
 	width: 100%;
+	position: relative;
+`
+
+const ListButton = styled.div`
+	position: fixed;
+	border-radius: 2px;
+	background-color: #fff;
+	padding: 5px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+	cursor: pointer;
+	top: 10px;
+	left: 10px;
+	z-index: 10;
+	font: 400 11px Roboto, Arial, sans-serif;
+	color: #666666;
+	width: 25px;
 `

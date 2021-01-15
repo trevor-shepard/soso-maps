@@ -53,7 +53,6 @@ export const FlexContainer = styled.div`
 	height: 100%;
 	width: auto;
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 `
@@ -98,7 +97,7 @@ export const MapMarkerIcon = styled.img`
 	position: absolute;
 	left: -15px;
 	top: -45px;
-	color: ${({color}) => color};
+	color: ${({ color }) => color};
 `
 
 export const TagTitle = styled.div`
@@ -116,3 +115,11 @@ export const TagTitleHeader = styled.div`
 `
 export const TagTitleSubHeader = styled.div``
 
+export const Close = styled.img`
+	position: absolute;
+	left: 3%;
+	top: 3%;
+	height: 20px;
+	width: 20px;
+	cursor: pointer;
+`

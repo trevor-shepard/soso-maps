@@ -1,14 +1,23 @@
-export interface MarkerState {
-	[id: string]: Marker
+export interface TouchState {
+	[id: string]: Touch
 }
 
-export type TagType = 'omv' | 'tentRepair' | 'request' | 'medical' | 'ride' | 'phone' | 'outreach' | 'misc'
+export type TagType =
+	| 'omv'
+	| 'tentRepair'
+	| 'request'
+	| 'medical'
+	| 'ride'
+	| 'phone'
+	| 'outreach'
+	| 'misc'
 
-export interface Marker {
+export interface Touch {
 	id: string
 	lat: number
 	lng: number
 	title: string
+	notes: string
 	date: number
 	location: string
 	tags: TagType[]
