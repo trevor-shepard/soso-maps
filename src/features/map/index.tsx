@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import GoogleMapReact from 'google-map-react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
-import { subscribeToMarkers, clear } from 'store/slices/touchSlice'
 import { useHistory } from 'react-router-dom'
-import Marker from './marker'
-import { Tag } from 'components/styled'
+import Marker from 'components/marker'
+import { Marker as MarkerStyled } from 'components/styled'
 
 export default function Map() {
 	const [lastPress, setlastPress] = useState(0)
 	const [Currentlat, setCurrentLat] = useState(29.94639419721249)
 	const [Currentlng, setCurrentLng] = useState(-90.07472171802686)
 	const touches = useSelector((state: RootState) => state.touch)
-	const dispatch = useDispatch()
 	const history = useHistory()
-
-	useEffect(() => {
-		dispatch(clear())
-		subscribeToMarkers(dispatch)
-	}, [dispatch])
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -60,7 +53,6 @@ export default function Map() {
 						setlastPress(Date.now())
 					}
 				}}
-				onChildClick={e => console.log('i clicked')}
 				bootstrapURLKeys={{
 					key: process.env.REACT_APP_FIREBASE_API_KEY as string
 				}}
@@ -70,15 +62,14 @@ export default function Map() {
 				}}
 				defaultZoom={13}
 			>
-				<Tag
+				<MarkerStyled
 					// @ts-ignore
 					lat={Currentlat}
 					// @ts-ignore
 					lng={Currentlng}
-					name="My Marker"
 				>
 					Current Location
-				</Tag>
+				</MarkerStyled>
 				{touchComponents}
 			</GoogleMapReact>
 		</Container>

@@ -12,6 +12,17 @@ export type TagType =
 	| 'outreach'
 	| 'misc'
 
+export const TAGS: TagType[] = [
+	'omv',
+	'tentRepair',
+	'request',
+	'medical',
+	'ride',
+	'phone',
+	'outreach',
+	'misc'
+]
+
 export interface Touch {
 	id: string
 	lat: number
@@ -42,4 +53,19 @@ export interface UserState {
 export interface UserWithoutId {
 	username: string
 	email: string
+}
+
+export interface CommunityMember {
+	name: string
+	touches: string[]
+	notes: string
+	id: string
+	location: string | null
+	photo: string | null
+	lat: number | null
+	lng: number | null
+}
+
+export interface CommunityMemberState {
+	[id: string]: CommunityMember
 }

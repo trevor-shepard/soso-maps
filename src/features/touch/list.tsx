@@ -5,19 +5,14 @@ import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import { CloseIcon } from 'assets/icons'
 import TextInput from 'components/inputs/text'
-import { PageTitle, FlexContainer, Close } from 'components/styled'
-import { TagType } from 'types'
-
-const TAGS: TagType[] = [
-	'omv',
-	'tentRepair',
-	'request',
-	'medical',
-	'ride',
-	'phone',
-	'outreach',
-	'misc'
-]
+import {
+	PageTitle,
+	FlexContainer,
+	Close,
+	TagsContainer,
+	Tag
+} from 'components/styled'
+import { TagType, TAGS } from 'types'
 
 export default function TouchList() {
 	const history = useHistory()
@@ -37,20 +32,20 @@ export default function TouchList() {
 	const touches = useSelector((state: RootState) => state.touch)
 
 	const touchList = Object.values(touches)
-		.filter(
-			({ title, notes, location, tags }) =>{
-				if (search === '') return true
-				
-				if (!tags.some(tag => selectedTags[tag])) return false
-				
-				return title.includes(search) ||
+		.filter(({ title, notes, location, tags }) => {
+			if (!tags.some(tag => selectedTags[tag])) return false
+			if (search === '') return true
+			return (
+				title.includes(search) ||
 				notes.includes(search) ||
-				location.includes(search) 
-			
-			}
-		)
+				location.includes(search)
+			)
+		})
 		.map(({ title, date, tags, id }) => (
-			<ListItem onClick={() => history.push(`/touch-detail/${id}`)}>
+			<ListItem
+				key={`touch-${id}`}
+				onClick={() => history.push(`/touch-detail/${id}`)}
+			>
 				{title} -{' '}
 				{new Date(date).toLocaleString('en-US', {
 					day: 'numeric',
@@ -63,12 +58,12 @@ export default function TouchList() {
 
 	const tags = TAGS.map(tag => (
 		<Tag
+			key={`tag-${tag}`}
 			onClick={() => {
 				const newSelected = {
 					...selectedTags,
 					[tag]: !selectedTags[tag]
 				}
-
 				setSelectedTags(newSelected)
 			}}
 			selected={selectedTags[tag]}
@@ -86,7 +81,7 @@ export default function TouchList() {
 				value={search}
 				handleInput={e => setSearch(e.target.value)}
 				label="search"
-				width='80%'
+				width="80%"
 			/>
 			<List>{touchList} </List>
 		</FlexContainer>
@@ -101,7 +96,6 @@ const List = styled.div`
 `
 
 const ListItem = styled.div`
-	
 	border: 1px solid black;
 	border-radius: 2px;
 	margin-top: 10px;
@@ -109,22 +103,5 @@ const ListItem = styled.div`
 	cursor: pointer;
 	&:hover {
 		color: #6eb8da;
-	};
-`
-
-const TagsContainer = styled.div`
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	width: 80%;
-	padding: 2%;
-`
-
-const Tag = styled.div<{ selected: boolean }>`
-	border: 2px solid ${({ selected }) => (selected ? '#6eb8da' : '#666666')};
-	border-radius: 5px;
-	padding: 2px;
-	margin-top: 10px;
-	color: ${({ selected }) => (selected ? '#000000' : '#666666')};
+	}
 `

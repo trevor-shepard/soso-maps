@@ -2,10 +2,10 @@ import React from 'react'
 import { MarkerIcon } from 'assets/icons'
 import {
 	MapMarkerIcon,
-	TagTitle,
-	Tag,
-	TagTitleHeader,
-	TagTitleSubHeader,
+	MarkerTitle,
+	Marker,
+	MarkerTitleHeader,
+	MarkerTitleSubHeader,
 	MarkerPhoto
 } from 'components/styled'
 import { useHistory } from 'react-router-dom'
@@ -27,7 +27,7 @@ export default function Component({ title, date, photo, tags, id }: Touch) {
 	const touchColor = tags.length ? MARKER_COLORS[tags[0]] : '#000000'
 
 	return (
-		<Tag
+		<Marker
 			onClick={e => {
 				e.stopPropagation()
 				history.push(`touch-detail/${id}`)
@@ -36,16 +36,16 @@ export default function Component({ title, date, photo, tags, id }: Touch) {
 		>
 			{photo && <MarkerPhoto src={photo} />}
 			<MapMarkerIcon color={touchColor} src={MarkerIcon} />
-			<TagTitle>
-				<TagTitleHeader>{title}</TagTitleHeader>
-				<TagTitleSubHeader>
+			<MarkerTitle>
+				<MarkerTitleHeader>{title}</MarkerTitleHeader>
+				<MarkerTitleSubHeader>
 					{new Date(date).toLocaleString('en-US', {
 						day: 'numeric',
 						month: 'numeric',
 						year: 'numeric'
 					})}
-				</TagTitleSubHeader>
-			</TagTitle>
-		</Tag>
+				</MarkerTitleSubHeader>
+			</MarkerTitle>
+		</Marker>
 	)
 }

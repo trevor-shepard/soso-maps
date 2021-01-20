@@ -14,8 +14,10 @@ export const SubmitButton = styled.button`
 	border-radius: 2px;
 	border: 1px solid black;
 	min-width: 200px;
+	max-width: 400px;
 	padding: 10px;
 	background-color: #ffffff;
+	margin-bottom: 3%;
 `
 
 export const ModalSubTitle = styled.div`
@@ -33,13 +35,20 @@ export const Error = styled.div`
 	color: #cc0000;
 `
 
+export const PageTitleContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	text-align: left;
+	width: 80%;
+`
+
 export const PageTitle = styled.div`
 	font-family: Amsi Pro Narw;
 	font-style: normal;
 	font-weight: 800;
 	font-size: 22px;
-	margin-top: 5%;
-	padding: 5px;
+	margin-top: 20px;
 `
 
 export const PageSubTitle = styled.div`
@@ -50,7 +59,7 @@ export const PageSubTitle = styled.div`
 `
 
 export const FlexContainer = styled.div`
-	height: 100%;
+	height: 100vh;
 	width: auto;
 	display: flex;
 	align-items: center;
@@ -75,7 +84,7 @@ export const ImgContainer = styled.div<{ height: string }>`
 	width: auto;
 `
 
-export const Tag = styled.div`
+export const Marker = styled.div<{ lat?: string | number, lng?: string | number}>`
 	font-family: 'Amiri';
 	font-weight: bold;
 	position: relative;
@@ -100,7 +109,7 @@ export const MapMarkerIcon = styled.img`
 	color: ${({ color }) => color};
 `
 
-export const TagTitle = styled.div`
+export const MarkerTitle = styled.div`
 	position: absolute;
 	width: 50px;
 	height: auto;
@@ -110,16 +119,63 @@ export const TagTitle = styled.div`
 	flex-direction: column;
 	justify-content: center;
 `
-export const TagTitleHeader = styled.div`
+export const MarkerTitleHeader = styled.div`
 	font-weight: bold;
 `
-export const TagTitleSubHeader = styled.div``
+export const MarkerTitleSubHeader = styled.div``
 
 export const Close = styled.img`
 	position: absolute;
-	left: 3%;
+	right: 4%;
 	top: 3%;
 	height: 20px;
 	width: 20px;
 	cursor: pointer;
+`
+
+export const TagsContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	width: 80%;
+	padding: 2%;
+`
+
+export const Tag = styled.div<{ selected: boolean }>`
+	border: 2px solid ${({ selected }) => (selected ? '#6eb8da' : '#666666')};
+	border-radius: 5px;
+	padding: 2px;
+	margin-top: 10px;
+	margin-left: 2px;
+	margin-right: 2px;
+	color: ${({ selected }) => (selected ? '#000000' : '#666666')};
+`
+
+
+export const CMemberListItem = styled.div`
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+`
+export const DetailsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+`
+export const CmemberName = styled.div`
+	font-family: Mulish;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 14px;
+`
+export const CmemberLocation = styled.div`
+	font-family: Mulish;
+	font-style: normal;
+	font-weight: 200;
+	font-size: 14px;
+`
+export const ProfileImg = styled.img`
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
 `
