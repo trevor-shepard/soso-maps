@@ -156,23 +156,28 @@ export const Tag = styled.div<{ selected: boolean }>`
 export const CMemberListItem = styled.div`
 	display: flex;
 	flex-direction: row;
-	justify-content: center;
+	padding: 3px;
 `
 export const DetailsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
+	justify-content: left;
+	margin-left: 2%;
+	width: 100;
 `
 export const CmemberName = styled.div`
 	font-family: Mulish;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
+	text-align: left;
 `
 export const CmemberLocation = styled.div`
 	font-family: Mulish;
 	font-style: normal;
 	font-weight: 200;
 	font-size: 14px;
+	text-align: left;
 `
 export const ProfileImg = styled.img`
 	height: 40px;

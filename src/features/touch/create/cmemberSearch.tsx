@@ -56,7 +56,7 @@ export default function CMemberSearch({ handleSelect, height, width }: Props) {
 				handleInput={e => setSearch(e.target.value)}
 				value={search}
 			/>
-			<OptionsContainer>{search !== '' && options}</OptionsContainer>
+			{search !== '' && <OptionsContainer>{options}</OptionsContainer>}
 		</Container>
 	)
 }
@@ -71,7 +71,14 @@ const Container = styled.div<{ height: string; width: string }>`
 const OptionsContainer = styled.div`
 	display: flex;
 	flex-direction: column;
+	justify-content: left;
 	position: absolute;
-	top: 50px;
+	top: 39px;
+	border: 2px solid black;
+	border-top: none;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background-color: '#ffff';
+	width: 89%;
 `
 
