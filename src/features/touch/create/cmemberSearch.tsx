@@ -8,10 +8,10 @@ import { GroupIcon } from 'assets/icons'
 import { CommunityMember } from 'types'
 import {
 	CMemberListItem,
-DetailsContainer,
-CmemberName,
-CmemberLocation,
-ProfileImg,
+	DetailsContainer,
+	CmemberName,
+	CmemberLocation,
+	ProfileImg
 } from 'components/styled'
 interface Props {
 	handleSelect: (member: CommunityMember) => void
@@ -81,4 +81,3 @@ const OptionsContainer = styled.div`
 	background-color: '#ffff';
 	width: 89%;
 `
-

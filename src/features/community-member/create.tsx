@@ -22,7 +22,7 @@ import {
 	Marker,
 	MapMarkerIcon,
 	MarkerTitle,
-	MarkerTitleHeader,
+	MarkerTitleHeader
 } from 'components/styled'
 
 export default function Create() {
@@ -123,7 +123,6 @@ export default function Create() {
 						if (now - lastPress < 1000) {
 							getAddress(lat, lng)
 							setLatLng([lat, lng])
-
 						} else {
 							setlastPress(Date.now())
 						}
@@ -138,12 +137,7 @@ export default function Create() {
 					defaultZoom={15}
 				>
 					{latLng && (
-						<Marker
-	
-							lat={latLng[0]}
-
-							lng={latLng[1]}
-						>
+						<Marker lat={latLng[0]} lng={latLng[1]}>
 							<MapMarkerIcon src={MarkerIcon} />
 							<MarkerTitle>
 								{location && <MarkerTitleHeader>{location}</MarkerTitleHeader>}

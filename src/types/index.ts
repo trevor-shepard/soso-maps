@@ -31,7 +31,7 @@ export interface Touch {
 	notes: string
 	date: number
 	location: string
-	tags: TagType[]
+	tag: TagType
 	photo?: string | null
 }
 

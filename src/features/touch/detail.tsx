@@ -20,30 +20,28 @@ export default function Detail() {
 
 	if (!id) history.goBack()
 
-	const { photo, location, title, tags, notes } = useSelector(
+	const touch = useSelector(
 		(state: RootState) => state.touch[id]
 	)
+	
+	if (!touch) history.goBack()
 
-	const tagsList = tags.map(tag => <Tag>{tag}</Tag>)
+	const { photo, location, title, tag, notes } = touch
+ 	
+
 	return (
 		<FlexContainer>
 			<Close onClick={history.goBack} src={CloseIcon} />
-			<PageTitle>{title}</PageTitle>
+			<PageTitle>
+				{title} <Tag>{tag}</Tag>
+			</PageTitle>
 			<PageSubTitle>{location}</PageSubTitle>
 			{photo && <Photo src={photo} />}
-			<TagsContainer>{tagsList}</TagsContainer>
-			<NotesContainer>{notes}</NotesContainer>
+
+			<NotesContainer>{notes.split('\n').map((line) => <p>{line}</p>)}</NotesContainer>
 		</FlexContainer>
 	)
 }
-
-const TagsContainer = styled.div`
-	width: 50%;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
-`
 
 const Tag = styled.div`
 	border: 2px solid black;

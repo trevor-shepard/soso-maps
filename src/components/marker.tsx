@@ -11,7 +11,7 @@ import {
 import { useHistory } from 'react-router-dom'
 
 import { Touch } from 'types'
-export default function Component({ title, date, photo, tags, id }: Touch) {
+export default function Component({ title, date, photo, tag, id }: Touch) {
 	const history = useHistory()
 	const MARKER_COLORS = {
 		omv: '#0A5DA6',
@@ -24,7 +24,7 @@ export default function Component({ title, date, photo, tags, id }: Touch) {
 		misc: '#BF9004'
 	}
 
-	const touchColor = tags.length ? MARKER_COLORS[tags[0]] : '#000000'
+	const touchColor = MARKER_COLORS[tag]
 
 	return (
 		<Marker

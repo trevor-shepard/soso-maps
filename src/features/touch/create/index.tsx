@@ -24,10 +24,10 @@ import {
 	Tag,
 	TagsContainer,
 	CMemberListItem,
-DetailsContainer,
-CmemberName,
-CmemberLocation,
-ProfileImg,
+	DetailsContainer,
+	CmemberName,
+	CmemberLocation,
+	ProfileImg
 } from 'components/styled'
 import { TagType, TAGS, CommunityMember } from 'types'
 
@@ -40,18 +40,7 @@ export default function Create() {
 	const [notes, setNotes] = useState('')
 	const [location, setLocation] = useState('')
 	const [cMember, setCMember] = useState<CommunityMember | null>(null)
-	const [selectedTags, setSelectedTags] = useState<{ [k in TagType]: boolean }>(
-		{
-			omv: true,
-			tentRepair: true,
-			request: true,
-			medical: true,
-			ride: true,
-			phone: true,
-			outreach: true,
-			misc: true
-		}
-	)
+	const [selectedTag, setSelectedTag] = useState<TagType>('misc')
 
 	const [error, setError] = useState('')
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
@@ -61,7 +50,7 @@ export default function Create() {
 	const handleSubmit = async () => {
 		try {
 			const date = Date.now()
-			const tags = TAGS.filter(tag => selectedTags[tag])
+
 			if (imageAsFile) {
 				const downloadURL = await handleFireBaseImageUpload(
 					`touch/${title}-${date}`,
@@ -74,7 +63,7 @@ export default function Create() {
 						lng,
 						title,
 						notes,
-						tags !== [] ? tags : ['misc'],
+						selectedTag,
 						location,
 						Date.now(),
 						downloadURL
@@ -87,7 +76,7 @@ export default function Create() {
 						lng,
 						title,
 						notes,
-						tags !== [] ? tags : ['misc'],
+						selectedTag,
 						location,
 						Date.now()
 					)
@@ -128,17 +117,41 @@ export default function Create() {
 		getAddress()
 	}, [coords, getAddress])
 
+	useEffect(() => {
+		switch (selectedTag) {
+			case 'phone':
+				setNotes("- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- GOV address (what's listed on their ID): \n\n- Mailing address: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)")
+				break;
+			case 'omv':
+				setNotes("- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- Phone #: \n\n- Have they had a LA ID before?: \n\n- If yes, do they have their birth certificate and two forms of ID?: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)")
+				break;
+			case 'ride':
+				setNotes("- Destination: \n\n- Urgency: ")
+				break
+			case 'request':
+				setNotes("- Item: \n\n- Size: ")
+			case 'medical':
+				setNotes("- Urgency: \n\n- Symptoms: ")
+				break;
+			case 'tentRepair':
+				setNotes("- Urgency: \n\n- Issue: ")
+				break;
+			case 'outreach':
+				setNotes("- Urgency: \n\n- Issue: ")
+				break;
+			default:
+				setNotes("")
+				break;
+		}
+	}, [selectedTag, setNotes])
+
 	const tagtoggles = TAGS.map(tag => (
 		<Tag
 			key={`tag-${tag}`}
 			onClick={() => {
-				const newSelected = {
-					...selectedTags,
-					[tag]: !selectedTags[tag]
-				}
-				setSelectedTags(newSelected)
+				setSelectedTag(tag)
 			}}
-			selected={selectedTags[tag]}
+			selected={tag === selectedTag}
 		>
 			{tag}
 		</Tag>
@@ -160,19 +173,26 @@ export default function Create() {
 				handleInput={e => setTitle(e.target.value)}
 			/>
 
-			{ cMember ? <CMemberListItem >
-					{cMember.photo ? <ProfileImg src={cMember.photo} /> : <ProfileImg src={GroupIcon} />}
+			{cMember ? (
+				<CMemberListItem>
+					{cMember.photo ? (
+						<ProfileImg src={cMember.photo} />
+					) : (
+						<ProfileImg src={GroupIcon} />
+					)}
 					<DetailsContainer>
 						<CmemberName>{cMember.name}</CmemberName>
 						{cMember && <CmemberLocation>{cMember.location}</CmemberLocation>}
 					</DetailsContainer>
 				</CMemberListItem>
-				
-				:<CMemberSearch
-				handleSelect={member => setCMember(member)}
-				width={'90%'}
-				height={'20%'}
-			/>}
+			) : (
+				<CMemberSearch
+					handleSelect={member => setCMember(member)}
+					width={'90%'}
+					height={'20%'}
+				/>
+			)}
+			<TagsContainer>{tagtoggles}</TagsContainer>
 			<ImgContainer height={'20%'}>
 				{fileAsImage ? (
 					<Image src={fileAsImage} />
@@ -183,14 +203,16 @@ export default function Create() {
 					</FileInputLabel>
 				)}
 			</ImgContainer>
-
-			<TextAreaInput
-				value={notes}
-				label={'notes'}
-				handleInput={e => setNotes(e.target.value)}
-				height={'200px'}
-			/>
-			<TagsContainer>{tagtoggles}</TagsContainer>
+			
+				<TextAreaInput
+					value={notes}
+					label={'notes'}
+					handleInput={e => setNotes(e.target.value)}
+					height={'300px'}
+				/>
+			
+			
+			
 
 			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
 		</Container>

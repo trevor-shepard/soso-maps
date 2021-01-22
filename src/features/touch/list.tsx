@@ -17,23 +17,12 @@ import { TagType, TAGS } from 'types'
 export default function TouchList() {
 	const history = useHistory()
 	const [search, setSearch] = useState('')
-	const [selectedTags, setSelectedTags] = useState<{ [k in TagType]: boolean }>(
-		{
-			omv: true,
-			tentRepair: true,
-			request: true,
-			medical: true,
-			ride: true,
-			phone: true,
-			outreach: true,
-			misc: true
-		}
-	)
+	const [selectedTag, setSelectedTag] = useState<TagType>('misc')
 	const touches = useSelector((state: RootState) => state.touch)
 
 	const touchList = Object.values(touches)
-		.filter(({ title, notes, location, tags }) => {
-			if (!tags.some(tag => selectedTags[tag])) return false
+		.filter(({ title, notes, location, tag }) => {
+			if (tag !== selectedTag) return false
 			if (search === '') return true
 			return (
 				title.includes(search) ||
@@ -41,7 +30,7 @@ export default function TouchList() {
 				location.includes(search)
 			)
 		})
-		.map(({ title, date, tags, id }) => (
+		.map(({ title, date, tag, id }) => (
 			<ListItem
 				key={`touch-${id}`}
 				onClick={() => history.push(`/touch-detail/${id}`)}
@@ -52,7 +41,7 @@ export default function TouchList() {
 					month: 'numeric',
 					year: 'numeric'
 				})}{' '}
-				- {tags.reduce((acc, curr) => `${curr} ${acc}`, '')}
+				- {tag}
 			</ListItem>
 		))
 
@@ -60,13 +49,9 @@ export default function TouchList() {
 		<Tag
 			key={`tag-${tag}`}
 			onClick={() => {
-				const newSelected = {
-					...selectedTags,
-					[tag]: !selectedTags[tag]
-				}
-				setSelectedTags(newSelected)
+				setSelectedTag(tag)
 			}}
-			selected={selectedTags[tag]}
+			selected={selectedTag === tag}
 		>
 			{tag}
 		</Tag>

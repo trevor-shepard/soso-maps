@@ -84,7 +84,10 @@ export const ImgContainer = styled.div<{ height: string }>`
 	width: auto;
 `
 
-export const Marker = styled.div<{ lat?: string | number, lng?: string | number}>`
+export const Marker = styled.div<{
+	lat?: string | number
+	lng?: string | number
+}>`
 	font-family: 'Amiri';
 	font-weight: bold;
 	position: relative;
@@ -143,15 +146,15 @@ export const TagsContainer = styled.div`
 `
 
 export const Tag = styled.div<{ selected: boolean }>`
-	border: 2px solid ${({ selected }) => (selected ? '#6eb8da' : '#666666')};
+	border:  ${({ selected }) => (selected ? '4px solid#6eb8da' : '2px solid #666666 ')};
 	border-radius: 5px;
-	padding: 2px;
+	padding: 4px;
 	margin-top: 10px;
 	margin-left: 2px;
 	margin-right: 2px;
 	color: ${({ selected }) => (selected ? '#000000' : '#666666')};
+	font-weight: ${({ selected }) => (selected ? 'bold' : '400')};
 `
-
 
 export const CMemberListItem = styled.div`
 	display: flex;
