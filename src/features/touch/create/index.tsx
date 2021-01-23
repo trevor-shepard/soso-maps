@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { createMarker } from 'store/slices/touchSlice'
 import { handleFireBaseImageUpload } from 'utils/firebase'
 import { useParams, useHistory } from 'react-router-dom'
+import "react-modern-calendar-datepicker/lib/DatePicker.css";
 import { functions } from 'utils/firebase'
 import TextInput from 'components/inputs/text'
 import TextAreaInput from 'components/inputs/textArea'
@@ -130,6 +131,7 @@ export default function Create() {
 				break
 			case 'request':
 				setNotes("- Item: \n\n- Size: ")
+				break
 			case 'medical':
 				setNotes("- Urgency: \n\n- Symptoms: ")
 				break;

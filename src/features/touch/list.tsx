@@ -17,12 +17,12 @@ import { TagType, TAGS } from 'types'
 export default function TouchList() {
 	const history = useHistory()
 	const [search, setSearch] = useState('')
-	const [selectedTag, setSelectedTag] = useState<TagType>('misc')
+	const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
 	const touches = useSelector((state: RootState) => state.touch)
 
 	const touchList = Object.values(touches)
 		.filter(({ title, notes, location, tag }) => {
-			if (tag !== selectedTag) return false
+			if (selectedTag && tag !== selectedTag) return false
 			if (search === '') return true
 			return (
 				title.includes(search) ||

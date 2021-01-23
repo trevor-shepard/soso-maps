@@ -1,35 +1,51 @@
-export interface Timestamp {
-	seconds: number
-	nanoseconds: number
-}
+export function getDaysInMonths(date: Date) {
+	
+	const currYear = date.getFullYear()
 
-export const tToD = (timestamp: Timestamp) => new Date(timestamp.seconds * 1000)
-
-export const convertTimestampsToDates = (object: { [key: string]: any }) => {
-	const obj: { [key: string]: any } = {}
-
-	for (const key of Object.keys(object)) {
-		const value = object[key]
-
-		if (value.seconds) {
-			obj[key] = tToD(value as Timestamp)
-		} else if (typeof object[key] === 'object') {
-			obj[key] = convertTimestampsToDates(value)
-		} else {
-			obj[key] = value
-		}
+	const daysInMonths = {
+		0: 31,
+		1: 28,
+		2: 31,
+		3: 30,
+		4: 31,
+		5: 30,
+		6: 31,
+		7: 31,
+		8: 30,
+		9: 31,
+		10: 30,
+		11: 31
 	}
 
-	return obj
+	// Check for leap year
+	if ((!(currYear % 4) && (currYear % 100)) || !(currYear % 400)) {
+		daysInMonths[1] = 29
+	}
+
+	return daysInMonths
+	
 }
 
-export const convertParticipantSeenToDates = (participants: {
-	[id: string]: string
-}) => {
-	const newobj: { [id: string]: Date } = {}
 
-	for (const id of Object.keys(participants)) {
-		newobj[id] = new Date(participants[id])
+function generateDays(date: Date, daysInMonths: {[month: number]: number}) {
+	// account for year rollover
+	const lastMonth = date.getMonth() === 0 ? 11 : date.getMonth() - 1
+	const lastMonthYear =  date.getMonth() === 0 ? (date.getFullYear() - 1) : date.getFullYear()
+	const nextMonth = date.getMonth() === 11 ? 0 : date.getMonth() + 1
+	const nextMonthYear = date.getMonth() === 11 ? (date.getFullYear() + 1) : date.getFullYear()
+
+	const days = []
+	// Get previous month lapover days
+	for (let index = 0; index < new Date(date.getFullYear(), date.getMonth(), 1).getDay(); index++) {
+		days.unshift(index)
 	}
-	return newobj
+	// Get current months days
+	for (let index = 1; index < (daysInMonths[date.getMonth()] + 1); index++) {
+		days.push(index)
+	}
+	// Get next month lapover days
+	
+	for (let index = 0; index < 6 - (new Date(date.getFullYear(), date.getMonth(), daysInMonths[date.getMonth()]).getDay()); index++) {
+		days.push(index)
+	}
 }

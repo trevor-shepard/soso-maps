@@ -5,6 +5,7 @@ import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Subscribe from 'components/subscribe'
+import TabNav from 'features/tab-nav'
 import Map from 'features/map'
 import CreateTouch from 'features/touch/create'
 import DetailTouch from 'features/touch/detail'
@@ -46,7 +47,9 @@ function App() {
 							/>
 							<ProtectedRoute path="/" component={Map} />
 						</Switch>
+						<ProtectedRoute component={TabNav} />
 					</Router>
+					
 				</PersistGate>
 			</Provider>
 		</div>
