@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { createMarker } from 'store/slices/touchSlice'
 import { handleFireBaseImageUpload } from 'utils/firebase'
 import { useParams, useHistory } from 'react-router-dom'
-import "react-modern-calendar-datepicker/lib/DatePicker.css";
+import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
 import TextInput from 'components/inputs/text'
 import TextAreaInput from 'components/inputs/textArea'
@@ -37,7 +37,6 @@ export default function Create() {
 	const [lat, lng] = coords.split(',')
 	const history = useHistory()
 	const dispatch = useDispatch()
-	const [title, setTitle] = useState('')
 	const [notes, setNotes] = useState('')
 	const [location, setLocation] = useState('')
 	const [cMember, setCMember] = useState<CommunityMember | null>(null)
@@ -54,33 +53,34 @@ export default function Create() {
 
 			if (imageAsFile) {
 				const downloadURL = await handleFireBaseImageUpload(
-					`touch/${title}-${date}`,
+					`touch/${location}-${date}`,
 					imageAsFile
 				)
 
 				await dispatch(
-					createMarker(
+					createMarker({
 						lat,
 						lng,
-						title,
 						notes,
-						selectedTag,
+						tag: selectedTag,
 						location,
-						Date.now(),
-						downloadURL
-					)
+						date: Date.now(),
+						photo: downloadURL,
+						cMember: cMember ? cMember.id : null
+					})
 				)
 			} else {
 				await dispatch(
-					createMarker(
+					createMarker({
 						lat,
 						lng,
-						title,
 						notes,
-						selectedTag,
+						tag: selectedTag,
 						location,
-						Date.now()
-					)
+						date: Date.now(),
+						photo: null,
+						cMember: cMember ? cMember.id : null
+					})
 				)
 			}
 		} catch (error) {
@@ -121,29 +121,33 @@ export default function Create() {
 	useEffect(() => {
 		switch (selectedTag) {
 			case 'phone':
-				setNotes("- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- GOV address (what's listed on their ID): \n\n- Mailing address: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)")
-				break;
+				setNotes(
+					"- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- GOV address (what's listed on their ID): \n\n- Mailing address: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)"
+				)
+				break
 			case 'omv':
-				setNotes("- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- Phone #: \n\n- Have they had a LA ID before?: \n\n- If yes, do they have their birth certificate and two forms of ID?: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)")
-				break;
+				setNotes(
+					'- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- Phone #: \n\n- Have they had a LA ID before?: \n\n- If yes, do they have their birth certificate and two forms of ID?: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)'
+				)
+				break
 			case 'ride':
-				setNotes("- Destination: \n\n- Urgency: ")
+				setNotes('- Destination: \n\n- Urgency: ')
 				break
 			case 'request':
-				setNotes("- Item: \n\n- Size: ")
+				setNotes('- Item: \n\n- Size: ')
 				break
 			case 'medical':
-				setNotes("- Urgency: \n\n- Symptoms: ")
-				break;
+				setNotes('- Urgency: \n\n- Symptoms: ')
+				break
 			case 'tentRepair':
-				setNotes("- Urgency: \n\n- Issue: ")
-				break;
+				setNotes('- Urgency: \n\n- Issue: ')
+				break
 			case 'outreach':
-				setNotes("- Urgency: \n\n- Issue: ")
-				break;
+				setNotes('- Urgency: \n\n- Issue: ')
+				break
 			default:
-				setNotes("")
-				break;
+				setNotes('')
+				break
 		}
 	}, [selectedTag, setNotes])
 
@@ -168,12 +172,6 @@ export default function Create() {
 			</PageTitleContainer>
 
 			{error !== '' && <Error>{error}</Error>}
-
-			<TextInput
-				value={title}
-				label={'title'}
-				handleInput={e => setTitle(e.target.value)}
-			/>
 
 			{cMember ? (
 				<CMemberListItem>
@@ -205,16 +203,13 @@ export default function Create() {
 					</FileInputLabel>
 				)}
 			</ImgContainer>
-			
-				<TextAreaInput
-					value={notes}
-					label={'notes'}
-					handleInput={e => setNotes(e.target.value)}
-					height={'300px'}
-				/>
-			
-			
-			
+
+			<TextAreaInput
+				value={notes}
+				label={'notes'}
+				handleInput={e => setNotes(e.target.value)}
+				height={'300px'}
+			/>
 
 			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
 		</Container>
@@ -223,4 +218,6 @@ export default function Create() {
 
 const Container = styled(FlexContainer)`
 	justify-content: space-between;
+	overflow-y: scroll;
+	margin-bottom: 65px;
 `

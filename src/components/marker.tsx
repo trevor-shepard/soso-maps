@@ -11,7 +11,7 @@ import {
 import { useHistory } from 'react-router-dom'
 
 import { Touch } from 'types'
-export default function Component({ title, date, photo, tag, id }: Touch) {
+export default function Component({ date, photo, tag, id }: Touch) {
 	const history = useHistory()
 	const MARKER_COLORS = {
 		omv: '#0A5DA6',
@@ -32,12 +32,11 @@ export default function Component({ title, date, photo, tag, id }: Touch) {
 				e.stopPropagation()
 				history.push(`touch-detail/${id}`)
 			}}
-			id={`${title}-${date}`}
 		>
 			{photo && <MarkerPhoto src={photo} />}
 			<MapMarkerIcon color={touchColor} src={MarkerIcon} />
 			<MarkerTitle>
-				<MarkerTitleHeader>{title}</MarkerTitleHeader>
+				<MarkerTitleHeader>{tag}</MarkerTitleHeader>
 				<MarkerTitleSubHeader>
 					{new Date(date).toLocaleString('en-US', {
 						day: 'numeric',

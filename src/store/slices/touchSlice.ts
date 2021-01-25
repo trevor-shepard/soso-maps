@@ -14,7 +14,7 @@ const touch = createSlice({
 	reducers: {
 		recieveMarkers(state, action: PayloadAction<TouchState>) {
 			const touches = action.payload
-			
+
 			return {
 				...touches
 			}
@@ -36,7 +36,6 @@ export const subscribeToTouches = (dispatch: Dispatch<any>) => {
 		querySnapshot.forEach(doc => {
 			const touch = doc.data() as Touch
 			touches[touch.id] = touch
-			
 		})
 
 		dispatch(recieveMarkers(touches))
@@ -45,29 +44,41 @@ export const subscribeToTouches = (dispatch: Dispatch<any>) => {
 	return unsubscribe
 }
 
-export const createMarker = (
-	lat: string,
-	lng: string,
-	title: string,
-	notes: string,
-	tag: TagType,
-	location: string,
-	date: number,
-	photo: string | null = null
-): AppThunk => async dispatch => {
+interface CreateMarkerProps {
+	lat: string
+	lng: string
+	notes: string
+	tag: TagType
+	location: string
+	date: number
+	photo: string | null
+	cMember: string | null
+}
+
+export const createMarker = ({
+	lat,
+	lng,
+	location,
+	date,
+	notes,
+	tag,
+	photo,
+	cMember
+}: CreateMarkerProps): AppThunk => async dispatch => {
 	try {
 		const ref = await db.collection('touches').doc()
 		debugger
 		const touch: Touch = {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),
-			title,
+			cMemeber: cMember ? cMember : null,
 			location,
 			date,
 			notes,
 			tag,
 			id: ref.id,
-			photo
+			photo: photo ? photo : null,
+			resolved: false
 		}
 
 		if (photo) {

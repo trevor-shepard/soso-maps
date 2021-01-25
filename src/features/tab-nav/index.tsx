@@ -14,7 +14,10 @@ const MobileNav: FunctionComponent = () => {
 				<TabIcon src={HomeIcon} alt=" " />
 				Home
 			</Tab>
-			<Tab current={pathname === '/touch-list' ? 'true' : 'false'} to="/touch-list">
+			<Tab
+				current={pathname === '/touch-list' ? 'true' : 'false'}
+				to="/touch-list"
+			>
 				<TabIcon src={HamburgerIcon} alt=" " />
 				List
 			</Tab>
@@ -31,14 +34,10 @@ const Navbar = styled.div`
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
-	position: fixed;
-	bottom: 0;
-	opacity: 1;
 	background-color: #ffff;
-	z-index: 10;
 `
 interface TabIconProps {
-	current: string;
+	current: string
 }
 
 const Tab = styled(Link)<TabIconProps>`

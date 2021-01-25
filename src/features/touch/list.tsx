@@ -21,21 +21,16 @@ export default function TouchList() {
 	const touches = useSelector((state: RootState) => state.touch)
 
 	const touchList = Object.values(touches)
-		.filter(({ title, notes, location, tag }) => {
+		.filter(({ notes, location, tag }) => {
 			if (selectedTag && tag !== selectedTag) return false
 			if (search === '') return true
-			return (
-				title.includes(search) ||
-				notes.includes(search) ||
-				location.includes(search)
-			)
+			return notes.includes(search) || location.includes(search)
 		})
-		.map(({ title, date, tag, id }) => (
+		.map(({ date, tag, id }) => (
 			<ListItem
 				key={`touch-${id}`}
 				onClick={() => history.push(`/touch-detail/${id}`)}
 			>
-				{title} -{' '}
 				{new Date(date).toLocaleString('en-US', {
 					day: 'numeric',
 					month: 'numeric',

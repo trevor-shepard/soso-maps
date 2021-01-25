@@ -49,7 +49,6 @@ function App() {
 						</Switch>
 						<ProtectedRoute component={TabNav} />
 					</Router>
-					
 				</PersistGate>
 			</Provider>
 		</div>

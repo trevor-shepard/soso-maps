@@ -1,6 +1,6 @@
 import React, { useState, useEffect, RefObject } from 'react'
 import styled from '@emotion/styled'
-import DatePicker, {DayRange, utils} from "react-modern-calendar-datepicker";
+import DatePicker, { DayRange, utils } from 'react-modern-calendar-datepicker'
 import GoogleMapReact from 'google-map-react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
@@ -17,16 +17,15 @@ export default function Map() {
 		from: {
 			year: new Date(Date.now() - 604800000).getFullYear(),
 			month: new Date(Date.now() - 604800000).getMonth(),
-			day: new Date(Date.now() - 604800000).getDate(),
-
+			day: new Date(Date.now() - 604800000).getDate()
 		},
-		to:{
+		to: {
 			year: new Date().getFullYear(),
 			month: new Date().getMonth(),
-			day: new Date().getDate(),
+			day: new Date().getDate()
 		}
-	  });
-	
+	})
+
 	const touches = useSelector((state: RootState) => state.touch)
 	const history = useHistory()
 
@@ -37,51 +36,61 @@ export default function Map() {
 				setCurrentLng(longitude)
 			}
 		)
-
 	}, [])
 
 	console.log(selectedDayRange)
 
-	const renderCustomInput = ({ ref }: { ref: RefObject<HTMLInputElement>}) => (
+	const renderCustomInput = ({ ref }: { ref: RefObject<HTMLInputElement> }) => (
 		<DateInput
-		  readOnly
-		  ref={ref} // necessary
-		  placeholder="I'm a custom input"
-		  value={selectedDayRange.from && selectedDayRange.to ? `${selectedDayRange.from.month + 1}/${selectedDayRange.from.day}/${selectedDayRange.from.year} - ${selectedDayRange.to.month + 1}/${selectedDayRange.to.day}/${selectedDayRange.to.year}` : 'pick a date range'}
-		  className="my-custom-input-class" // a styling class
+			readOnly
+			ref={ref} // necessary
+			placeholder="I'm a custom input"
+			value={
+				selectedDayRange.from && selectedDayRange.to
+					? `${selectedDayRange.from.month + 1}/${selectedDayRange.from.day}/${
+							selectedDayRange.from.year
+					  } - ${selectedDayRange.to.month + 1}/${selectedDayRange.to.day}/${
+							selectedDayRange.to.year
+					  }`
+					: 'pick a date range'
+			}
+			className="my-custom-input-class" // a styling class
 		/>
 	)
 
+	const touchComponents = Object.values(touches)
+		.filter(({ date }) => {
+			if (selectedDayRange.from && selectedDayRange.to) {
+				const from = Date.parse(
+					`${selectedDayRange.from.month + 1}/${selectedDayRange.from.day}/${
+						selectedDayRange.from.year
+					}`
+				)
+				const to = Date.parse(
+					`${selectedDayRange.to.month + 1}/${selectedDayRange.to.day}/${
+						selectedDayRange.to.year
+					}`
+				)
 
+				return from < date && date < to
+			}
 
-	const touchComponents = Object.values(touches).filter(({date}) => {
-		if (selectedDayRange.from && selectedDayRange.to) {
-			const from = Date.parse(`${selectedDayRange.from.month + 1}/${selectedDayRange.from.day}/${selectedDayRange.from.year}`)
-			const to =  Date.parse(`${selectedDayRange.to.month + 1}/${selectedDayRange.to.day}/${selectedDayRange.to.year}`)
-
-			return from < date && date < to
-		} 
-
-		return true
-	}).map((touch, i) => (
-		<Marker {...touch} key={`touch-${i}`} />
-	))
-
+			return true
+		})
+		.map((touch, i) => <Marker {...touch} key={`touch-${i}`} />)
 
 	return (
 		<Container>
-			
-				<DatePicker 
-					value={selectedDayRange}
-					onChange={setSelectedDayRange}
-					inputPlaceholder="Select a day range"
-					// @ts-ignore
-					renderInput={renderCustomInput}
-					maximumDate={utils('en').getToday()}
-					shouldHighlightWeekends
-				/>
-			
-			
+			<DatePicker
+				value={selectedDayRange}
+				onChange={setSelectedDayRange}
+				inputPlaceholder="Select a day range"
+				// @ts-ignore
+				renderInput={renderCustomInput}
+				maximumDate={utils('en').getToday()}
+				shouldHighlightWeekends
+			/>
+
 			<GoogleMapReact
 				onClick={async values => {
 					const { lat, lng } = values
@@ -95,6 +104,9 @@ export default function Map() {
 					} else {
 						setlastPress(Date.now())
 					}
+				}}
+				style={{
+					playsInline: true
 				}}
 				bootstrapURLKeys={{
 					key: process.env.REACT_APP_FIREBASE_API_KEY as string
@@ -120,7 +132,7 @@ export default function Map() {
 }
 
 const Container = styled.div`
-	height: 100vh;
+	height: calc(100% - 60px);
 	width: 100%;
 	position: relative;
 `
@@ -139,3 +151,5 @@ const DateInput = styled.input`
 	color: #666666;
 	width: auto;
 `
+
+

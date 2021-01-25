@@ -20,25 +20,31 @@ export default function Detail() {
 
 	if (!id) history.goBack()
 
-	const touch = useSelector(
-		(state: RootState) => state.touch[id]
-	)
-	
+	const touch = useSelector((state: RootState) => state.touch[id])
+	const cMembers = useSelector((state: RootState) => state.communitymember)
+
 	if (!touch) history.goBack()
 
-	const { photo, location, title, tag, notes } = touch
- 	
+	
+
+	const cMember = touch.cMemeber ? cMembers[touch.cMemeber] : false
+
+	const { photo, location, tag, notes, resolved } = touch
 
 	return (
 		<FlexContainer>
 			<Close onClick={history.goBack} src={CloseIcon} />
 			<PageTitle>
-				{title} <Tag>{tag}</Tag>
+				<Tag>{tag}{cMember && ` - ${cMember.name}`} {resolved && 'Resolved'}</Tag>
 			</PageTitle>
 			<PageSubTitle>{location}</PageSubTitle>
 			{photo && <Photo src={photo} />}
 
-			<NotesContainer>{notes.split('\n').map((line) => <p>{line}</p>)}</NotesContainer>
+			<NotesContainer>
+				{notes.split('\n').map(line => (
+					<p>{line}</p>
+				))}
+			</NotesContainer>
 		</FlexContainer>
 	)
 }

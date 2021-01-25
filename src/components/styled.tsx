@@ -59,7 +59,7 @@ export const PageSubTitle = styled.div`
 `
 
 export const FlexContainer = styled.div`
-	height: 100vh;
+	height: calc(100% - 60px);
 	width: auto;
 	display: flex;
 	align-items: center;
@@ -146,7 +146,8 @@ export const TagsContainer = styled.div`
 `
 
 export const Tag = styled.div<{ selected: boolean }>`
-	border:  ${({ selected }) => (selected ? '4px solid#6eb8da' : '2px solid #666666 ')};
+	border: ${({ selected }) =>
+		selected ? '4px solid#6eb8da' : '2px solid #666666 '};
 	border-radius: 5px;
 	padding: 4px;
 	margin-top: 10px;
