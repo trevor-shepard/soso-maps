@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction, Dispatch } from '@reduxjs/toolkit'
 
-import { AppThunk } from '..'
-
 import { db } from 'utils/firebase'
 
 import { TouchState, Touch, TagType } from 'types'
@@ -55,7 +53,7 @@ interface CreateMarkerProps {
 	cMember: string | null
 }
 
-export const createMarker = ({
+export const createMarker = async ({
 	lat,
 	lng,
 	location,
@@ -64,10 +62,10 @@ export const createMarker = ({
 	tag,
 	photo,
 	cMember
-}: CreateMarkerProps): AppThunk => async dispatch => {
+}: CreateMarkerProps) => {
 	try {
 		const ref = await db.collection('touches').doc()
-		debugger
+		
 		const touch: Touch = {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),

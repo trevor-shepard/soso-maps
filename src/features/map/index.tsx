@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import Marker from 'components/marker'
-import { Marker as MarkerStyled } from 'components/styled'
 
 export default function Map() {
 	const [lastPress, setlastPress] = useState(0)
@@ -37,8 +36,6 @@ export default function Map() {
 			}
 		)
 	}, [])
-
-	console.log(selectedDayRange)
 
 	const renderCustomInput = ({ ref }: { ref: RefObject<HTMLInputElement> }) => (
 		<DateInput
@@ -115,16 +112,15 @@ export default function Map() {
 					lat: 29.94639419721249,
 					lng: -90.07472171802686
 				}}
-				defaultZoom={13}
+				defaultZoom={15}
 			>
-				<MarkerStyled
+				<CurrentLocation
 					// @ts-ignore
 					lat={Currentlat}
 					// @ts-ignore
 					lng={Currentlng}
-				>
-					Current Location
-				</MarkerStyled>
+				/>
+					
 				{touchComponents}
 			</GoogleMapReact>
 		</Container>
@@ -150,6 +146,16 @@ const DateInput = styled.input`
 	font: 400 11px Roboto, Arial, sans-serif;
 	color: #666666;
 	width: auto;
+`
+
+const CurrentLocation = styled.div`
+	height: 20px;
+	width: 20px;
+	background-color: #2E8DF2;
+	border: 3px solid #fff;
+	border-radius: 50%;
+	box-shadow: 0 0 10px 3px #bbbbbb;
+
 `
 
 

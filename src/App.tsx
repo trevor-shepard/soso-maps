@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom'
 import Subscribe from 'components/subscribe'
 import TabNav from 'features/tab-nav'
 import Map from 'features/map'
+import Inventory from 'features/inventory'
 import CreateTouch from 'features/touch/create'
 import DetailTouch from 'features/touch/detail'
 import DetailList from 'features/touch/list'
@@ -44,6 +45,11 @@ function App() {
 								path="/touch-list"
 								exact={true}
 								component={DetailList}
+							/>
+							<ProtectedRoute
+								path="/inventory"
+								exact={true}
+								component={Inventory}
 							/>
 							<ProtectedRoute path="/" component={Map} />
 						</Switch>

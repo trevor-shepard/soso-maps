@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useCallback, FormEvent } from 'react'
 import styled from '@emotion/styled'
-import { useDispatch } from 'react-redux'
 import { createMarker } from 'store/slices/touchSlice'
 import { handleFireBaseImageUpload } from 'utils/firebase'
 import { useParams, useHistory } from 'react-router-dom'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
-import TextInput from 'components/inputs/text'
 import TextAreaInput from 'components/inputs/textArea'
 import CMemberSearch from './cmemberSearch'
 import { AddImageIcon, CloseIcon, GroupIcon } from 'assets/icons'
@@ -36,7 +34,6 @@ export default function Create() {
 	const { coords } = useParams<{ coords: string }>()
 	const [lat, lng] = coords.split(',')
 	const history = useHistory()
-	const dispatch = useDispatch()
 	const [notes, setNotes] = useState('')
 	const [location, setLocation] = useState('')
 	const [cMember, setCMember] = useState<CommunityMember | null>(null)
@@ -57,7 +54,7 @@ export default function Create() {
 					imageAsFile
 				)
 
-				await dispatch(
+				
 					createMarker({
 						lat,
 						lng,
@@ -68,9 +65,9 @@ export default function Create() {
 						photo: downloadURL,
 						cMember: cMember ? cMember.id : null
 					})
-				)
+			
 			} else {
-				await dispatch(
+				
 					createMarker({
 						lat,
 						lng,
@@ -81,7 +78,7 @@ export default function Create() {
 						photo: null,
 						cMember: cMember ? cMember.id : null
 					})
-				)
+				
 			}
 		} catch (error) {
 			setError(

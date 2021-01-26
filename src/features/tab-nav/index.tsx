@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from 'react'
 import styled from '@emotion/styled'
 import { Link, useLocation } from 'react-router-dom'
-import { HomeIcon, HamburgerIcon } from 'assets/icons'
+import { HomeIcon, HamburgerIcon, ShoppingIcon } from 'assets/icons'
 
 const MobileNav: FunctionComponent = () => {
 	const { pathname } = useLocation()
@@ -20,6 +20,13 @@ const MobileNav: FunctionComponent = () => {
 			>
 				<TabIcon src={HamburgerIcon} alt=" " />
 				List
+			</Tab>
+			<Tab
+				current={pathname === '/inventory' ? 'true' : 'false'}
+				to="/inventory"
+			>
+				<TabIcon src={ShoppingIcon} alt=" " />
+				Inventory
 			</Tab>
 		</Navbar>
 	)

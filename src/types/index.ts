@@ -70,3 +70,14 @@ export interface CommunityMember {
 export interface CommunityMemberState {
 	[id: string]: CommunityMember
 }
+
+
+export interface Item  {
+	ideal: number,
+	current: number,
+	name: string,
+}
+
+export interface Inventory  {
+	[name: string]: Item
+}
