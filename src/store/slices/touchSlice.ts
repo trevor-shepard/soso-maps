@@ -65,7 +65,7 @@ export const createMarker = async ({
 }: CreateMarkerProps) => {
 	try {
 		const ref = await db.collection('touches').doc()
-		
+
 		const touch: Touch = {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),

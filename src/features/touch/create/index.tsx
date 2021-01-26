@@ -38,7 +38,6 @@ export default function Create() {
 	const [location, setLocation] = useState('')
 	const [cMember, setCMember] = useState<CommunityMember | null>(null)
 	const [selectedTag, setSelectedTag] = useState<TagType>('misc')
-
 	const [error, setError] = useState('')
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
@@ -54,31 +53,27 @@ export default function Create() {
 					imageAsFile
 				)
 
-				
-					createMarker({
-						lat,
-						lng,
-						notes,
-						tag: selectedTag,
-						location,
-						date: Date.now(),
-						photo: downloadURL,
-						cMember: cMember ? cMember.id : null
-					})
-			
+				createMarker({
+					lat,
+					lng,
+					notes,
+					tag: selectedTag,
+					location,
+					date: Date.now(),
+					photo: downloadURL,
+					cMember: cMember ? cMember.id : null
+				})
 			} else {
-				
-					createMarker({
-						lat,
-						lng,
-						notes,
-						tag: selectedTag,
-						location,
-						date: Date.now(),
-						photo: null,
-						cMember: cMember ? cMember.id : null
-					})
-				
+				createMarker({
+					lat,
+					lng,
+					notes,
+					tag: selectedTag,
+					location,
+					date: Date.now(),
+					photo: null,
+					cMember: cMember ? cMember.id : null
+				})
 			}
 		} catch (error) {
 			setError(

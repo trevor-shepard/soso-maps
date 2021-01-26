@@ -25,8 +25,6 @@ export default function Detail() {
 
 	if (!touch) history.goBack()
 
-	
-
 	const cMember = touch.cMemeber ? cMembers[touch.cMemeber] : false
 
 	const { photo, location, tag, notes, resolved } = touch
@@ -35,7 +33,10 @@ export default function Detail() {
 		<FlexContainer>
 			<Close onClick={history.goBack} src={CloseIcon} />
 			<PageTitle>
-				<Tag>{tag}{cMember && ` - ${cMember.name}`} {resolved && 'Resolved'}</Tag>
+				<Tag>
+					{tag}
+					{cMember && ` - ${cMember.name}`} {resolved && 'Resolved'}
+				</Tag>
 			</PageTitle>
 			<PageSubTitle>{location}</PageSubTitle>
 			{photo && <Photo src={photo} />}

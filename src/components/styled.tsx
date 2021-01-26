@@ -64,6 +64,7 @@ export const FlexContainer = styled.div`
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+	position: relative;
 `
 
 export const Image = styled.img`

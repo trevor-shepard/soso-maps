@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 interface TextInputProps {
 	handleInput: (e: React.ChangeEvent<HTMLInputElement>) => void
-	value: string
+	value: string | number
 	label: string
 	height?: string
 	width?: string

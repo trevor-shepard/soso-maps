@@ -120,7 +120,7 @@ export default function Map() {
 					// @ts-ignore
 					lng={Currentlng}
 				/>
-					
+
 				{touchComponents}
 			</GoogleMapReact>
 		</Container>
@@ -151,11 +151,8 @@ const DateInput = styled.input`
 const CurrentLocation = styled.div`
 	height: 20px;
 	width: 20px;
-	background-color: #2E8DF2;
+	background-color: #2e8df2;
 	border: 3px solid #fff;
 	border-radius: 50%;
 	box-shadow: 0 0 10px 3px #bbbbbb;
-
 `
-
-

@@ -9,7 +9,7 @@ const initialState: Inventory = {}
 const inventory = createSlice({
 	name: 'inventory',
 	initialState,
-    reducers: {
+	reducers: {
 		recieveInventory(state, action: PayloadAction<Inventory>) {
 			const inventory = action.payload
 
@@ -42,13 +42,9 @@ export const subscribeToInventory = (dispatch: Dispatch<any>) => {
 	return unsubscribe
 }
 
-export const createMarker = async ({
-	name,
-	ideal,
-	current
-}: Item) => {
+export const createItem = async ({ name, ideal, current }: Item) => {
 	try {
-		const ref = await db.collection('touches').doc()
+		const ref = await db.collection('inventory').doc()
 		const item: Item = {
 			name,
 			ideal,
@@ -56,6 +52,22 @@ export const createMarker = async ({
 		}
 
 		await ref.set(item)
+	} catch (error) {
+		console.log('error creating touch', error)
+	}
+}
+
+export const updateAmount = async ({
+	item,
+	current
+}: {
+	item: string
+	current: number
+}) => {
+	try {
+		db.collection('inventory')
+			.doc(item)
+			.update({ current })
 	} catch (error) {
 		console.log('error creating touch', error)
 	}
