@@ -34,6 +34,8 @@ export default function Inventory() {
 		</Item>
 	))
 
+	items.push(<Item onClick={()=>  setCreateToggle(true)}><Name>Add Item</Name></Item>)
+
 	return (
 		<FlexContainer
 			onClick={() => {
@@ -175,7 +177,7 @@ const Modal = styled.div`
 	position: absolute;
 	z-index: 1000;
 	width: 90%;
-	height: 30%;
+	height: 60%;
 	top: 20%;
 	background-color: white;
 	border: 2px solid black;
