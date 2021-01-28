@@ -13,19 +13,32 @@ export default function Map() {
 	const [Currentlng, setCurrentLng] = useState(-90.07472171802686)
 
 	const [selectedDayRange, setSelectedDayRange] = useState<DayRange>({
-		from: {
-			year: new Date(Date.now() - 604800000).getFullYear(),
-			month: new Date(Date.now() - 604800000).getMonth(),
-			day: new Date(Date.now() - 604800000).getDate()
-		},
-		to: {
-			year: new Date().getFullYear(),
-			month: new Date().getMonth(),
-			day: new Date().getDate()
-		}
+		from: null,
+		to: null
 	})
+	useEffect(() => {
+		const oneWeekAgo = new Date(Date.now() - 604800000)
+
+		const tomorrow = new Date()
+		tomorrow.setDate(tomorrow.getDate() + 1);
+
+
+		setSelectedDayRange({
+			from: {
+				year: oneWeekAgo.getFullYear(),
+				month: oneWeekAgo.getMonth(),
+				day: oneWeekAgo.getDate()
+			},
+			to: {
+				year: tomorrow.getFullYear(),
+				month: tomorrow.getMonth(),
+				day: tomorrow.getDate()
+			}
+		})
+	}, [])
 
 	const touches = useSelector((state: RootState) => state.touch)
+	console.log('touches', touches)
 	const history = useHistory()
 
 	useEffect(() => {

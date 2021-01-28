@@ -10,25 +10,25 @@ const touch = createSlice({
 	name: 'touch',
 	initialState,
 	reducers: {
-		recieveMarkers(state, action: PayloadAction<TouchState>) {
+		recieveTouches(state, action: PayloadAction<TouchState>) {
 			const touches = action.payload
-
-			return {
-				...touches
-			}
+			
+			return touches
 		},
 		touchClear() {
+			
 			return {}
 		}
 	}
 })
 
-export const { recieveMarkers, touchClear } = touch.actions
+export const { recieveTouches, touchClear } = touch.actions
 
 export default touch.reducer
 
-export const subscribeToTouches = (dispatch: Dispatch<any>) => {
-	const unsubscribe = db.collection('touches').onSnapshot(querySnapshot => {
+export const subscribeToTouches = async (dispatch: Dispatch<any>) => {
+	
+	const unsubscribe = await db.collection('touches').onSnapshot(querySnapshot => {
 		const touches: { [id: string]: Touch } = {}
 
 		querySnapshot.forEach(doc => {
@@ -36,13 +36,18 @@ export const subscribeToTouches = (dispatch: Dispatch<any>) => {
 			touches[touch.id] = touch
 		})
 
-		dispatch(recieveMarkers(touches))
+		
+
+		dispatch(recieveTouches(touches))
 	})
 
-	return unsubscribe
+	return () =>{
+		console.log('unsubscribing from touches')
+		unsubscribe()
+	}
 }
 
-interface CreateMarkerProps {
+interface CreateTouchProps {
 	lat: string
 	lng: string
 	notes: string
@@ -53,7 +58,7 @@ interface CreateMarkerProps {
 	cMember: string | null
 }
 
-export const createMarker = async ({
+export const createTouch = async ({
 	lat,
 	lng,
 	location,
@@ -62,7 +67,7 @@ export const createMarker = async ({
 	tag,
 	photo,
 	cMember
-}: CreateMarkerProps) => {
+}: CreateTouchProps) => {
 	try {
 		const ref = await db.collection('touches').doc()
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, FormEvent } from 'react'
 import styled from '@emotion/styled'
-import { createMarker } from 'store/slices/touchSlice'
+import { createTouch } from 'store/slices/touchSlice'
 import { handleFireBaseImageUpload } from 'utils/firebase'
 import { useParams, useHistory } from 'react-router-dom'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
@@ -53,7 +53,7 @@ export default function Create() {
 					imageAsFile
 				)
 
-				createMarker({
+				await createTouch({
 					lat,
 					lng,
 					notes,
@@ -64,7 +64,7 @@ export default function Create() {
 					cMember: cMember ? cMember.id : null
 				})
 			} else {
-				createMarker({
+				await createTouch({
 					lat,
 					lng,
 					notes,
