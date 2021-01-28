@@ -141,7 +141,7 @@ export default function Map() {
 }
 
 const Container = styled.div`
-	height: calc(100% - 60px);
+	height: calc(${() => window.innerHeight}px - 60px);
 	width: 100%;
 	position: relative;
 `
