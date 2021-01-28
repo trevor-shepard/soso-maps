@@ -3,12 +3,10 @@ import styled from '@emotion/styled'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
-import { CloseIcon } from 'assets/icons'
 import TextInput from 'components/inputs/text'
 import {
 	PageTitle,
 	FlexContainer,
-	Close,
 	TagsContainer,
 	Tag
 } from 'components/styled'
@@ -54,7 +52,6 @@ export default function TouchList() {
 
 	return (
 		<FlexContainer>
-			<Close onClick={history.goBack} src={CloseIcon} />
 			<PageTitle>Touches</PageTitle>
 			<TagsContainer>{tags}</TagsContainer>
 			<TextInput

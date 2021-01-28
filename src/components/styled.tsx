@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 
 export const ModalTitle = styled.div`
-	font-family: Amsi Pro Narw;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 800;
 	font-size: 22px;
@@ -10,7 +10,7 @@ export const ModalTitle = styled.div`
 `
 
 export const SubmitButton = styled.button`
-	font-family: Amsi Pro Narw;
+	font-family: Poppins;
 	border-radius: 2px;
 	border: 1px solid black;
 	min-width: 200px;
@@ -44,7 +44,7 @@ export const PageTitleContainer = styled.div`
 `
 
 export const PageTitle = styled.div`
-	font-family: Amsi Pro Narw;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 800;
 	font-size: 22px;
@@ -59,7 +59,7 @@ export const PageSubTitle = styled.div`
 `
 
 export const FlexContainer = styled.div`
-	height: calc(100% - 60px);
+	height: calc(${() => window.innerHeight}px - 60px);
 	width: auto;
 	display: flex;
 	align-items: center;

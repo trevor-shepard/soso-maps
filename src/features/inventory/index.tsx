@@ -138,7 +138,7 @@ const Item = styled.div`
 `
 
 const Name = styled.div`
-	font-family: Amsi Pro Narw;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 800;
 	font-size: 14px;
@@ -157,7 +157,7 @@ const Amount = styled.div`
 `
 
 const Ideal = styled.div`
-	font-family: Amsi Pro Narw;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 800;
 	font-size: 14px;
@@ -166,7 +166,7 @@ const Ideal = styled.div`
 	color: #262626;
 `
 const Current = styled.div<{ enough: boolean }>`
-	font-family: Amsi Pro Narw;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 800;
 	font-size: 14px;
