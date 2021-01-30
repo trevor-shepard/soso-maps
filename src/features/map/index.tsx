@@ -203,6 +203,7 @@ export default function Map() {
 					if (isCluster) {
 						return (
 							<Cluster
+								key={`${cluster.id}-cluster`}
 								className="cluster-marker"
 								style={{
 									width: `${10 + (pointCount / points.length) * 20}px`,

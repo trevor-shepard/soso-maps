@@ -10,6 +10,14 @@ import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
 import TextAreaInput from 'components/inputs/textArea'
 import TextInput from 'components/inputs/text'
+import OMV from './omv'
+import Phone from './phone'
+import Medical from './medical'
+import Outreach from './outreach'
+import Request from './request'
+import Ride from './ride'
+import TentRepair from './tentRepair'
+
 import { AddImageIcon, CloseIcon, GroupIcon } from 'assets/icons'
 import {
 	PageTitle,
@@ -39,8 +47,8 @@ export default function Create() {
 	const history = useHistory()
 	const [notes, setNotes] = useState('')
 	const [location, setLocation] = useState('')
-	const [cMember, setCMember] = useState<CommunityMember| null>(null)
-	const [newMemberID, setNewMemberIDMember] = useState<string| null>(null)
+	const [cMember, setCMember] = useState<CommunityMember | null>(null)
+	const [newMemberID, setNewMemberIDMember] = useState<string | null>(null)
 	const [selectedTag, setSelectedTag] = useState<TagType>('misc')
 	const [error, setError] = useState('')
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
@@ -161,7 +169,8 @@ export default function Create() {
 	}, [selectedTag, setNotes])
 
 	useEffect(() => {
-		if (newMemberID && communityMemberState[newMemberID]) setCMember(communityMemberState[newMemberID])
+		if (newMemberID && communityMemberState[newMemberID])
+			setCMember(communityMemberState[newMemberID])
 	}, [communityMemberState, newMemberID])
 
 	return (
@@ -207,7 +216,10 @@ export default function Create() {
 							{communityMembers.map((member) => {
 								const { photo, name, location, id } = member
 								return (
-									<CMemberListItem key={`member-${id}`} onClick={() => setCMember(member)}>
+									<CMemberListItem
+										key={`member-${id}`}
+										onClick={() => setCMember(member)}
+									>
 										{photo ? (
 											<ProfileImg src={photo} />
 										) : (
@@ -240,12 +252,10 @@ export default function Create() {
 											downloadURl
 										)
 									} else {
-										id = await createCommunityMember(
-											search,
-											notes,
-											location,
-											[parseFloat(lat), parseFloat(lng)]
-										)
+										id = await createCommunityMember(search, notes, location, [
+											parseFloat(lat),
+											parseFloat(lng),
+										])
 									}
 									if (id) setNewMemberIDMember(id)
 								}}
@@ -256,7 +266,7 @@ export default function Create() {
 					)}
 				</CmemberSearch>
 			)}
-			
+
 			<TagsContainer>
 				{TAGS.map((tag) => (
 					<Tag
@@ -271,12 +281,21 @@ export default function Create() {
 				))}
 			</TagsContainer>
 
-			<TextAreaInput
-				value={notes}
-				label={'notes'}
-				handleInput={(e) => setNotes(e.target.value)}
-				height={'200px'}
-			/>
+			{selectedTag === 'omv' && <OMV createNote={setNotes} />}
+			{selectedTag === 'phone' && <Phone createNote={setNotes} />}
+			{selectedTag === 'medical' && <Medical createNote={setNotes} />}
+			{selectedTag === 'outreach' && <Outreach createNote={setNotes} />}
+			{selectedTag === 'request' && <Request createNote={setNotes} />}
+			{selectedTag === 'ride' && <Ride createNote={setNotes} />}
+			{selectedTag === 'tentRepair' && <TentRepair createNote={setNotes} />}
+			{selectedTag === 'misc' && (
+				<TextAreaInput
+					value={notes}
+					label={'notes'}
+					handleInput={(e) => setNotes(e.target.value)}
+					height={'200px'}
+				/>
+			)}
 
 			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
 		</Container>

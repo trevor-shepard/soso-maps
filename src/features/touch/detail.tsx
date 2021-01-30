@@ -41,9 +41,15 @@ export default function Detail() {
 			<PageSubTitle>{location}</PageSubTitle>
 			{photo && <Photo src={photo} />}
 
-			<NotesContainer>
-				{notes.split('\n').map((line) => (
-					<p>{line}</p>
+			<NotesContainer
+				onClick={async () => {
+					try {
+						await navigator.clipboard.writeText(notes)
+					} catch (error) {}
+				}}
+			>
+				{notes.split('\n').map((line, i) => (
+					<p key={`${i}-line`}>{line}</p>
 				))}
 			</NotesContainer>
 		</FlexContainer>
