@@ -80,7 +80,6 @@ export const FileInputLabel = styled.label``
 
 export const ImgContainer = styled.div<{ height: string }>`
 	width: 100%;
-	overflow: hidden;
 	height: ${({ height }) => height};
 	width: auto;
 `

@@ -3,10 +3,13 @@ import styled from '@emotion/styled'
 import { createTouch } from 'store/slices/touchSlice'
 import { handleFireBaseImageUpload } from 'utils/firebase'
 import { useParams, useHistory } from 'react-router-dom'
+import { RootState } from 'store/rootReducer'
+import { useSelector } from 'react-redux'
+import { createCommunityMember } from 'store/slices/communitymemberSlice'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
 import TextAreaInput from 'components/inputs/textArea'
-import CMemberSearch from './cmemberSearch'
+import TextInput from 'components/inputs/text'
 import { AddImageIcon, CloseIcon, GroupIcon } from 'assets/icons'
 import {
 	PageTitle,
@@ -36,11 +39,24 @@ export default function Create() {
 	const history = useHistory()
 	const [notes, setNotes] = useState('')
 	const [location, setLocation] = useState('')
-	const [cMember, setCMember] = useState<CommunityMember | null>(null)
+	const [cMember, setCMember] = useState<CommunityMember| null>(null)
+	const [newMemberID, setNewMemberIDMember] = useState<string| null>(null)
 	const [selectedTag, setSelectedTag] = useState<TagType>('misc')
 	const [error, setError] = useState('')
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
+
+	const [search, setSearch] = useState('')
+
+	const communityMemberState = useSelector(
+		(state: RootState) => state.communitymember
+	)
+	const communityMembers = Object.values(communityMemberState).filter(
+		({ name, notes, location }) =>
+			name.includes(search) ||
+			notes.includes(search) ||
+			(location && location.includes(search))
+	)
 
 	// methods
 	const handleSubmit = async () => {
@@ -94,7 +110,7 @@ export default function Create() {
 		setFileAsImage(image)
 	}
 
-	// hooks
+	// callbacks
 	if (!lat || !lng) history.push('/')
 	const getAddress = useCallback(async () => {
 		const result = await functions.httpsCallable('getAddress')({
@@ -105,6 +121,7 @@ export default function Create() {
 		setLocation(address)
 	}, [lat, lng])
 
+	// hooks
 	useEffect(() => {
 		setLocation(coords)
 		getAddress()
@@ -143,17 +160,9 @@ export default function Create() {
 		}
 	}, [selectedTag, setNotes])
 
-	const tagtoggles = TAGS.map((tag) => (
-		<Tag
-			key={`tag-${tag}`}
-			onClick={() => {
-				setSelectedTag(tag)
-			}}
-			selected={tag === selectedTag}
-		>
-			{tag}
-		</Tag>
-	))
+	useEffect(() => {
+		if (newMemberID && communityMemberState[newMemberID]) setCMember(communityMemberState[newMemberID])
+	}, [communityMemberState, newMemberID])
 
 	return (
 		<Container>
@@ -164,7 +173,16 @@ export default function Create() {
 			</PageTitleContainer>
 
 			{error !== '' && <Error>{error}</Error>}
-
+			<ImgContainer height={'20%'}>
+				{fileAsImage ? (
+					<Image src={fileAsImage} />
+				) : (
+					<FileInputLabel>
+						<Image src={AddImageIcon} />
+						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
+					</FileInputLabel>
+				)}
+			</ImgContainer>
 			{cMember ? (
 				<CMemberListItem>
 					{cMember.photo ? (
@@ -178,29 +196,86 @@ export default function Create() {
 					</DetailsContainer>
 				</CMemberListItem>
 			) : (
-				<CMemberSearch
-					handleSelect={(member) => setCMember(member)}
-					width={'90%'}
-					height={'20%'}
-				/>
+				<CmemberSearch>
+					<TextInput
+						label={'search members'}
+						handleInput={(e) => setSearch(e.target.value)}
+						value={search}
+					/>
+					{search !== '' && (
+						<CmemberOptionsContainer>
+							{communityMembers.map((member) => {
+								const { photo, name, location, id } = member
+								return (
+									<CMemberListItem key={`member-${id}`} onClick={() => setCMember(member)}>
+										{photo ? (
+											<ProfileImg src={photo} />
+										) : (
+											<ProfileImg src={GroupIcon} />
+										)}
+										<DetailsContainer>
+											<CmemberName>{name}</CmemberName>
+											{location && (
+												<CmemberLocation>{location}</CmemberLocation>
+											)}
+										</DetailsContainer>
+									</CMemberListItem>
+								)
+							})}
+							<CMemberListItem
+								key={`member-create`}
+								onClick={async () => {
+									let id
+									if (imageAsFile) {
+										const downloadURl = await handleFireBaseImageUpload(
+											`community-member/${search}-${Date.now()}`,
+											imageAsFile
+										)
+
+										id = await createCommunityMember(
+											search,
+											notes,
+											location,
+											[parseFloat(lat), parseFloat(lng)],
+											downloadURl
+										)
+									} else {
+										id = await createCommunityMember(
+											search,
+											notes,
+											location,
+											[parseFloat(lat), parseFloat(lng)]
+										)
+									}
+									if (id) setNewMemberIDMember(id)
+								}}
+							>
+								Add New Community Member
+							</CMemberListItem>
+						</CmemberOptionsContainer>
+					)}
+				</CmemberSearch>
 			)}
-			<TagsContainer>{tagtoggles}</TagsContainer>
-			<ImgContainer height={'20%'}>
-				{fileAsImage ? (
-					<Image src={fileAsImage} />
-				) : (
-					<FileInputLabel>
-						<Image src={AddImageIcon} />
-						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
-					</FileInputLabel>
-				)}
-			</ImgContainer>
+			
+			<TagsContainer>
+				{TAGS.map((tag) => (
+					<Tag
+						key={`tag-${tag}`}
+						onClick={() => {
+							setSelectedTag(tag)
+						}}
+						selected={tag === selectedTag}
+					>
+						{tag}
+					</Tag>
+				))}
+			</TagsContainer>
 
 			<TextAreaInput
 				value={notes}
 				label={'notes'}
 				handleInput={(e) => setNotes(e.target.value)}
-				height={'300px'}
+				height={'200px'}
 			/>
 
 			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
@@ -212,4 +287,24 @@ const Container = styled(FlexContainer)`
 	justify-content: space-between;
 	overflow-y: scroll;
 	margin-bottom: 65px;
+`
+
+const CmemberSearch = styled.div`
+	width: 90%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+`
+const CmemberOptionsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	justify-content: left;
+	position: absolute;
+	top: 39px;
+	border: 2px solid black;
+	border-top: none;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background-color: white;
+	width: 89%;
 `

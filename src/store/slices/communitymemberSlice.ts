@@ -78,6 +78,8 @@ export const createCommunityMember = async (
 		}
 
 		await ref.set(cMember)
+
+		return ref.id
 	} catch (error) {}
 }
 
