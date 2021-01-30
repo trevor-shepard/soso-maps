@@ -10,7 +10,7 @@ import {
 	PageSubTitle,
 	FlexContainer,
 	Image,
-	Close
+	Close,
 } from 'components/styled'
 
 export default function Detail() {
@@ -42,7 +42,7 @@ export default function Detail() {
 			{photo && <Photo src={photo} />}
 
 			<NotesContainer>
-				{notes.split('\n').map(line => (
+				{notes.split('\n').map((line) => (
 					<p>{line}</p>
 				))}
 			</NotesContainer>

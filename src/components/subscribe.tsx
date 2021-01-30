@@ -3,17 +3,16 @@ import { useDispatch } from 'react-redux'
 import { subscribeToTouches, touchClear } from 'store/slices/touchSlice'
 import {
 	subscribeToInventory,
-	inventoryClear
+	inventoryClear,
 } from 'store/slices/inventorySlice'
 import {
 	subscribeToCommunityMembers,
-	cMemberClear
+	cMemberClear,
 } from 'store/slices/communitymemberSlice'
 
 export default function Subscribe() {
 	const dispatch = useDispatch()
 
-	
 	useEffect(() => {
 		dispatch(touchClear())
 		dispatch(cMemberClear())
@@ -22,8 +21,6 @@ export default function Subscribe() {
 		subscribeToTouches(dispatch)
 		subscribeToCommunityMembers(dispatch)
 		subscribeToInventory(dispatch)
-
-		
 	}, [dispatch])
 	return <Fragment />
 }

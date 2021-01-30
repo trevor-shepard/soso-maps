@@ -16,7 +16,7 @@ const TextInput: FunctionComponent<TextInputProps> = ({
 	height,
 	width,
 	label,
-	type
+	type,
 }) => {
 	return (
 		<Container width={width ? width : '90%'}>
@@ -24,7 +24,7 @@ const TextInput: FunctionComponent<TextInputProps> = ({
 				placeholder={label}
 				value={value}
 				type={type ? type : 'text'}
-				onChange={e => {
+				onChange={(e) => {
 					e.preventDefault()
 					handleInput(e)
 				}}
@@ -39,7 +39,7 @@ type ContainerProps = {
 }
 
 const Container = styled.div<ContainerProps>`
-	width: ${props => props.width};
+	width: ${(props) => props.width};
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;

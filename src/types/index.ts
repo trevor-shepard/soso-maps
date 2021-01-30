@@ -20,7 +20,7 @@ export const TAGS: TagType[] = [
 	'ride',
 	'phone',
 	'outreach',
-	'misc'
+	'misc',
 ]
 
 export interface Touch {

@@ -22,7 +22,7 @@ import {
 	Marker,
 	MapMarkerIcon,
 	MarkerTitle,
-	MarkerTitleHeader
+	MarkerTitleHeader,
 } from 'components/styled'
 
 export default function Create() {
@@ -83,7 +83,7 @@ export default function Create() {
 	const getAddress = async (lat: number, lng: number) => {
 		const result = await functions.httpsCallable('getAddress')({
 			lat,
-			lng
+			lng,
 		})
 		const { address } = result.data
 		setLocation(address)
@@ -98,7 +98,7 @@ export default function Create() {
 			<TextInput
 				value={name}
 				label={'name'}
-				handleInput={e => setName(e.target.value)}
+				handleInput={(e) => setName(e.target.value)}
 			/>
 
 			{error !== '' && <Error>{error}</Error>}
@@ -116,7 +116,7 @@ export default function Create() {
 
 			<MapsContainer>
 				<GoogleMapReact
-					onClick={async values => {
+					onClick={async (values) => {
 						const { lat, lng } = values
 						const now = Date.now()
 
@@ -128,11 +128,11 @@ export default function Create() {
 						}
 					}}
 					bootstrapURLKeys={{
-						key: process.env.REACT_APP_FIREBASE_API_KEY as string
+						key: process.env.REACT_APP_FIREBASE_API_KEY as string,
 					}}
 					defaultCenter={{
 						lat: Currentlat,
-						lng: Currentlng
+						lng: Currentlng,
 					}}
 					defaultZoom={15}
 				>
@@ -150,7 +150,7 @@ export default function Create() {
 			<TextAreaInput
 				value={notes}
 				label={'notes'}
-				handleInput={e => setNotes(e.target.value)}
+				handleInput={(e) => setNotes(e.target.value)}
 				height={'200px'}
 			/>
 

@@ -14,13 +14,13 @@ const inventory = createSlice({
 			const inventory = action.payload
 
 			return {
-				...inventory
+				...inventory,
 			}
 		},
 		inventoryClear() {
 			return {}
-		}
-	}
+		},
+	},
 })
 
 export const { recieveInventory, inventoryClear } = inventory.actions
@@ -28,10 +28,10 @@ export const { recieveInventory, inventoryClear } = inventory.actions
 export default inventory.reducer
 
 export const subscribeToInventory = (dispatch: Dispatch<any>) => {
-	const unsubscribe = db.collection('inventory').onSnapshot(querySnapshot => {
+	const unsubscribe = db.collection('inventory').onSnapshot((querySnapshot) => {
 		const items: Inventory = {}
 
-		querySnapshot.forEach(doc => {
+		querySnapshot.forEach((doc) => {
 			const item = doc.data() as Item
 			items[item.name] = item
 		})
@@ -48,7 +48,7 @@ export const createItem = async ({ name, ideal, current }: Item) => {
 		const item: Item = {
 			name,
 			ideal,
-			current
+			current,
 		}
 
 		await ref.set(item)
@@ -59,15 +59,13 @@ export const createItem = async ({ name, ideal, current }: Item) => {
 
 export const updateAmount = async ({
 	item,
-	current
+	current,
 }: {
 	item: string
 	current: number
 }) => {
 	try {
-		db.collection('inventory')
-			.doc(item)
-			.update({ current })
+		db.collection('inventory').doc(item).update({ current })
 	} catch (error) {
 		console.log('error creating touch', error)
 	}

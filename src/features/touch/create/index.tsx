@@ -26,7 +26,7 @@ import {
 	DetailsContainer,
 	CmemberName,
 	CmemberLocation,
-	ProfileImg
+	ProfileImg,
 } from 'components/styled'
 import { TagType, TAGS, CommunityMember } from 'types'
 
@@ -61,7 +61,7 @@ export default function Create() {
 					location,
 					date: Date.now(),
 					photo: downloadURL,
-					cMember: cMember ? cMember.id : null
+					cMember: cMember ? cMember.id : null,
 				})
 			} else {
 				await createTouch({
@@ -72,7 +72,7 @@ export default function Create() {
 					location,
 					date: Date.now(),
 					photo: null,
-					cMember: cMember ? cMember.id : null
+					cMember: cMember ? cMember.id : null,
 				})
 			}
 		} catch (error) {
@@ -99,7 +99,7 @@ export default function Create() {
 	const getAddress = useCallback(async () => {
 		const result = await functions.httpsCallable('getAddress')({
 			lat,
-			lng
+			lng,
 		})
 		const { address } = result.data
 		setLocation(address)
@@ -143,7 +143,7 @@ export default function Create() {
 		}
 	}, [selectedTag, setNotes])
 
-	const tagtoggles = TAGS.map(tag => (
+	const tagtoggles = TAGS.map((tag) => (
 		<Tag
 			key={`tag-${tag}`}
 			onClick={() => {
@@ -179,7 +179,7 @@ export default function Create() {
 				</CMemberListItem>
 			) : (
 				<CMemberSearch
-					handleSelect={member => setCMember(member)}
+					handleSelect={(member) => setCMember(member)}
 					width={'90%'}
 					height={'20%'}
 				/>
@@ -199,7 +199,7 @@ export default function Create() {
 			<TextAreaInput
 				value={notes}
 				label={'notes'}
-				handleInput={e => setNotes(e.target.value)}
+				handleInput={(e) => setNotes(e.target.value)}
 				height={'300px'}
 			/>
 

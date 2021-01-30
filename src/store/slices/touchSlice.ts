@@ -12,14 +12,13 @@ const touch = createSlice({
 	reducers: {
 		recieveTouches(state, action: PayloadAction<TouchState>) {
 			const touches = action.payload
-			
+
 			return touches
 		},
 		touchClear() {
-			
 			return {}
-		}
-	}
+		},
+	},
 })
 
 export const { recieveTouches, touchClear } = touch.actions
@@ -27,21 +26,20 @@ export const { recieveTouches, touchClear } = touch.actions
 export default touch.reducer
 
 export const subscribeToTouches = async (dispatch: Dispatch<any>) => {
-	
-	const unsubscribe = await db.collection('touches').onSnapshot(querySnapshot => {
-		const touches: { [id: string]: Touch } = {}
+	const unsubscribe = await db
+		.collection('touches')
+		.onSnapshot((querySnapshot) => {
+			const touches: { [id: string]: Touch } = {}
 
-		querySnapshot.forEach(doc => {
-			const touch = doc.data() as Touch
-			touches[touch.id] = touch
+			querySnapshot.forEach((doc) => {
+				const touch = doc.data() as Touch
+				touches[touch.id] = touch
+			})
+
+			dispatch(recieveTouches(touches))
 		})
 
-		
-
-		dispatch(recieveTouches(touches))
-	})
-
-	return () =>{
+	return () => {
 		console.log('unsubscribing from touches')
 		unsubscribe()
 	}
@@ -66,7 +64,7 @@ export const createTouch = async ({
 	notes,
 	tag,
 	photo,
-	cMember
+	cMember,
 }: CreateTouchProps) => {
 	try {
 		const ref = await db.collection('touches').doc()
@@ -81,7 +79,7 @@ export const createTouch = async ({
 			tag,
 			id: ref.id,
 			photo: photo ? photo : null,
-			resolved: false
+			resolved: false,
 		}
 
 		if (photo) {

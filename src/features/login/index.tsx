@@ -19,14 +19,14 @@ const Login: FunctionComponent = () => {
 			<Input
 				placeholder={'Email'}
 				value={email}
-				onChange={e => setEmail(e.target.value)}
+				onChange={(e) => setEmail(e.target.value)}
 			/>
 
 			<Input
 				placeholder={'Password'}
 				type="password"
 				value={password}
-				onChange={e => setPassword(e.target.value)}
+				onChange={(e) => setPassword(e.target.value)}
 			/>
 
 			<SubmitButton onClick={handleLogin}>Login</SubmitButton>

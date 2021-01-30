@@ -23,7 +23,7 @@ const SelectInput: FunctionComponent<SelectInputProps> = ({
 	width,
 	label,
 	options,
-	leftMargin
+	leftMargin,
 }) => {
 	const optionElements = options.map(({ value, display }: Option, i) => (
 		<option key={`option-${i}`} value={value}>
@@ -46,7 +46,7 @@ type ContainerProps = {
 }
 
 const Container = styled.div<ContainerProps>`
-	width: ${props => props.width};
+	width: ${(props) => props.width};
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;

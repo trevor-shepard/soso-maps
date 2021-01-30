@@ -11,7 +11,7 @@ const config = {
 	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
 	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
 	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-	appId: process.env.REACT_APP_FIREBASE_APP_ID
+	appId: process.env.REACT_APP_FIREBASE_APP_ID,
 }
 
 if (!firebase.apps.length) {
@@ -36,7 +36,7 @@ export const handleFireBaseImageUpload = async (path, photo) => {
 			// gets the download url then sets the image from firebase as the value for the imgUrl key:
 			return await storage.ref(path).getDownloadURL()
 		})
-		.catch(error => {
+		.catch((error) => {
 			const message = error.message
 			console.log(message)
 		})

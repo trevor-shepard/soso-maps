@@ -1,21 +1,73 @@
-import React, { useState, useEffect, RefObject } from 'react'
+import React, { useState, useEffect, RefObject, useRef } from 'react'
 import styled from '@emotion/styled'
 import DatePicker, { DayRange, utils } from 'react-modern-calendar-datepicker'
 import GoogleMapReact from 'google-map-react'
+import useSupercluster from "use-supercluster";
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import Marker from 'components/marker'
 
 export default function Map() {
+	const history = useHistory()
+
+	// state
+	const mapRef = useRef()
 	const [lastPress, setlastPress] = useState(0)
-	const [Currentlat, setCurrentLat] = useState(29.94639419721249)
-	const [Currentlng, setCurrentLng] = useState(-90.07472171802686)
+	const [currentCoords, setCurrentCoords] = useState([29.94639419721249, -90.07472171802686 ])
+	const [bounds, setBounds] = useState<number[] | null>(null);
+  	const [zoom, setZoom] = useState(17);
 
 	const [selectedDayRange, setSelectedDayRange] = useState<DayRange>({
 		from: null,
 		to: null
 	})
+	const touches = useSelector((state: RootState) => state.touch)
+	
+	const points = Object.values(touches).filter(({ date }) => {
+		if (selectedDayRange.from && selectedDayRange.to) {
+			const from = Date.parse(
+				`${selectedDayRange.from.month + 1}/${selectedDayRange.from.day}/${
+					selectedDayRange.from.year
+				}`
+			)
+			const to = Date.parse(
+				`${selectedDayRange.to.month + 1}/${selectedDayRange.to.day}/${
+					selectedDayRange.to.year
+				}`
+			)
+
+			return from < date && date < to
+		}
+
+		return true
+	}).map(({ lat, lng, id, tag, date, photo }) =>( {
+		type: 'Feature',
+		properties: {
+			cluster: false,
+			id,
+			tag,
+			date,
+			photo
+		},
+		geometry: {
+			type: "Point",
+			coordinates: [
+				lng,
+				lat
+			]
+		  }
+		
+	}))
+
+	const { clusters, supercluster } = useSupercluster({
+		points,
+		bounds,
+		zoom,
+		options: { radius: 70, maxZoom: 20 }
+	  });
+
+	// on mount effects
 	useEffect(() => {
 		const oneWeekAgo = new Date(Date.now() - 604800000)
 
@@ -35,21 +87,28 @@ export default function Map() {
 				day: tomorrow.getDate()
 			}
 		})
-	}, [])
-
-	const touches = useSelector((state: RootState) => state.touch)
-	console.log('touches', touches)
-	const history = useHistory()
-
-	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
 			({ coords: { latitude, longitude } }) => {
-				setCurrentLat(latitude)
-				setCurrentLng(longitude)
+				setCurrentCoords([latitude, longitude])
+			
 			}
 		)
 	}, [])
 
+	// recieve props effects
+	useEffect(() => {
+		const [lat, lng] = currentCoords
+		if (mapRef.current !== undefined) {
+			// @ts-ignore
+			mapRef.current.setZoom(18);
+			// @ts-ignore
+			mapRef.current.panTo({ lat, lng });
+		}
+		
+	}, [currentCoords])
+
+
+	// methods
 	const renderCustomInput = ({ ref }: { ref: RefObject<HTMLInputElement> }) => (
 		<DateInput
 			readOnly
@@ -68,26 +127,54 @@ export default function Map() {
 		/>
 	)
 
-	const touchComponents = Object.values(touches)
-		.filter(({ date }) => {
-			if (selectedDayRange.from && selectedDayRange.to) {
-				const from = Date.parse(
-					`${selectedDayRange.from.month + 1}/${selectedDayRange.from.day}/${
-						selectedDayRange.from.year
-					}`
-				)
-				const to = Date.parse(
-					`${selectedDayRange.to.month + 1}/${selectedDayRange.to.day}/${
-						selectedDayRange.to.year
-					}`
-				)
 
-				return from < date && date < to
-			}
 
-			return true
-		})
-		.map((touch, i) => <Marker {...touch} key={`touch-${i}`} />)
+	// Components
+	console.log(points)
+
+
+	const touchComponents = clusters.map(cluster =>{
+		const [ lng, lat] = cluster.geometry.coordinates
+		const {
+            cluster: isCluster,
+			point_count: pointCount,
+			id,
+			date,
+			photo,
+			tag
+		} = cluster.properties;
+		
+		if (isCluster) {
+
+			return (<Cluster
+					className="cluster-marker"
+					style={{
+						width: `${10 + (pointCount / points.length) * 20}px`,
+						height: `${10 + (pointCount / points.length) * 20}px`
+					}}
+					onClick={() => {
+						const expansionZoom = Math.min(
+						supercluster.getClusterExpansionZoom(cluster.id),
+						20
+						);
+						// @ts-ignore
+						mapRef.current.setZoom(expansionZoom);
+						// @ts-ignore
+						mapRef.current.panTo({ lat, lng });
+					}}
+					// @ts-ignore
+					lat={lat}
+					lng={lng}
+                >
+                  {pointCount}
+                </Cluster>)
+		}
+
+		return (
+			<Marker lat={lat} lng={lng} tag={tag} date={date} photo={photo} id={id} key={`touch-${id}`} />
+		)
+	})
+
 
 	return (
 		<Container>
@@ -125,13 +212,27 @@ export default function Map() {
 					lat: 29.94639419721249,
 					lng: -90.07472171802686
 				}}
-				defaultZoom={15}
+				defaultZoom={17}
+
+				yesIWantToUseGoogleMapApiInternals
+				onGoogleApiLoaded={({ map }) => {
+					mapRef.current = map
+				}}
+				onChange={({ zoom, bounds }) => {
+					setZoom(zoom);
+					setBounds([
+					  bounds.nw.lng,
+					  bounds.se.lat,
+					  bounds.se.lng,
+					  bounds.nw.lat
+					]);
+				  }}
 			>
 				<CurrentLocation
 					// @ts-ignore
-					lat={Currentlat}
+					lat={currentCoords[0]}
 					// @ts-ignore
-					lng={Currentlng}
+					lng={currentCoords[1]}
 				/>
 
 				{touchComponents}
@@ -168,4 +269,14 @@ const CurrentLocation = styled.div`
 	border: 3px solid #fff;
 	border-radius: 50%;
 	box-shadow: 0 0 10px 3px #bbbbbb;
+`
+
+const Cluster = styled.div`
+	color: #fff;
+	background: #1978c8;
+	border-radius: 50%;
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `

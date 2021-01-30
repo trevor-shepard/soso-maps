@@ -10,7 +10,7 @@ const initialState: UserState = {
 	username: null,
 	email: null,
 	uid: null,
-	error: null
+	error: null,
 }
 
 const user = createSlice({
@@ -20,7 +20,7 @@ const user = createSlice({
 		recieveUser(state, action: PayloadAction<User>) {
 			return {
 				...action.payload,
-				error: null
+				error: null,
 			}
 		},
 		clear() {
@@ -30,28 +30,27 @@ const user = createSlice({
 				username: null,
 				email: null,
 				uid: null,
-				error: null
+				error: null,
 			}
 		},
 		userError(state, action: PayloadAction<string>) {
 			state.error = action.payload
 			return state
-		}
-	}
+		},
+	},
 })
 
 export const { recieveUser, userError, clear } = user.actions
 
 export default user.reducer
 
-export const login = (
-	email: string,
-	password: string
-): AppThunk => async dispatch => {
+export const login = (email: string, password: string): AppThunk => async (
+	dispatch
+) => {
 	try {
 		const uid = await auth
 			.signInWithEmailAndPassword(email, password)
-			.then(resp => {
+			.then((resp) => {
 				if (resp === null || resp.user === null) {
 					throw new Error('user not found')
 				} else {
@@ -62,7 +61,7 @@ export const login = (
 			.collection('users')
 			.doc(uid)
 			.get()
-			.then(doc => doc.data())) as User
+			.then((doc) => doc.data())) as User
 
 		dispatch(recieveUser(user))
 	} catch (error) {
@@ -73,11 +72,11 @@ export const login = (
 export const signup = (
 	user: UserWithoutId,
 	password: string
-): AppThunk => async dispatch => {
+): AppThunk => async (dispatch) => {
 	try {
 		const uid = await auth
 			.createUserWithEmailAndPassword(user.email, password)
-			.then(resp => {
+			.then((resp) => {
 				if (resp === null || resp.user === null) {
 					throw new Error('user not found')
 				} else {
@@ -90,12 +89,12 @@ export const signup = (
 			.doc(uid)
 			.set({
 				...user,
-				uid
+				uid,
 			})
 		dispatch(
 			recieveUser({
 				...user,
-				uid
+				uid,
 			})
 		)
 	} catch (error) {
@@ -103,6 +102,6 @@ export const signup = (
 	}
 }
 
-export const logout = (): AppThunk => async dispatch => {
+export const logout = (): AppThunk => async (dispatch) => {
 	dispatch(clear())
 }

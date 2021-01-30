@@ -4,12 +4,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import TextInput from 'components/inputs/text'
-import {
-	PageTitle,
-	FlexContainer,
-	TagsContainer,
-	Tag
-} from 'components/styled'
+import { PageTitle, FlexContainer, TagsContainer, Tag } from 'components/styled'
 import { TagType, TAGS } from 'types'
 
 export default function TouchList() {
@@ -32,13 +27,13 @@ export default function TouchList() {
 				{new Date(date).toLocaleString('en-US', {
 					day: 'numeric',
 					month: 'numeric',
-					year: 'numeric'
+					year: 'numeric',
 				})}{' '}
 				- {tag}
 			</ListItem>
 		))
 
-	const tags = TAGS.map(tag => (
+	const tags = TAGS.map((tag) => (
 		<Tag
 			key={`tag-${tag}`}
 			onClick={() => {
@@ -56,7 +51,7 @@ export default function TouchList() {
 			<TagsContainer>{tags}</TagsContainer>
 			<TextInput
 				value={search}
-				handleInput={e => setSearch(e.target.value)}
+				handleInput={(e) => setSearch(e.target.value)}
 				label="search"
 				width="80%"
 			/>

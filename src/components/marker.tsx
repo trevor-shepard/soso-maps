@@ -6,42 +6,41 @@ import {
 	Marker,
 	MarkerTitleHeader,
 	MarkerTitleSubHeader,
-	MarkerPhoto
+	MarkerPhoto,
 } from 'components/styled'
 import { useHistory } from 'react-router-dom'
 
-import { Touch } from 'types'
-export default function Component({ date, photo, tag, id }: Touch) {
+export default function Component({
+	date,
+	photo,
+	tag,
+	id,
+}: {
+	date: string
+	photo: string
+	tag: string
+	id: string
+	lat: number
+	lng: number
+}) {
 	const history = useHistory()
-	const MARKER_COLORS = {
-		omv: '#0A5DA6',
-		tentRepair: '#F27405',
-		request: '#F2B705',
-		medical: '#F24405',
-		ride: '#0A5DA6',
-		phone: '#F2B705',
-		outreach: '#F24405',
-		misc: '#BF9004'
-	}
-
-	const touchColor = MARKER_COLORS[tag]
 
 	return (
 		<Marker
-			onClick={e => {
+			onClick={(e) => {
 				e.stopPropagation()
 				history.push(`touch-detail/${id}`)
 			}}
 		>
 			{photo && <MarkerPhoto src={photo} />}
-			<MapMarkerIcon color={touchColor} src={MarkerIcon} />
+			<MapMarkerIcon color={'#ffff'} src={MarkerIcon} />
 			<MarkerTitle>
 				<MarkerTitleHeader>{tag}</MarkerTitleHeader>
 				<MarkerTitleSubHeader>
 					{new Date(date).toLocaleString('en-US', {
 						day: 'numeric',
 						month: 'numeric',
-						year: 'numeric'
+						year: 'numeric',
 					})}
 				</MarkerTitleSubHeader>
 			</MarkerTitle>

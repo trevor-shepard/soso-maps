@@ -19,7 +19,7 @@ export default function Inventory() {
 	const items = Object.values(inventory).map(({ name, ideal, current }) => (
 		<Item
 			key={`inventory-item-${name}`}
-			onClick={e => {
+			onClick={(e) => {
 				e.stopPropagation()
 				setAmount(current)
 				setItem(name)
@@ -34,7 +34,11 @@ export default function Inventory() {
 		</Item>
 	))
 
-	items.push(<Item onClick={()=>  setCreateToggle(true)}><Name>Add Item</Name></Item>)
+	items.push(
+		<Item onClick={() => setCreateToggle(true)}>
+			<Name>Add Item</Name>
+		</Item>
+	)
 
 	return (
 		<FlexContainer
@@ -47,18 +51,18 @@ export default function Inventory() {
 			<TextInput
 				label={'search'}
 				value={search}
-				handleInput={e => setSearch(e.target.value)}
+				handleInput={(e) => setSearch(e.target.value)}
 			/>
 			<ItemList>{items}</ItemList>
 			{item !== null && (
-				<Modal onClick={e => e.stopPropagation()}>
+				<Modal onClick={(e) => e.stopPropagation()}>
 					<PageTitle>{loading ? 'Loading' : `Update ${item} Amount`}</PageTitle>
 
 					<TextInput
 						label={'amount'}
 						value={amount}
 						type="number"
-						handleInput={e => setAmount(parseInt(e.target.value))}
+						handleInput={(e) => setAmount(parseInt(e.target.value))}
 					/>
 
 					<SubmitButton
@@ -75,26 +79,26 @@ export default function Inventory() {
 				</Modal>
 			)}
 			{createToggle && (
-				<Modal onClick={e => e.stopPropagation()}>
+				<Modal onClick={(e) => e.stopPropagation()}>
 					<PageTitle>{loading ? 'Loading' : 'Add Item to Inventory'}</PageTitle>
 
 					<TextInput
 						label={'item name'}
 						value={name}
 						type="number"
-						handleInput={e => setName(e.target.value)}
+						handleInput={(e) => setName(e.target.value)}
 					/>
 					<TextInput
 						label={'current'}
 						value={current}
 						type="number"
-						handleInput={e => setCurrent(parseInt(e.target.value))}
+						handleInput={(e) => setCurrent(parseInt(e.target.value))}
 					/>
 					<TextInput
 						label={'ideal amount stocked at any time'}
 						value={ideal}
 						type="number"
-						handleInput={e => setIdeal(parseInt(e.target.value))}
+						handleInput={(e) => setIdeal(parseInt(e.target.value))}
 					/>
 
 					<SubmitButton

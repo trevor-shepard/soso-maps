@@ -10,7 +10,7 @@ interface CheckboxProps {
 const Checkbox: FunctionComponent<CheckboxProps> = ({
 	label,
 	isSelected,
-	onCheckboxChange
+	onCheckboxChange,
 }) => (
 	<Container>
 		<Input

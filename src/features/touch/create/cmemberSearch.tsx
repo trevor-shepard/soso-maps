@@ -11,7 +11,7 @@ import {
 	DetailsContainer,
 	CmemberName,
 	CmemberLocation,
-	ProfileImg
+	ProfileImg,
 } from 'components/styled'
 interface Props {
 	handleSelect: (member: CommunityMember) => void
@@ -32,7 +32,7 @@ export default function CMemberSearch({ handleSelect, height, width }: Props) {
 				notes.includes(search) ||
 				(location && location.includes(search))
 		)
-		.map(member => {
+		.map((member) => {
 			const { photo, name, location } = member
 			return (
 				<CMemberListItem onClick={() => handleSelect(member)}>
@@ -53,7 +53,7 @@ export default function CMemberSearch({ handleSelect, height, width }: Props) {
 		<Container height={height} width={width}>
 			<TextInput
 				label={'search members'}
-				handleInput={e => setSearch(e.target.value)}
+				handleInput={(e) => setSearch(e.target.value)}
 				value={search}
 			/>
 			{search !== '' && <OptionsContainer>{options}</OptionsContainer>}

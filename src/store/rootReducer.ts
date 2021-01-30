@@ -7,7 +7,7 @@ const rootReducer = combineReducers({
 	touch,
 	user,
 	communitymember,
-	inventory
+	inventory,
 })
 
 export type RootState = ReturnType<typeof rootReducer>

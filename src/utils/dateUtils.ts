@@ -13,7 +13,7 @@ export function getDaysInMonths(date: Date) {
 		8: 30,
 		9: 31,
 		10: 30,
-		11: 31
+		11: 31,
 	}
 
 	// Check for leap year
