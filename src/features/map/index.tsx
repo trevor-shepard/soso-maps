@@ -85,14 +85,14 @@ export default function Map() {
 				dispatch(recieveLocation({ lat: latitude, lng: longitude }))
 			}
 		)
-		const oneWeekAgo = new Date(Date.now() - 604800000)
+		const yesterday = new Date(Date.now() - 86400000)
 		const tomorrow = new Date()
 		tomorrow.setDate(tomorrow.getDate() + 1)
 		setSelectedDayRange({
 			from: {
-				year: oneWeekAgo.getFullYear(),
-				month: oneWeekAgo.getMonth(),
-				day: oneWeekAgo.getDate(),
+				year: yesterday.getFullYear(),
+				month: yesterday.getMonth(),
+				day: yesterday.getDate(),
 			},
 			to: {
 				year: tomorrow.getFullYear(),
