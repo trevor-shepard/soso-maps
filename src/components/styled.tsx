@@ -65,6 +65,7 @@ export const FlexContainer = styled.div`
 	align-items: center;
 	flex-direction: column;
 	position: relative;
+	overflow: scroll;
 `
 
 export const Image = styled.img`

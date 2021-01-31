@@ -80,3 +80,8 @@ export interface Item {
 export interface Inventory {
 	[name: string]: Item
 }
+
+export interface LocationState {
+	lat: number
+	lng: number
+}

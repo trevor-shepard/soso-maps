@@ -3,21 +3,19 @@ import styled from '@emotion/styled'
 import DatePicker, { DayRange, utils } from 'react-modern-calendar-datepicker'
 import GoogleMapReact from 'google-map-react'
 import useSupercluster from 'use-supercluster'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
+import { recieveLocation } from 'store/slices/locationSlice'
+import { CurrentLocationIcon } from 'assets/icons'
 import Marker from 'components/marker'
 
 export default function Map() {
 	const history = useHistory()
-
+	const dispatch = useDispatch()
 	// state
 	const mapRef = useRef()
 	const [lastPress, setlastPress] = useState(0)
-	const [currentCoords, setCurrentCoords] = useState([
-		29.94639419721249,
-		-90.07472171802686,
-	])
 	const [bounds, setBounds] = useState<number[] | null>(null)
 	const [zoom, setZoom] = useState(17)
 
@@ -25,7 +23,19 @@ export default function Map() {
 		from: null,
 		to: null,
 	})
+
+	const location = useSelector((state: RootState) => state.location)
 	const touches = useSelector((state: RootState) => state.touch)
+
+	const panToCurrentLocation = () => {
+		const { lat, lng } = location
+		if (mapRef.current !== undefined) {
+			// @ts-ignore
+			mapRef.current.setZoom(18)
+			// @ts-ignore
+			mapRef.current.panTo({ lat, lng })
+		}
+	}
 
 	const points = Object.values(touches)
 		.filter(({ date }) => {
@@ -70,6 +80,11 @@ export default function Map() {
 
 	// on mount effects
 	useEffect(() => {
+		navigator.geolocation.getCurrentPosition(
+			({ coords: { latitude, longitude } }) => {
+				dispatch(recieveLocation({ lat: latitude, lng: longitude }))
+			}
+		)
 		const oneWeekAgo = new Date(Date.now() - 604800000)
 		const tomorrow = new Date()
 		tomorrow.setDate(tomorrow.getDate() + 1)
@@ -85,23 +100,7 @@ export default function Map() {
 				day: tomorrow.getDate(),
 			},
 		})
-		navigator.geolocation.getCurrentPosition(
-			({ coords: { latitude, longitude } }) => {
-				setCurrentCoords([latitude, longitude])
-			}
-		)
-	}, [])
-
-	// recieve props effects
-	useEffect(() => {
-		const [lat, lng] = currentCoords
-		if (mapRef.current !== undefined) {
-			// @ts-ignore
-			mapRef.current.setZoom(18)
-			// @ts-ignore
-			mapRef.current.panTo({ lat, lng })
-		}
-	}, [currentCoords])
+	}, [dispatch])
 
 	return (
 		<Container>
@@ -130,10 +129,16 @@ export default function Map() {
 				shouldHighlightWeekends
 			/>
 
+			<PanCurrentLocation
+				id="current-location"
+				src={CurrentLocationIcon}
+				onClick={panToCurrentLocation}
+			/>
+
 			<CreateTouch
 				id="create-touch"
 				onClick={() => {
-					const [lat, lng] = currentCoords
+					const { lat, lng } = location
 					history.push(`/touch-create/${lat},${lng}`, {
 						lat,
 						lng,
@@ -144,6 +149,12 @@ export default function Map() {
 			</CreateTouch>
 
 			<GoogleMapReact
+				options={() => {
+					return {
+						zoomControl: false,
+						fullscreenControl: false,
+					}
+				}}
 				onClick={async (values) => {
 					const { lat, lng } = values
 					const now = Date.now()
@@ -164,8 +175,8 @@ export default function Map() {
 					key: process.env.REACT_APP_FIREBASE_API_KEY as string,
 				}}
 				defaultCenter={{
-					lat: currentCoords[0],
-					lng: currentCoords[1],
+					lat: 29.94639419721249,
+					lng: -90.07472171802686,
 				}}
 				defaultZoom={17}
 				yesIWantToUseGoogleMapApiInternals
@@ -184,9 +195,9 @@ export default function Map() {
 			>
 				<CurrentLocation
 					// @ts-ignore
-					lat={currentCoords[0]}
+					lat={location.lat}
 					// @ts-ignore
-					lng={currentCoords[1]}
+					lng={location.lng}
 				/>
 
 				{clusters.map((cluster) => {
@@ -298,4 +309,14 @@ const Cluster = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+`
+
+const PanCurrentLocation = styled.img`
+	height: 44px;
+	width: 44px;
+	position: fixed;
+	bottom: 98px;
+	right: 6px;
+	cursor: pointer;
+	z-index: 10;
 `

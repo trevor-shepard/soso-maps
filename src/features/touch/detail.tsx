@@ -12,8 +12,7 @@ import {
 	Image,
 	Close,
 	Marker,
-	MarkerTitle,
-	MapMarkerIcon
+	MapMarkerIcon,
 } from 'components/styled'
 
 export default function Detail() {
@@ -44,7 +43,6 @@ export default function Detail() {
 			<PageSubTitle>{location}</PageSubTitle>
 			<MapsContainer>
 				<GoogleMapReact
-					
 					bootstrapURLKeys={{
 						key: process.env.REACT_APP_FIREBASE_API_KEY as string,
 					}}
@@ -52,13 +50,11 @@ export default function Detail() {
 						lat,
 						lng,
 					}}
-					defaultZoom={17}
+					defaultZoom={16}
 				>
-				
 					<Marker lat={lat} lng={lng}>
 						<MapMarkerIcon src={MarkerIcon} />
 					</Marker>
-					
 				</GoogleMapReact>
 			</MapsContainer>
 			{photo && <Photo src={photo} />}
@@ -98,5 +94,6 @@ const NotesContainer = styled.div`
 `
 const MapsContainer = styled.div`
 	height: 30%;
+	min-height: 200px;
 	width: 80%;
 `
