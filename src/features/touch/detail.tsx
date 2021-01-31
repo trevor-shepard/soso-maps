@@ -2,15 +2,18 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
-
+import GoogleMapReact from 'google-map-react'
 import { useParams, useHistory } from 'react-router-dom'
-import { CloseIcon } from 'assets/icons'
+import { CloseIcon, MarkerIcon } from 'assets/icons'
 import {
 	PageTitle,
 	PageSubTitle,
 	FlexContainer,
 	Image,
 	Close,
+	Marker,
+	MarkerTitle,
+	MapMarkerIcon
 } from 'components/styled'
 
 export default function Detail() {
@@ -27,7 +30,7 @@ export default function Detail() {
 
 	const cMember = touch.cMemeber ? cMembers[touch.cMemeber] : false
 
-	const { photo, location, tag, notes, resolved } = touch
+	const { photo, location, tag, notes, resolved, lat, lng } = touch
 
 	return (
 		<FlexContainer>
@@ -39,6 +42,25 @@ export default function Detail() {
 				</Tag>
 			</PageTitle>
 			<PageSubTitle>{location}</PageSubTitle>
+			<MapsContainer>
+				<GoogleMapReact
+					
+					bootstrapURLKeys={{
+						key: process.env.REACT_APP_FIREBASE_API_KEY as string,
+					}}
+					defaultCenter={{
+						lat,
+						lng,
+					}}
+					defaultZoom={17}
+				>
+				
+					<Marker lat={lat} lng={lng}>
+						<MapMarkerIcon src={MarkerIcon} />
+					</Marker>
+					
+				</GoogleMapReact>
+			</MapsContainer>
 			{photo && <Photo src={photo} />}
 
 			<NotesContainer
@@ -73,4 +95,8 @@ const NotesContainer = styled.div`
 	height: auto;
 	text-align: left;
 	margin-top: 2%;
+`
+const MapsContainer = styled.div`
+	height: 30%;
+	width: 80%;
 `
