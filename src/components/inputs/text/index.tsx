@@ -19,7 +19,7 @@ const TextInput: FunctionComponent<TextInputProps> = ({
 	type,
 }) => {
 	return (
-		<Container width={width ? width : '90%'}>
+		
 			<Input
 				placeholder={label}
 				value={value}
@@ -30,21 +30,12 @@ const TextInput: FunctionComponent<TextInputProps> = ({
 				}}
 				height={height ? height : '40px'}
 			/>
-		</Container>
+		
 	)
 }
 
-type ContainerProps = {
-	width: string
-}
 
-const Container = styled.div<ContainerProps>`
-	width: ${(props) => props.width};
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	margin-bottom: 10px;
-`
+
 
 type InputProps = {
 	height?: string
@@ -52,7 +43,7 @@ type InputProps = {
 
 const Input = styled.input<InputProps>`
 	font-family: AmsiPro-Ultra;
-	width: 100%;
+	width: 90%;
 	padding: 12px;
 	margin: 6px 0 4px;
 	border: 1px solid #ccc;
@@ -67,6 +58,7 @@ const Input = styled.input<InputProps>`
 	border: none;
 	border-bottom: 6px solid #271600;
 	background-color: #ffffff;
+	margin-bottom: 10px;
 	
 `
 
