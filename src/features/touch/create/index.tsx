@@ -135,38 +135,7 @@ export default function Create() {
 		getAddress()
 	}, [coords, getAddress])
 
-	useEffect(() => {
-		switch (selectedTag) {
-			case 'phone':
-				setNotes(
-					"- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- GOV address (what's listed on their ID): \n\n- Mailing address: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)"
-				)
-				break
-			case 'omv':
-				setNotes(
-					'- Full name: \n\n- DOB -: \n\n- Last 4 of SSN: \n\n- Phone #: \n\n- Have they had a LA ID before?: \n\n- If yes, do they have their birth certificate and two forms of ID?: \n\n- What govt benefit they have (Medicaid, SNAP, or SSI)'
-				)
-				break
-			case 'ride':
-				setNotes('- Destination: \n\n- Urgency: ')
-				break
-			case 'request':
-				setNotes('- Item: \n\n- Size: ')
-				break
-			case 'medical':
-				setNotes('- Urgency: \n\n- Symptoms: ')
-				break
-			case 'tentRepair':
-				setNotes('- Urgency: \n\n- Issue: ')
-				break
-			case 'outreach':
-				setNotes('- Urgency: \n\n- Issue: ')
-				break
-			default:
-				setNotes('')
-				break
-		}
-	}, [selectedTag, setNotes])
+
 
 	useEffect(() => {
 		if (newMemberID && communityMemberState[newMemberID])
@@ -182,7 +151,7 @@ export default function Create() {
 			</PageTitleContainer>
 
 			{error !== '' && <Error>{error}</Error>}
-			<ImgContainer height={'20%'}>
+			
 				{fileAsImage ? (
 					<Image src={fileAsImage} />
 				) : (
@@ -191,7 +160,7 @@ export default function Create() {
 						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
 					</FileInputLabel>
 				)}
-			</ImgContainer>
+			
 			{cMember ? (
 				<CMemberListItem>
 					{cMember.photo ? (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import TextInput from 'components/inputs/text'
+import styled from '@emotion/styled'
 
 export default function Ride({
 	createNote,
@@ -13,7 +14,7 @@ export default function Ride({
 	}, [createNote, destination, urgency])
 
 	return (
-		<>
+		<Container>
 			<TextInput
 				value={destination}
 				label="Destination"
@@ -24,6 +25,15 @@ export default function Ride({
 				label="Urgency"
 				handleInput={(e) => setUrgency(e.target.value)}
 			/>
-		</>
+		</Container>
 	)
 }
+
+
+const Container = styled.div`
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`

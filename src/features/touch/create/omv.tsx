@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import TextInput from 'components/inputs/text'
 import Checkbox from 'components/inputs/checkbox'
+
 export default function OMV({
 	createNote,
 }: {
@@ -24,7 +25,7 @@ export default function OMV({
 	}, [fullName, dob, last4ssn, govBenifit, createNote, firstLAID, phone])
 
 	return (
-		<>
+		<Container>
 			<TextInput
 				value={fullName}
 				label="Full Name"
@@ -61,7 +62,7 @@ export default function OMV({
 				label="What govt benefit they have (Medicaid, SNAP, or SSI)"
 				handleInput={(e) => setGovBenifit(e.target.value)}
 			/>
-		</>
+		</Container>
 	)
 }
 
@@ -71,4 +72,11 @@ const Message = styled.div`
 	font-weight: 400;
 	font-size: 14px;
 	color: #cc0000;
+`
+const Container = styled.div`
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 `

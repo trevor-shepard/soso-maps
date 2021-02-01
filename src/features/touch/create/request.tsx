@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import TextInput from 'components/inputs/text'
+import styled from '@emotion/styled'
 
 export default function Request({
 	createNote,
@@ -13,7 +14,7 @@ export default function Request({
 	}, [createNote, item, urgency])
 
 	return (
-		<>
+		<Container>
 			<TextInput
 				value={item}
 				label="Item"
@@ -24,6 +25,14 @@ export default function Request({
 				label="Urgency"
 				handleInput={(e) => setUrgency(e.target.value)}
 			/>
-		</>
+		</Container>
 	)
 }
+
+const Container = styled.div`
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`
