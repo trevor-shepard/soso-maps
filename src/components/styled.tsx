@@ -146,7 +146,7 @@ export const TagsContainer = styled.div`
 	width: 90%;
 	padding: 2%;
 	margin-bottom: 10px;
-	height: 20%;
+	height: 150px;
 `
 
 export const Tag = styled.div<{ selected: boolean }>`
