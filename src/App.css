@@ -1,6 +1,8 @@
 .App {
 	text-align: center;
 	font: Amari;
+	display: flex;
+	flex-direction: column;
 }
 
 .App-logo {
