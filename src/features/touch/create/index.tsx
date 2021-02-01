@@ -24,7 +24,6 @@ import {
 	PageSubTitle,
 	PageTitleContainer,
 	SubmitButton,
-	FlexContainer,
 	Image,
 	FileInput,
 	FileInputLabel,
