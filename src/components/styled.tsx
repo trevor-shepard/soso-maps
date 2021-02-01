@@ -145,6 +145,7 @@ export const TagsContainer = styled.div`
 	justify-content: space-around;
 	width: 80%;
 	padding: 2%;
+	margin-bottom: 10px;
 `
 
 export const Tag = styled.div<{ selected: boolean }>`
