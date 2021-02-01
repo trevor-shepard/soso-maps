@@ -270,7 +270,7 @@ export default function Create() {
 	)
 }
 
-const Container = styled(FlexContainer)`
+const Container = styled.div`
 	height: calc(${() => window.innerHeight}px - 60px);
 	width: auto;
 	display: flex;
