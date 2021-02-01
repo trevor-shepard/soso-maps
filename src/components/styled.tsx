@@ -143,9 +143,10 @@ export const TagsContainer = styled.div`
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-around;
-	width: 80%;
+	width: 90%;
 	padding: 2%;
 	margin-bottom: 10px;
+	height: 20%;
 `
 
 export const Tag = styled.div<{ selected: boolean }>`
@@ -154,10 +155,11 @@ export const Tag = styled.div<{ selected: boolean }>`
 	border-radius: 5px;
 	padding: 4px;
 	margin-top: 10px;
-	margin-left: 2px;
-	margin-right: 2px;
+	margin-left: 5px;
+	margin-right: 5px;
 	color: ${({ selected }) => (selected ? '#000000' : '#666666')};
 	font-weight: ${({ selected }) => (selected ? 'bold' : '400')};
+	height: 25px;
 `
 
 export const CMemberListItem = styled.div`
