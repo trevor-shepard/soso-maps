@@ -17,14 +17,8 @@ const communitymember = createSlice({
 				...state,
 			}
 		},
-		recieveCommunityMembers(
-			state,
-			action: PayloadAction<CommunityMemberState>
-		) {
-			return {
-				...state,
-				...action.payload,
-			}
+		recieveCommunityMembers(_, action: PayloadAction<CommunityMemberState>) {
+			return action.payload
 		},
 		cMemberClear() {
 			return {}

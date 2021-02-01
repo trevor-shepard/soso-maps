@@ -25,7 +25,7 @@ export default function Detail() {
 	const touch = useSelector((state: RootState) => state.touch[id])
 	const cMembers = useSelector((state: RootState) => state.communitymember)
 
-	if (!touch) history.goBack()
+	if (!touch || touch === undefined) history.goBack()
 
 	const cMember = touch.cMemeber ? cMembers[touch.cMemeber] : false
 
@@ -51,6 +51,12 @@ export default function Detail() {
 						lng,
 					}}
 					defaultZoom={16}
+					options={() => {
+						return {
+							zoomControl: false,
+							fullscreenControl: false,
+						}
+					}}
 				>
 					<Marker lat={lat} lng={lng}>
 						<MapMarkerIcon src={MarkerIcon} />
@@ -96,4 +102,5 @@ const MapsContainer = styled.div`
 	height: 30%;
 	min-height: 200px;
 	width: 80%;
+	margin-bottom: 20px;
 `

@@ -49,6 +49,7 @@ export const PageTitle = styled.div`
 	font-weight: 800;
 	font-size: 22px;
 	margin-top: 20px;
+	margin-bottom: 30px;
 `
 
 export const PageSubTitle = styled.div`

@@ -12,50 +12,70 @@ export default function TouchList() {
 	const [search, setSearch] = useState('')
 	const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
 	const touches = useSelector((state: RootState) => state.touch)
-
-	const touchList = Object.values(touches)
-		.filter(({ notes, location, tag }) => {
-			if (selectedTag && tag !== selectedTag) return false
-			if (search === '') return true
-			return notes.includes(search) || location.includes(search)
-		})
-		.map(({ date, tag, id }) => (
-			<ListItem
-				key={`touch-${id}`}
-				onClick={() => history.push(`/touch-detail/${id}`)}
-			>
-				{new Date(date).toLocaleString('en-US', {
-					day: 'numeric',
-					month: 'numeric',
-					year: 'numeric',
-				})}{' '}
-				- {tag}
-			</ListItem>
-		))
-
-	const tags = TAGS.map((tag) => (
-		<Tag
-			key={`tag-${tag}`}
-			onClick={() => {
-				setSelectedTag(tag)
-			}}
-			selected={selectedTag === tag}
-		>
-			{tag}
-		</Tag>
-	))
+	const communityMembers = useSelector(
+		(state: RootState) => state.communitymember
+	)
 
 	return (
 		<FlexContainer>
 			<PageTitle>Touches</PageTitle>
-			<TagsContainer>{tags}</TagsContainer>
+			<TagsContainer>
+				{TAGS.map((tag) => (
+					<Tag
+						key={`tag-${tag}`}
+						onClick={() => {
+							setSelectedTag(tag)
+						}}
+						selected={selectedTag === tag}
+					>
+						{tag}
+					</Tag>
+				))}
+			</TagsContainer>
 			<TextInput
 				value={search}
 				handleInput={(e) => setSearch(e.target.value)}
 				label="search"
 				width="80%"
 			/>
-			<List>{touchList} </List>
+			<List>
+				{Object.values(touches)
+					.filter(({ notes, location, tag, cMemeber }) => {
+						if (selectedTag && tag !== selectedTag) return false
+						if (search === '') return true
+						if (
+							cMemeber &&
+							communityMembers[cMemeber] &&
+							communityMembers[cMemeber].name
+								.toLocaleLowerCase()
+								.includes(search.toLocaleLowerCase())
+						)
+							return true
+						return (
+							notes.toLowerCase().includes(search.toLocaleLowerCase()) ||
+							location.toLowerCase().includes(search.toLowerCase())
+						)
+					})
+					.map(({ date, tag, id, cMemeber }) => {
+						return (
+							<ListItem
+								key={`touch-${id}`}
+								onClick={() => history.push(`/touch-detail/${id}`)}
+							>
+								{cMemeber &&
+									communityMembers[cMemeber] &&
+									communityMembers[cMemeber] &&
+									`${communityMembers[cMemeber].name} - `}
+								{tag} -
+								{new Date(date).toLocaleString('en-US', {
+									day: 'numeric',
+									month: 'numeric',
+									year: 'numeric',
+								})}{' '}
+							</ListItem>
+						)
+					})}{' '}
+			</List>
 		</FlexContainer>
 	)
 }
