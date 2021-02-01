@@ -28,35 +28,35 @@ export default function Phone({
 
 	return (
 		<>
-			<TextInput
+			<input
 				value={fullName}
-				label="Full Name"
-				handleInput={(e) => setFullName(e.target.value)}
+				placeholder="Full Name"
+				onChange={(e) => setFullName(e.target.value)}
 			/>
-			<TextInput
+			<input
 				value={dob}
-				label="DOB"
-				handleInput={(e) => setDob(e.target.value)}
+				placeholder="DOB"
+				onChange={(e) => setDob(e.target.value)}
 			/>
-			<TextInput
+			<input
 				value={last4ssn}
-				label="Last 4 of SSN"
-				handleInput={(e) => setLast4ssn(e.target.value)}
+				placeholder="Last 4 of SSN"
+				onChange={(e) => setLast4ssn(e.target.value)}
 			/>
-			<TextInput
+			<input
 				value={govAddress}
-				label="GOV address (what's listed on their ID):"
-				handleInput={(e) => setGovAddress(e.target.value)}
+				placeholder="GOV address (what's listed on their ID):"
+				onChange={(e) => setGovAddress(e.target.value)}
 			/>
-			<TextInput
+			<input
 				value={mailingAddress}
-				label="Mailing address:"
-				handleInput={(e) => setMailingAddress(e.target.value)}
+				placeholder="Mailing address:"
+				onChange={(e) => setMailingAddress(e.target.value)}
 			/>
-			<TextInput
+			<input
 				value={govBenifit}
-				label="What govt benefit they have (Medicaid, SNAP, or SSI)"
-				handleInput={(e) => setGovBenifit(e.target.value)}
+				placeholder="What govt benefit they have (Medicaid, SNAP, or SSI)"
+				onChange={(e) => setGovBenifit(e.target.value)}
 			/>
 		</>
 	)
