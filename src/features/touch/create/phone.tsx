@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import TextInput from 'components/inputs/text'
+// import TextInput from 'components/inputs/text'
 
 export default function Phone({
 	createNote,
