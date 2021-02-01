@@ -30,15 +30,15 @@ export default function TouchList() {
 						const searchTerms = search.split(' ')
 						// @ts-ignore
 						if (searchTerms.some((term) => TAGS.includes(term))) {
-							
 							if (searchTerms.includes(tag)) {
 								console.log(tag)
 								let searchWithTagRemoved = searchTerms.reduce((acc, curr) => {
-									if (acc === "" && curr === ' ') return acc
-									return (curr === tag)? acc : `${acc} ${curr}`	
+									if (acc === '' && curr === ' ') return acc
+									return curr === tag ? acc : `${acc} ${curr}`
 								}, '')
-								
-								if (searchWithTagRemoved[0] === " ") searchWithTagRemoved = searchWithTagRemoved.substr(1)
+
+								if (searchWithTagRemoved[0] === ' ')
+									searchWithTagRemoved = searchWithTagRemoved.substr(1)
 
 								return (
 									searchWithTagRemoved === '' ||

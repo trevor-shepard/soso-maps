@@ -19,23 +19,18 @@ const TextInput: FunctionComponent<TextInputProps> = ({
 	type,
 }) => {
 	return (
-		
-			<Input
-				placeholder={label}
-				value={value}
-				type={type ? type : 'text'}
-				onChange={(e) => {
-					e.preventDefault()
-					handleInput(e)
-				}}
-				height={height ? height : '40px'}
-			/>
-		
+		<Input
+			placeholder={label}
+			value={value}
+			type={type ? type : 'text'}
+			onChange={(e) => {
+				e.preventDefault()
+				handleInput(e)
+			}}
+			height={height ? height : '40px'}
+		/>
 	)
 }
-
-
-
 
 type InputProps = {
 	height?: string
@@ -60,7 +55,6 @@ const Input = styled.input<InputProps>`
 	border-bottom: 6px solid #271600;
 	background-color: #ffffff;
 	margin-bottom: 10px;
-	
 `
 
 export default TextInput
