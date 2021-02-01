@@ -4,13 +4,12 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import TextInput from 'components/inputs/text'
-import { PageTitle, FlexContainer, TagsContainer, Tag } from 'components/styled'
-import { TagType, TAGS } from 'types'
+import { PageTitle, FlexContainer } from 'components/styled'
+import { TAGS } from 'types'
 
 export default function TouchList() {
 	const history = useHistory()
 	const [search, setSearch] = useState('')
-	const [selectedTag, setSelectedTag] = useState<TagType | null>(null)
 	const touches = useSelector((state: RootState) => state.touch)
 	const communityMembers = useSelector(
 		(state: RootState) => state.communitymember
@@ -19,39 +18,53 @@ export default function TouchList() {
 	return (
 		<FlexContainer>
 			<PageTitle>Touches</PageTitle>
-			<TagsContainer>
-				{TAGS.map((tag) => (
-					<Tag
-						key={`tag-${tag}`}
-						onClick={() => {
-							setSelectedTag(tag)
-						}}
-						selected={selectedTag === tag}
-					>
-						{tag}
-					</Tag>
-				))}
-			</TagsContainer>
 			<TextInput
 				value={search}
-				handleInput={(e) => setSearch(e.target.value)}
+				handleInput={(e) => setSearch(e.target.value.toLocaleLowerCase())}
 				label="search"
 				width="80%"
 			/>
 			<List>
 				{Object.values(touches)
 					.filter(({ notes, location, tag, cMemeber }) => {
-						if (selectedTag && tag !== selectedTag) return false
-						if (search === '') return true
-						if (
-							cMemeber &&
-							communityMembers[cMemeber] &&
-							communityMembers[cMemeber].name
-								.toLocaleLowerCase()
-								.includes(search.toLocaleLowerCase())
-						)
-							return true
+						const searchTerms = search.split(' ')
+						// @ts-ignore
+						if (searchTerms.some((term) => TAGS.includes(term))) {
+							
+							if (searchTerms.includes(tag)) {
+								console.log(tag)
+								let searchWithTagRemoved = searchTerms.reduce((acc, curr) => {
+									if (acc === "" && curr === ' ') return acc
+									return (curr === tag)? acc : `${acc} ${curr}`	
+								}, '')
+								
+								if (searchWithTagRemoved[0] === " ") searchWithTagRemoved = searchWithTagRemoved.substr(1)
+
+								return (
+									searchWithTagRemoved === '' ||
+									(cMemeber &&
+										communityMembers[cMemeber] &&
+										communityMembers[cMemeber].name
+											.toLocaleLowerCase()
+											.includes(searchWithTagRemoved.toLocaleLowerCase())) ||
+									notes
+										.toLowerCase()
+										.includes(searchWithTagRemoved.toLocaleLowerCase()) ||
+									location
+										.toLowerCase()
+										.includes(searchWithTagRemoved.toLowerCase())
+								)
+							} else {
+								return false
+							}
+						}
+
 						return (
+							(cMemeber &&
+								communityMembers[cMemeber] &&
+								communityMembers[cMemeber].name
+									.toLocaleLowerCase()
+									.includes(search.toLocaleLowerCase())) ||
 							notes.toLowerCase().includes(search.toLocaleLowerCase()) ||
 							location.toLowerCase().includes(search.toLowerCase())
 						)
