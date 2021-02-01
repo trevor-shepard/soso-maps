@@ -268,7 +268,7 @@ export default function Create() {
 }
 
 const Container = styled.div`
-	height: calc(${() => window.innerHeight}px - 60px);
+	height: 100%;
 	width: auto;
 	display: flex;
 	align-items: center;
