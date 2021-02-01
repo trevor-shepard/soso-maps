@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-// import TextInput from 'components/inputs/text'
+import styled from '@emotion/styled'
+import TextInput from 'components/inputs/text'
 
 export default function Phone({
 	createNote,
@@ -27,37 +28,46 @@ export default function Phone({
 	])
 
 	return (
-		<>
-			<input
+		<Container>
+			<TextInput
 				value={fullName}
-				placeholder="Full Name"
-				onChange={(e) => setFullName(e.target.value)}
+				label="Full Name"
+				handleInput={(e) => setFullName(e.target.value)}
 			/>
-			<input
+			<TextInput
 				value={dob}
-				placeholder="DOB"
-				onChange={(e) => setDob(e.target.value)}
+				label="DOB"
+				handleInput={(e) => setDob(e.target.value)}
 			/>
-			<input
+			<TextInput
 				value={last4ssn}
-				placeholder="Last 4 of SSN"
-				onChange={(e) => setLast4ssn(e.target.value)}
+				label="Last 4 of SSN"
+				handleInput={(e) => setLast4ssn(e.target.value)}
 			/>
-			<input
+			<TextInput
 				value={govAddress}
-				placeholder="GOV address (what's listed on their ID):"
-				onChange={(e) => setGovAddress(e.target.value)}
+				label="GOV address (what's listed on their ID):"
+				handleInput={(e) => setGovAddress(e.target.value)}
 			/>
-			<input
+			<TextInput
 				value={mailingAddress}
-				placeholder="Mailing address:"
-				onChange={(e) => setMailingAddress(e.target.value)}
+				label="Mailing address:"
+				handleInput={(e) => setMailingAddress(e.target.value)}
 			/>
-			<input
+			<TextInput
 				value={govBenifit}
-				placeholder="What govt benefit they have (Medicaid, SNAP, or SSI)"
-				onChange={(e) => setGovBenifit(e.target.value)}
+				label="What govt benefit they have (Medicaid, SNAP, or SSI)"
+				handleInput={(e) => setGovBenifit(e.target.value)}
 			/>
-		</>
+		</Container>
 	)
 }
+
+
+const Container = styled.div`
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`
