@@ -247,22 +247,24 @@ export default function Create() {
 					</Tag>
 				))}
 			</TagsContainer>
-
-			{selectedTag === 'omv' && <OMV createNote={setNotes} />}
-			{selectedTag === 'phone' && <Phone createNote={setNotes} />}
-			{selectedTag === 'medical' && <Medical createNote={setNotes} />}
-			{selectedTag === 'outreach' && <Outreach createNote={setNotes} />}
-			{selectedTag === 'request' && <Request createNote={setNotes} />}
-			{selectedTag === 'ride' && <Ride createNote={setNotes} />}
-			{selectedTag === 'tentRepair' && <TentRepair createNote={setNotes} />}
-			{selectedTag === 'misc' && (
-				<TextAreaInput
-					value={notes}
-					label={'notes'}
-					handleInput={(e) => setNotes(e.target.value)}
-					height={'200px'}
-				/>
-			)}
+			<InputContainer>
+				{selectedTag === 'omv' && <OMV createNote={setNotes} />}
+				{selectedTag === 'phone' && <Phone createNote={setNotes} />}
+				{selectedTag === 'medical' && <Medical createNote={setNotes} />}
+				{selectedTag === 'outreach' && <Outreach createNote={setNotes} />}
+				{selectedTag === 'request' && <Request createNote={setNotes} />}
+				{selectedTag === 'ride' && <Ride createNote={setNotes} />}
+				{selectedTag === 'tentRepair' && <TentRepair createNote={setNotes} />}
+				{selectedTag === 'misc' && (
+					<TextAreaInput
+						value={notes}
+						label={'notes'}
+						handleInput={(e) => setNotes(e.target.value)}
+						height={'200px'}
+					/>
+				)}
+			</InputContainer>
+			
 
 			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
 		</Container>
@@ -302,4 +304,9 @@ const CmemberOptionsContainer = styled.div`
 const AddPhoto = styled(Image)`
 	height: 100px;
 	width: auto;
+`
+
+const InputContainer = styled.div`
+	height: 100%;
+	width: 100%;
 `
