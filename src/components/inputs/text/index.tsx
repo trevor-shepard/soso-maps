@@ -43,7 +43,7 @@ const Container = styled.div<ContainerProps>`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 `
 
 type InputProps = {
