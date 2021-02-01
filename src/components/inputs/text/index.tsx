@@ -42,6 +42,7 @@ type InputProps = {
 }
 
 const Input = styled.input<InputProps>`
+	outline: none;
 	font-family: AmsiPro-Ultra;
 	width: 90%;
 	padding: 12px;
