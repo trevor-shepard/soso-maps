@@ -56,6 +56,9 @@ export default function TouchList() {
 							location.toLowerCase().includes(search.toLowerCase())
 						)
 					})
+					.sort((a, b) => {
+						return a.date < b.date ? 1 : -1
+					})
 					.map(({ date, tag, id, cMemeber }) => {
 						return (
 							<ListItem
