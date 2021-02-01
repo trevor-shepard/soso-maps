@@ -28,7 +28,6 @@ import {
 	Image,
 	FileInput,
 	FileInputLabel,
-	ImgContainer,
 	Error,
 	Close,
 	Tag,
