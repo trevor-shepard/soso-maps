@@ -43,6 +43,7 @@ const Container = styled.div<ContainerProps>`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	margin-bottom: 5px;
 `
 
 type InputProps = {
@@ -65,15 +66,8 @@ const Input = styled.input<InputProps>`
 	padding: 5px;
 	border: none;
 	border-bottom: 6px solid #271600;
-	text-transform: uppercase;
 	background-color: #ffffff;
-	/* &:focus ~ .floating-label{
-        top: 8px;
-        bottom: 10px;
-        left: 20px;
-        font-size: 11px;
-        opacity: 1;
-    } */
+	
 `
 
 export default TextInput
