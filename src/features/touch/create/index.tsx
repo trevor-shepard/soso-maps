@@ -155,7 +155,7 @@ export default function Create() {
 					<Image src={fileAsImage} />
 				) : (
 					<FileInputLabel>
-						<Image src={AddImageIcon} />
+						<AddPhoto src={AddImageIcon} />
 						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
 					</FileInputLabel>
 				)}
@@ -271,9 +271,13 @@ export default function Create() {
 }
 
 const Container = styled(FlexContainer)`
-	justify-content: space-between;
-	overflow-y: scroll;
-	margin-bottom: 65px;
+	height: calc(${() => window.innerHeight}px - 60px);
+	width: auto;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+	overflow: scroll;
 `
 
 const CmemberSearch = styled.div`
@@ -294,4 +298,9 @@ const CmemberOptionsContainer = styled.div`
 	border-bottom-right-radius: 5px;
 	background-color: white;
 	width: 89%;
+`
+
+const AddPhoto = styled(Image)`
+	height: 100px;
+	width: auto;
 `
