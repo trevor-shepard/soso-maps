@@ -3,6 +3,7 @@ import { createSlice, PayloadAction, Dispatch } from '@reduxjs/toolkit'
 import { db } from 'utils/firebase'
 
 import { TouchState, Touch, TagType } from 'types'
+import { functions } from 'utils/firebase'
 
 const initialState: TouchState = {}
 
@@ -87,6 +88,13 @@ export const createTouch = async ({
 		}
 
 		await ref.set(touch)
+
+		if (cMember) {
+			functions.httpsCallable('addTouchToMember')({
+				memberID: cMember,
+				touchID: ref.id,
+			})
+		}
 	} catch (error) {
 		console.log('error creating touch', error)
 	}

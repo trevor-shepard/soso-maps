@@ -36,7 +36,7 @@ import {
 	CmemberName,
 	CmemberLocation,
 	ProfileImg,
-	ImgContainer
+	ImgContainer,
 } from 'components/styled'
 import { TagType, TAGS, CommunityMember } from 'types'
 
@@ -148,17 +148,16 @@ export default function Create() {
 			</PageTitleContainer>
 
 			{error !== '' && <Error>{error}</Error>}
-		<ImgContainer height='100px'>
-		{fileAsImage ? (
-				<Image src={fileAsImage} />
-			) : (
-				<FileInputLabel>
-					<AddPhoto src={AddImageIcon} />
-					<FileInput id="upload" type="file" onChange={handleImageAsFile} />
-				</FileInputLabel>
-			)}
-		</ImgContainer>
-			
+			<ImgContainer height="100px">
+				{fileAsImage ? (
+					<Image src={fileAsImage} />
+				) : (
+					<FileInputLabel>
+						<AddPhoto src={AddImageIcon} />
+						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
+					</FileInputLabel>
+				)}
+			</ImgContainer>
 
 			{cMember ? (
 				<CMemberListItem>
