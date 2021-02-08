@@ -4,20 +4,27 @@ import styled from '@emotion/styled'
 
 export default function Medical({
 	createNote,
+	hide
 }: {
-	createNote: (note: string) => void
+	createNote: (note: string) => void,
+	hide: boolean
 }) {
 	const [issue, setissue] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
-		createNote(`Issue:${issue} \n\n- Urgency:${urgency}`)
+		createNote(`
+		Issue:${issue}\n
+		Urgency:${urgency}
+	`)
 	}, [createNote, issue, urgency])
+
+	if (hide) return <></>
 
 	return (
 		<Container>
 			<TextInput
 				value={issue}
-				label="issue"
+				label="Issue"
 				handleInput={(e) => setissue(e.target.value)}
 			/>
 			<TextInput

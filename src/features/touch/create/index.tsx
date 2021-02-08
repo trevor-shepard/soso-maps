@@ -139,6 +139,10 @@ export default function Create() {
 			setCMember(communityMemberState[newMemberID])
 	}, [communityMemberState, newMemberID])
 
+	useEffect(() => {
+		setNotes('')
+	}, [selectedTag, setNotes])
+
 	return (
 		<Container>
 			<Close onClick={history.goBack} src={CloseIcon} />
@@ -248,21 +252,21 @@ export default function Create() {
 				))}
 			</TagsContainer>
 
-			{selectedTag === 'omv' && <OMV createNote={setNotes} />}
-			{selectedTag === 'phone' && <Phone createNote={setNotes} />}
-			{selectedTag === 'medical' && <Medical createNote={setNotes} />}
-			{selectedTag === 'outreach' && <Outreach createNote={setNotes} />}
-			{selectedTag === 'request' && <Request createNote={setNotes} />}
-			{selectedTag === 'ride' && <Ride createNote={setNotes} />}
-			{selectedTag === 'tentRepair' && <TentRepair createNote={setNotes} />}
-			{selectedTag === 'misc' && (
-				<TextAreaInput
+			 <OMV hide={selectedTag !== 'omv'} createNote={setNotes} />
+			 <Phone hide={selectedTag !== 'phone'} createNote={setNotes} />
+			 <Medical hide={selectedTag !== 'medical'} createNote={setNotes} />
+			 <Outreach hide={selectedTag !== 'outreach'} createNote={setNotes} />
+			 <Request hide={selectedTag !== 'request'} createNote={setNotes} />
+			 <Ride hide={selectedTag !== 'ride'} createNote={setNotes} />
+			 <TentRepair hide={selectedTag !== 'tentRepair'} createNote={setNotes} />
+			 
+				{ selectedTag === 'misc' && <TextAreaInput
 					value={notes}
 					label={'notes'}
 					handleInput={(e) => setNotes(e.target.value)}
 					height={'200px'}
-				/>
-			)}
+				/>}
+			
 
 			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
 		</Container>

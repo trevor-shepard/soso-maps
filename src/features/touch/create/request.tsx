@@ -4,17 +4,25 @@ import styled from '@emotion/styled'
 
 export default function Request({
 	createNote,
+	hide
 }: {
-	createNote: (note: string) => void
+	createNote: (note: string) => void,
+	hide: boolean
 }) {
 	const [item, setItem] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
-		createNote(`Destination:${item} \n\n- Urgency:${urgency}`)
+		createNote(`
+			Item:${item}\n
+			Urgency:${urgency}
+		`)
 	}, [createNote, item, urgency])
+
+	if (hide) return (<></>)
 
 	return (
 		<Container>
+			PLEASE CONFIRM THIS A FIRST TIME REQUEST
 			<TextInput
 				value={item}
 				label="Item"
