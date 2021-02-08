@@ -23,6 +23,17 @@ export const TAGS: TagType[] = [
 	'misc',
 ]
 
+export const TAGS_DISPLAY: { [key in TagType]: string } = {
+	omv: 'OMV',
+	tentRepair: 'TENT REPAIR',
+	request: 'REQUEST',
+	medical: 'MEDIC',
+	ride: 'RIDE',
+	phone: 'PHONE',
+	outreach: 'OUTREACH',
+	misc: 'MISC',
+}
+
 export interface Touch {
 	id: string
 	lat: number

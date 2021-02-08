@@ -5,9 +5,9 @@ import Checkbox from 'components/inputs/checkbox'
 
 export default function OMV({
 	createNote,
-	hide
+	hide,
 }: {
-	createNote: (note: string) => void,
+	createNote: (note: string) => void
 	hide: boolean
 }) {
 	const [fullName, setFullName] = useState('')
@@ -19,22 +19,22 @@ export default function OMV({
 	useEffect(() => {
 		createNote(
 			`
-			Full name:${fullName} \n
-			DOB -:${dob}\n
-			Last 4 of SSN:${last4ssn} \n
+			Full name: ${fullName} \n
+			DOB -: ${dob}\n
+			Last 4 of SSN: ${last4ssn} \n
 			Phone #: ${phone} \n
-			Have they had a LA ID before?: ${
-				firstLAID ? 'YES' : 'NO'
-			}\n
+			Have they had a LA ID before?: ${firstLAID ? 'YES' : 'NO'}\n
 			${
-				firstLAID ? `Confirmed birthcertificate and two forms of ID\n
-				\n` : ''
+				firstLAID
+					? `Confirmed birthcertificate and two forms of ID\n
+				\n`
+					: ''
 			}
 			What govt benefit they have (Medicaid, SNAP, or SSI): ${govBenifit}`
 		)
 	}, [fullName, dob, last4ssn, govBenifit, createNote, firstLAID, phone])
 
-	if (hide) return (<></>)
+	if (hide) return <></>
 	return (
 		<Container>
 			<TextInput

@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import GoogleMapReact from 'google-map-react'
+import BeatLoader from 'react-spinners/BeatLoader'
 import { useParams, useHistory } from 'react-router-dom'
 import { CloseIcon, MarkerIcon } from 'assets/icons'
 import {
@@ -13,7 +14,9 @@ import {
 	Close,
 	Marker,
 	MapMarkerIcon,
+	SubmitButton,
 } from 'components/styled'
+import { TAGS_DISPLAY } from 'types'
 
 export default function Detail() {
 	const history = useHistory()
@@ -21,7 +24,7 @@ export default function Detail() {
 	const { id } = useParams<{ id: string }>()
 
 	if (!id) history.goBack()
-
+	const [loading, setLoading] = useState(false)
 	const touch = useSelector((state: RootState) => state.touch[id])
 	const cMembers = useSelector((state: RootState) => state.communitymember)
 
@@ -31,9 +34,22 @@ export default function Detail() {
 
 	const { photo, location, tag, notes, resolved, lat, lng } = touch
 
+	const copyNote = async () => {
+		setLoading(true)
+		try {
+			navigator.clipboard.writeText(`
+			${TAGS_DISPLAY[tag]}${cMember && ` ${cMember.name}`}:
+			${notes}
+			`)
+		} catch (error) {}
+
+		setLoading(false)
+	}
+
 	return (
 		<FlexContainer>
 			<Close onClick={history.goBack} src={CloseIcon} />
+
 			<PageTitle>
 				<Tag>
 					{tag}
@@ -65,17 +81,16 @@ export default function Detail() {
 			</MapsContainer>
 			{photo && <Photo src={photo} />}
 
-			<NotesContainer
-				onClick={async () => {
-					try {
-						await navigator.clipboard.writeText(notes)
-					} catch (error) {}
-				}}
-			>
+			<NotesContainer>
 				{notes.split('\n').map((line, i) => (
 					<p key={`${i}-line`}>{line}</p>
 				))}
 			</NotesContainer>
+			{loading ? (
+				<BeatLoader />
+			) : (
+				<SubmitButton onClick={copyNote}>Copy Note</SubmitButton>
+			)}
 		</FlexContainer>
 	)
 }

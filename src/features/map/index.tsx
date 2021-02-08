@@ -75,7 +75,7 @@ export default function Map() {
 		points,
 		bounds,
 		zoom,
-		options: { radius: 75, maxZoom: 20 },
+		options: { radius: 75, maxZoom: 30 },
 	})
 
 	// on mount effects
@@ -185,6 +185,7 @@ export default function Map() {
 				}}
 				onChange={({ zoom, bounds }) => {
 					setZoom(zoom)
+					console.log('zoom', zoom)
 					setBounds([
 						bounds.nw.lng,
 						bounds.se.lat,
@@ -200,57 +201,79 @@ export default function Map() {
 					lng={location.lng}
 				/>
 
-				{clusters.map((cluster) => {
-					const [lng, lat] = cluster.geometry.coordinates
-					const {
-						cluster: isCluster,
-						point_count: pointCount,
-						id,
-						date,
-						photo,
-						tag,
-					} = cluster.properties
+				{zoom >= 22
+					? supercluster.points.map((point: any) => {
+							const [lng, lat] = point.geometry.coordinates
+							const {
+								id,
+								date,
+								photo,
+								tag,
+							} = point.properties
 
-					if (isCluster) {
-						return (
-							<Cluster
-								key={`${cluster.id}-cluster`}
-								className="cluster-marker"
-								style={{
-									width: `${10 + (pointCount / points.length) * 20}px`,
-									height: `${10 + (pointCount / points.length) * 20}px`,
-								}}
-								onClick={() => {
-									const expansionZoom = Math.min(
-										supercluster.getClusterExpansionZoom(cluster.id),
-										20
-									)
-									// @ts-ignore
-									mapRef.current.setZoom(expansionZoom)
-									// @ts-ignore
-									mapRef.current.panTo({ lat, lng })
-								}}
-								// @ts-ignore
-								lat={lat}
-								lng={lng}
-							>
-								{pointCount}
-							</Cluster>
-						)
-					}
+							return (
+								<Marker
+									lat={lat}
+									lng={lng}
+									tag={tag}
+									date={date}
+									photo={photo}
+									id={id}
+									key={`touch-${id}`}
+								/>
+							)
+					  })
+					: clusters.map((cluster) => {
+							const [lng, lat] = cluster.geometry.coordinates
+							const {
+								cluster: isCluster,
+								point_count: pointCount,
+								id,
+								date,
+								photo,
+								tag,
+							} = cluster.properties
 
-					return (
-						<Marker
-							lat={lat}
-							lng={lng}
-							tag={tag}
-							date={date}
-							photo={photo}
-							id={id}
-							key={`touch-${id}`}
-						/>
-					)
-				})}
+							if (isCluster) {
+								return (
+									<Cluster
+										key={`${cluster.id}-cluster`}
+										className="cluster-marker"
+										style={{
+											width: `${10 + (pointCount / points.length) * 20}px`,
+											height: `${10 + (pointCount / points.length) * 20}px`,
+										}}
+										onClick={() => {
+											const expansionZoom = Math.min(
+												supercluster.getClusterExpansionZoom(cluster.id),
+												30
+											)
+											// @ts-ignore
+											mapRef.current.setZoom(expansionZoom)
+											// @ts-ignore
+											mapRef.current.panTo({ lat, lng })
+										}}
+										// @ts-ignore
+										lat={lat}
+										lng={lng}
+									>
+										{pointCount}
+									</Cluster>
+								)
+							}
+
+							return (
+								<Marker
+									lat={lat}
+									lng={lng}
+									tag={tag}
+									date={date}
+									photo={photo}
+									id={id}
+									key={`touch-${id}`}
+								/>
+							)
+					  })}
 			</GoogleMapReact>
 		</Container>
 	)

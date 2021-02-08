@@ -252,21 +252,22 @@ export default function Create() {
 				))}
 			</TagsContainer>
 
-			 <OMV hide={selectedTag !== 'omv'} createNote={setNotes} />
-			 <Phone hide={selectedTag !== 'phone'} createNote={setNotes} />
-			 <Medical hide={selectedTag !== 'medical'} createNote={setNotes} />
-			 <Outreach hide={selectedTag !== 'outreach'} createNote={setNotes} />
-			 <Request hide={selectedTag !== 'request'} createNote={setNotes} />
-			 <Ride hide={selectedTag !== 'ride'} createNote={setNotes} />
-			 <TentRepair hide={selectedTag !== 'tentRepair'} createNote={setNotes} />
-			 
-				{ selectedTag === 'misc' && <TextAreaInput
+			<OMV hide={selectedTag !== 'omv'} createNote={setNotes} />
+			<Phone hide={selectedTag !== 'phone'} createNote={setNotes} />
+			<Medical hide={selectedTag !== 'medical'} createNote={setNotes} />
+			<Outreach hide={selectedTag !== 'outreach'} createNote={setNotes} />
+			<Request hide={selectedTag !== 'request'} createNote={setNotes} />
+			<Ride hide={selectedTag !== 'ride'} createNote={setNotes} />
+			<TentRepair hide={selectedTag !== 'tentRepair'} createNote={setNotes} />
+
+			{selectedTag === 'misc' && (
+				<TextAreaInput
 					value={notes}
 					label={'notes'}
 					handleInput={(e) => setNotes(e.target.value)}
 					height={'200px'}
-				/>}
-			
+				/>
+			)}
 
 			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
 		</Container>

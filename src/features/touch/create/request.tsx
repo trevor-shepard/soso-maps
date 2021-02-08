@@ -4,21 +4,21 @@ import styled from '@emotion/styled'
 
 export default function Request({
 	createNote,
-	hide
+	hide,
 }: {
-	createNote: (note: string) => void,
+	createNote: (note: string) => void
 	hide: boolean
 }) {
 	const [item, setItem] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
 		createNote(`
-			Item:${item}\n
-			Urgency:${urgency}
+			Item: ${item}
+			Urgency: ${urgency}
 		`)
 	}, [createNote, item, urgency])
 
-	if (hide) return (<></>)
+	if (hide) return <></>
 
 	return (
 		<Container>

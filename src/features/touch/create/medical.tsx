@@ -4,17 +4,17 @@ import styled from '@emotion/styled'
 
 export default function Medical({
 	createNote,
-	hide
+	hide,
 }: {
-	createNote: (note: string) => void,
+	createNote: (note: string) => void
 	hide: boolean
 }) {
 	const [issue, setissue] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
 		createNote(`
-		Issue:${issue}\n
-		Urgency:${urgency}
+		Issue: ${issue}\n
+		Urgency: ${urgency}
 	`)
 	}, [createNote, issue, urgency])
 

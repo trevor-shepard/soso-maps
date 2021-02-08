@@ -4,18 +4,18 @@ import styled from '@emotion/styled'
 
 export default function TentRepair({
 	createNote,
-	hide
+	hide,
 }: {
-	createNote: (note: string) => void,
+	createNote: (note: string) => void
 	hide: boolean
 }) {
 	const [issue, setissue] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
-		createNote(`Issue:${issue} \n\n- Urgency:${urgency}`)
+		createNote(`Issue: ${issue} \n\n- Urgency: ${urgency}`)
 	}, [createNote, issue, urgency])
 
-	if (hide) return (<></>)
+	if (hide) return <></>
 
 	return (
 		<Container>

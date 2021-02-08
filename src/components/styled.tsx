@@ -48,15 +48,16 @@ export const PageTitle = styled.div`
 	font-style: normal;
 	font-weight: 800;
 	font-size: 22px;
-	margin-top: 20px;
+	margin-top: 10%;
 	margin-bottom: 10px;
 `
 
 export const PageSubTitle = styled.div`
-	font-family: Mulish;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 200;
 	font-size: 14px;
+	margin-bottom: 3%;
 `
 
 export const FlexContainer = styled.div`

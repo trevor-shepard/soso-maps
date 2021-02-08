@@ -4,21 +4,21 @@ import styled from '@emotion/styled'
 
 export default function Ride({
 	createNote,
-	hide
+	hide,
 }: {
-	createNote: (note: string) => void,
+	createNote: (note: string) => void
 	hide: boolean
 }) {
 	const [destination, setDestination] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
 		createNote(`
-			Destination:${destination}\n
-			Urgency:${urgency}
+			Destination: ${destination}\n
+			Urgency: ${urgency}
 			`)
 	}, [createNote, destination, urgency])
 
-	if (hide) return (<></>)
+	if (hide) return <></>
 
 	return (
 		<Container>

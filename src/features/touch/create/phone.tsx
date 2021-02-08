@@ -4,9 +4,9 @@ import TextInput from 'components/inputs/text'
 
 export default function Phone({
 	createNote,
-	hide
+	hide,
 }: {
-	createNote: (note: string) => void,
+	createNote: (note: string) => void
 	hide: boolean
 }) {
 	const [fullName, setFullName] = useState('')
@@ -18,11 +18,11 @@ export default function Phone({
 	useEffect(() => {
 		createNote(
 			`
-			Full name:${fullName}\n
-			DOB -:${dob} \n
-			Last 4 of SSN:${last4ssn} \n
-			GOV address (what's listed on their ID):${govAddress} \n
-			Mailing address:${mailingAddress} \n
+			Full name: ${fullName}\n
+			DOB -: ${dob} \n
+			Last 4 of SSN: ${last4ssn} \n
+			GOV address (what's listed on their ID): ${govAddress} \n
+			Mailing address: ${mailingAddress} \n
 			What govt benefit they have (Medicaid, SNAP, or SSI): ${govBenifit}`
 		)
 	}, [
@@ -35,7 +35,7 @@ export default function Phone({
 		createNote,
 	])
 
-	if (hide) return (<></>)
+	if (hide) return <></>
 
 	return (
 		<Container>
