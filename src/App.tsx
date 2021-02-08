@@ -11,7 +11,6 @@ import Inventory from 'features/inventory'
 import CreateTouch from 'features/touch/create'
 import DetailTouch from 'features/touch/detail'
 import DetailList from 'features/touch/list'
-import CommunityMemberCreate from 'features/community-member/create'
 import store from 'store'
 import { AuthRoute, ProtectedRoute } from 'utils/routeUtils'
 import Login from 'features/login'
@@ -30,11 +29,6 @@ function App() {
 								path="/touch-create/:coords"
 								exact={true}
 								component={CreateTouch}
-							/>
-							<ProtectedRoute
-								path="/community-member-create"
-								exact={true}
-								component={CommunityMemberCreate}
 							/>
 							<ProtectedRoute
 								path="/touch-detail/:id"

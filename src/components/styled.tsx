@@ -21,14 +21,14 @@ export const SubmitButton = styled.button`
 `
 
 export const ModalSubTitle = styled.div`
-	font-family: Mulish;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 200;
 	font-size: 14px;
 `
 
 export const Error = styled.div`
-	font-family: Mulish;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 200;
 	font-size: 14px;
@@ -176,14 +176,14 @@ export const DetailsContainer = styled.div`
 	width: 100;
 `
 export const CmemberName = styled.div`
-	font-family: Mulish;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
 	text-align: left;
 `
 export const CmemberLocation = styled.div`
-	font-family: Mulish;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 200;
 	font-size: 14px;

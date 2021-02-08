@@ -204,12 +204,7 @@ export default function Map() {
 				{zoom >= 22
 					? supercluster.points.map((point: any) => {
 							const [lng, lat] = point.geometry.coordinates
-							const {
-								id,
-								date,
-								photo,
-								tag,
-							} = point.properties
+							const { id, date, photo, tag } = point.properties
 
 							return (
 								<Marker

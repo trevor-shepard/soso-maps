@@ -5,7 +5,7 @@ import { handleFireBaseImageUpload } from 'utils/firebase'
 import { useParams, useHistory } from 'react-router-dom'
 import { RootState } from 'store/rootReducer'
 import { useSelector } from 'react-redux'
-import { createCommunityMember } from 'store/slices/communitymemberSlice'
+import CreateCommunityMember from './community-member/create'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
 import TextAreaInput from 'components/inputs/textArea'
@@ -52,8 +52,8 @@ export default function Create() {
 	const [error, setError] = useState('')
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
-
 	const [search, setSearch] = useState('')
+	const [createCommunityMember, setCreateCommunityMember] = useState(false)
 
 	const communityMemberState = useSelector(
 		(state: RootState) => state.communitymember
@@ -143,6 +143,15 @@ export default function Create() {
 		setNotes('')
 	}, [selectedTag, setNotes])
 
+	if (createCommunityMember)
+		return (
+			<CreateCommunityMember
+				close={() => setCreateCommunityMember(false)}
+				name={search}
+				setCMember={(id: string) => setNewMemberIDMember(id)}
+			/>
+		)
+
 	return (
 		<Container>
 			<Close onClick={history.goBack} src={CloseIcon} />
@@ -207,29 +216,7 @@ export default function Create() {
 							})}
 							<CMemberListItem
 								key={`member-create`}
-								onClick={async () => {
-									let id
-									if (imageAsFile) {
-										const downloadURl = await handleFireBaseImageUpload(
-											`community-member/${search}-${Date.now()}`,
-											imageAsFile
-										)
-
-										id = await createCommunityMember(
-											search,
-											notes,
-											location,
-											[parseFloat(lat), parseFloat(lng)],
-											downloadURl
-										)
-									} else {
-										id = await createCommunityMember(search, notes, location, [
-											parseFloat(lat),
-											parseFloat(lng),
-										])
-									}
-									if (id) setNewMemberIDMember(id)
-								}}
+								onClick={() => setCreateCommunityMember(true)}
 							>
 								Add New Community Member
 							</CMemberListItem>

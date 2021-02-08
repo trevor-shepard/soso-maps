@@ -78,7 +78,7 @@ export default function OMV({
 }
 
 const Message = styled.div`
-	font-family: Mulish;
+	font-family: Poppins;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;

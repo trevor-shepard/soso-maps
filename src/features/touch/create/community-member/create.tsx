@@ -3,11 +3,13 @@ import styled from '@emotion/styled'
 import GoogleMapReact from 'google-map-react'
 import { createCommunityMember } from 'store/slices/communitymemberSlice'
 import { handleFireBaseImageUpload } from 'utils/firebase'
-import { useHistory } from 'react-router-dom'
 import { functions } from 'utils/firebase'
 import TextInput from 'components/inputs/text'
 import TextAreaInput from 'components/inputs/textArea'
 import { AddImageIcon, CloseIcon, MarkerIcon } from 'assets/icons'
+import { RootState } from 'store/rootReducer'
+import { useSelector } from 'react-redux'
+import BeatLoader from 'react-spinners/BeatLoader'
 import {
 	PageTitle,
 	PageTitleContainer,
@@ -25,10 +27,14 @@ import {
 	MarkerTitleHeader,
 } from 'components/styled'
 
-export default function Create() {
-	const history = useHistory()
+export default function Create(props: {
+	name: string
+	close: () => void
+	setCMember: (id: string) => void
+}) {
+	const { lat, lng } = useSelector((state: RootState) => state.location)
 	const [lastPress, setlastPress] = useState(0)
-	const [name, setName] = useState('')
+	const [name, setName] = useState(props.name)
 	const [notes, setNotes] = useState('')
 	const [latLng, setLatLng] = useState<[number, number] | null>(null)
 	const [location, setLocation] = useState<string | null>(null)
@@ -37,27 +43,38 @@ export default function Create() {
 	const [error, setError] = useState('')
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
-
+	const [loading, setLoading] = useState(false)
 	// methods
 	const handleSubmit = async () => {
+		setLoading(true)
 		try {
+			let id
 			if (imageAsFile) {
 				const downloadURl = await handleFireBaseImageUpload(
 					`community-member/${name}-${Date.now()}`,
 					imageAsFile
 				)
 
-				await createCommunityMember(name, notes, location, latLng, downloadURl)
+				id = await createCommunityMember(
+					name,
+					notes,
+					location,
+					[lat, lng],
+					downloadURl
+				)
 			} else {
-				await createCommunityMember(name, notes, location, latLng)
+				id = await createCommunityMember(name, notes, location, [lat, lng])
 			}
+			if (id) props.setCMember(id)
+
+			return props.close()
 		} catch (error) {
 			setError(
 				'something went wrong, please check your internet connection and try again'
 			)
 		}
 
-		history.goBack()
+		setLoading(false)
 	}
 
 	useEffect(() => {
@@ -91,7 +108,7 @@ export default function Create() {
 
 	return (
 		<Container>
-			<Close onClick={history.goBack} src={CloseIcon} />
+			<Close onClick={props.close} src={CloseIcon} />
 			<PageTitleContainer>
 				<PageTitle>Add a Community Member</PageTitle>
 			</PageTitleContainer>
@@ -154,7 +171,11 @@ export default function Create() {
 				height={'200px'}
 			/>
 
-			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
+			{loading ? (
+				<BeatLoader />
+			) : (
+				<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
+			)}
 		</Container>
 	)
 }
