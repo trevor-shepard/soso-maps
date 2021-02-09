@@ -12,10 +12,7 @@ export default function Ride({
 	const [destination, setDestination] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
-		createNote(`
-			Destination: ${destination}\n
-			Urgency: ${urgency}
-			`)
+		createNote(`Destination: ${destination}\nUrgency: ${urgency}`)
 	}, [createNote, destination, urgency])
 
 	if (hide) return <></>

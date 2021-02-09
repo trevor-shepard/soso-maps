@@ -19,18 +19,11 @@ export default function OMV({
 	useEffect(() => {
 		createNote(
 			`
-			Full name: ${fullName} \n
-			DOB -: ${dob}\n
-			Last 4 of SSN: ${last4ssn} \n
-			Phone #: ${phone} \n
-			Have they had a LA ID before?: ${firstLAID ? 'YES' : 'NO'}\n
-			${
-				firstLAID
-					? `Confirmed birthcertificate and two forms of ID\n
-				\n`
-					: ''
-			}
-			What govt benefit they have (Medicaid, SNAP, or SSI): ${govBenifit}`
+			Full name: ${fullName}\nDOB -: ${dob}\nLast 4 of SSN: ${last4ssn} \nPhone #: ${phone} \nHave they had a LA ID before?: ${
+				firstLAID ? 'YES' : 'NO'
+			}\n${
+				firstLAID ? `Confirmed birthcertificate and two forms of ID\n` : ''
+			}What govt benefit they have (Medicaid, SNAP, or SSI): ${govBenifit}`
 		)
 	}, [fullName, dob, last4ssn, govBenifit, createNote, firstLAID, phone])
 

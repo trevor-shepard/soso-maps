@@ -12,7 +12,7 @@ export default function TentRepair({
 	const [issue, setissue] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
-		createNote(`Issue: ${issue} \n\n- Urgency: ${urgency}`)
+		createNote(`Issue: ${issue}\nUrgency: ${urgency}`)
 	}, [createNote, issue, urgency])
 
 	if (hide) return <></>

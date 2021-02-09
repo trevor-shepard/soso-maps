@@ -12,10 +12,7 @@ export default function Request({
 	const [item, setItem] = useState('')
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
-		createNote(`
-			Item: ${item}
-			Urgency: ${urgency}
-		`)
+		createNote(`Item: ${item}\nUrgency: ${urgency}`)
 	}, [createNote, item, urgency])
 
 	if (hide) return <></>

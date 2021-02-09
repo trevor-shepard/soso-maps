@@ -15,25 +15,21 @@ export default function Phone({
 	const [govAddress, setGovAddress] = useState('')
 	const [mailingAddress, setMailingAddress] = useState('')
 	const [govBenifit, setGovBenifit] = useState('')
-	useEffect(() => {
-		createNote(
-			`
-			Full name: ${fullName}\n
-			DOB -: ${dob} \n
-			Last 4 of SSN: ${last4ssn} \n
-			GOV address (what's listed on their ID): ${govAddress} \n
-			Mailing address: ${mailingAddress} \n
-			What govt benefit they have (Medicaid, SNAP, or SSI): ${govBenifit}`
-		)
-	}, [
-		fullName,
-		dob,
-		last4ssn,
-		govAddress,
-		mailingAddress,
-		govBenifit,
-		createNote,
-	])
+	useEffect(
+		() =>
+			createNote(
+				`Full name: ${fullName}\nDOB -: ${dob} \nLast 4 of SSN: ${last4ssn}\nGOV address (what's listed on their ID): ${govAddress}\nMailing address: ${mailingAddress}\nWhat govt benefit they have (Medicaid, SNAP, or SSI): ${govBenifit}`
+			),
+		[
+			fullName,
+			dob,
+			last4ssn,
+			govAddress,
+			mailingAddress,
+			govBenifit,
+			createNote,
+		]
+	)
 
 	if (hide) return <></>
 

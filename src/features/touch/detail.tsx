@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
+import { keyframes } from 'emotion'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import GoogleMapReact from 'google-map-react'
@@ -32,15 +33,14 @@ export default function Detail() {
 
 	const cMember = touch.cMemeber ? cMembers[touch.cMemeber] : false
 
-	const { photo, location, tag, notes, resolved, lat, lng } = touch
+	const { photo, location, tag, notes, resolved, lat, lng, date } = touch
 
 	const copyNote = async () => {
 		setLoading(true)
 		try {
-			navigator.clipboard.writeText(`
-			${TAGS_DISPLAY[tag]}${cMember && ` ${cMember.name}`}:
-			${notes}
-			`)
+			navigator.clipboard.writeText(
+				`${TAGS_DISPLAY[tag]}${cMember && ` ${cMember.name}`}\n${notes}`
+			)
 		} catch (error) {}
 
 		setLoading(false)
@@ -52,11 +52,19 @@ export default function Detail() {
 
 			<PageTitle>
 				<Tag>
-					{tag}
-					{cMember && ` - ${cMember.name}`} {resolved && 'Resolved'}
+					{tag} on{' '}
+					{new Date(date).toLocaleDateString('en-US', {
+						day: 'numeric',
+						month: 'long',
+						year: 'numeric',
+					})}
+					{resolved && 'Resolved'}
 				</Tag>
 			</PageTitle>
-			<PageSubTitle>{location}</PageSubTitle>
+
+			{cMember && cMember.photo && <ProfilePhoto src={cMember.photo} />}
+			{cMember && cMember.name && <PageSubTitle>{cMember.name}</PageSubTitle>}
+
 			<MapsContainer>
 				<GoogleMapReact
 					bootstrapURLKeys={{
@@ -79,6 +87,7 @@ export default function Detail() {
 					</Marker>
 				</GoogleMapReact>
 			</MapsContainer>
+			<PageSubTitle>{location}</PageSubTitle>
 			{photo && <Photo src={photo} />}
 
 			<NotesContainer>
@@ -107,15 +116,35 @@ const Photo = styled(Image)`
 	width: auto;
 `
 
-const NotesContainer = styled.div`
-	width: 80%;
-	height: auto;
-	text-align: left;
-	margin-top: 2%;
+const ProfilePhoto = styled(Image)`
+	height: 20%;
+	width: auto;
+	border-radius: 50%;
+	border: 2px solid black;
 `
+
 const MapsContainer = styled.div`
 	height: 30%;
 	min-height: 200px;
 	width: 80%;
 	margin-bottom: 20px;
+`
+
+const select = () => keyframes`
+to {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+`
+
+const NotesContainer = styled.div`
+	width: 80%;
+	height: auto;
+	text-align: left;
+	margin-top: 2%;
+	-webkit-user-select: text;
+	user-select: text;
+	&:focus {
+		animation: ${select()} 100ms step-end forwards;
+	}
 `

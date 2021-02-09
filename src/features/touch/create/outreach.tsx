@@ -13,8 +13,7 @@ export default function Medical({
 	const [urgency, setUrgency] = useState('')
 	useEffect(() => {
 		createNote(`
-			Issue: ${issue}\n
-			Urgency: ${urgency}
+			Issue: ${issue}Urgency: ${urgency}
 		`)
 	}, [createNote, issue, urgency])
 	if (hide) return <></>
