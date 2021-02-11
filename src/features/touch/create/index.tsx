@@ -5,11 +5,16 @@ import { handleFireBaseImageUpload } from 'utils/firebase'
 import { useParams, useHistory } from 'react-router-dom'
 import { RootState } from 'store/rootReducer'
 import { useSelector } from 'react-redux'
+import BeatLoader from 'react-spinners/BeatLoader'
 import CreateCommunityMember from './community-member/create'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
+
+
 import TextAreaInput from 'components/inputs/textArea'
 import TextInput from 'components/inputs/text'
+
+
 import OMV from './omv'
 import Phone from './phone'
 import Medical from './medical'
@@ -44,6 +49,7 @@ export default function Create() {
 	const { coords } = useParams<{ coords: string }>()
 	const [lat, lng] = coords.split(',')
 	const history = useHistory()
+	const [loading, setLoading] = useState(false)
 	const [notes, setNotes] = useState('')
 	const [location, setLocation] = useState('')
 	const [cMember, setCMember] = useState<CommunityMember | null>(null)
@@ -67,6 +73,7 @@ export default function Create() {
 
 	// methods
 	const handleSubmit = async () => {
+		setLoading(true)
 		try {
 			const date = Date.now()
 
@@ -98,13 +105,15 @@ export default function Create() {
 					cMember: cMember ? cMember.id : null,
 				})
 			}
+			setLoading(false)
+			history.push('/')
 		} catch (error) {
+			setLoading(false)
 			setError(
 				'something went wrong, please check your internet connection and try again'
 			)
 		}
-
-		history.push('/')
+		
 	}
 
 	const handleImageAsFile = (event: FormEvent) => {
@@ -256,7 +265,7 @@ export default function Create() {
 				/>
 			)}
 
-			<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
+			{loading ? <BeatLoader/> : <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>}
 		</Container>
 	)
 }
