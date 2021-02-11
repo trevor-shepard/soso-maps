@@ -18,8 +18,7 @@ export default function OMV({
 	const [govBenifit, setGovBenifit] = useState('')
 	useEffect(() => {
 		createNote(
-			`
-			Full name: ${fullName}\nDOB -: ${dob}\nLast 4 of SSN: ${last4ssn} \nPhone #: ${phone} \nHave they had a LA ID before?: ${
+			`Full name: ${fullName}\nDOB -: ${dob}\nLast 4 of SSN: ${last4ssn} \nPhone #: ${phone} \nHave they had a LA ID before?: ${
 				firstLAID ? 'YES' : 'NO'
 			}\n${
 				firstLAID ? `Confirmed birthcertificate and two forms of ID\n` : ''
