@@ -11,6 +11,7 @@ import Inventory from 'features/inventory'
 import CreateTouch from 'features/touch/create'
 import DetailTouch from 'features/touch/detail'
 import DetailList from 'features/touch/list'
+import Profile from 'features/profile'
 import store from 'store'
 import { AuthRoute, ProtectedRoute } from 'utils/routeUtils'
 import Login from 'features/login'
@@ -44,6 +45,11 @@ function App() {
 								path="/inventory"
 								exact={true}
 								component={Inventory}
+							/>
+							<ProtectedRoute
+								path="/profile"
+								exact={true}
+								component={Profile}
 							/>
 							<ProtectedRoute path="/" component={Map} />
 						</Switch>

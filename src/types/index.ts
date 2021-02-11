@@ -45,12 +45,18 @@ export interface Touch {
 	photo: string | null
 	resolved: boolean
 	cMemeber: string | null
+	createdBy: string
 }
 
 export interface User {
 	username: string
 	uid: string
 	email: string
+	photo?: string
+}
+
+export interface UserUpdate {
+	username?: string
 	photo?: string
 }
 
@@ -96,3 +102,9 @@ export interface LocationState {
 	lat: number
 	lng: number
 }
+
+
+export interface UsersState {
+	[uid: string]: User
+}
+

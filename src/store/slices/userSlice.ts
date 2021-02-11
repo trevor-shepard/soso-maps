@@ -4,7 +4,7 @@ import { AppThunk } from '..'
 
 import firebase, { auth, db } from 'utils/firebase'
 
-import { UserState, User, UserWithoutId } from 'types'
+import { UserState, User, UserWithoutId, UserUpdate } from 'types'
 
 const initialState: UserState = {
 	username: null,
@@ -33,6 +33,12 @@ const user = createSlice({
 				error: null,
 			}
 		},
+		updateUser(state, action: PayloadAction<UserUpdate>) {
+			return {
+				...state,
+				...action.payload
+			}
+		},
 		userError(state, action: PayloadAction<string>) {
 			state.error = action.payload
 			return state
@@ -40,7 +46,7 @@ const user = createSlice({
 	},
 })
 
-export const { recieveUser, userError, clear } = user.actions
+export const { recieveUser, userError, updateUser, clear } = user.actions
 
 export default user.reducer
 
@@ -101,6 +107,25 @@ export const signup = (
 		dispatch(userError(error.message))
 	}
 }
+
+export const addUserPhoto = (photo: string): AppThunk => async (
+	dispatch,
+	getState
+) => {
+	const { user } = getState()
+
+	const uid = user.uid as string
+	await db
+		.collection('users')
+		.doc(uid)
+		.update({
+			photo
+		})
+
+	dispatch(updateUser({ photo }))
+
+}
+
 
 export const logout = (): AppThunk => async (dispatch) => {
 	dispatch(clear())

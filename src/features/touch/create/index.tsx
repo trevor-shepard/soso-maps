@@ -60,10 +60,12 @@ export default function Create() {
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
 	const [search, setSearch] = useState('')
 	const [createCommunityMember, setCreateCommunityMember] = useState(false)
-
+	const user  = useSelector((state: RootState) => state.user)
 	const communityMemberState = useSelector(
 		(state: RootState) => state.communitymember
 	)
+
+
 	const communityMembers = Object.values(communityMemberState).filter(
 		({ name, notes, location }) =>
 			name.includes(search) ||
@@ -82,7 +84,7 @@ export default function Create() {
 					`touch/${location}-${date}`,
 					imageAsFile
 				)
-
+				
 				await createTouch({
 					lat,
 					lng,
@@ -92,8 +94,10 @@ export default function Create() {
 					date: Date.now(),
 					photo: downloadURL,
 					cMember: cMember ? cMember.id : null,
+					uid: (user && user.uid) ? user.uid : 'unk'
 				})
 			} else {
+				debugger
 				await createTouch({
 					lat,
 					lng,
@@ -103,6 +107,7 @@ export default function Create() {
 					date: Date.now(),
 					photo: null,
 					cMember: cMember ? cMember.id : null,
+					uid: (user && user.uid) ? user.uid : 'unk'
 				})
 			}
 			setLoading(false)

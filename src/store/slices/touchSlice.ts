@@ -55,6 +55,7 @@ interface CreateTouchProps {
 	date: number
 	photo: string | null
 	cMember: string | null
+	uid: string
 }
 
 export const createTouch = async ({
@@ -66,10 +67,11 @@ export const createTouch = async ({
 	tag,
 	photo,
 	cMember,
+	uid
 }: CreateTouchProps) => {
 	try {
 		const ref = await db.collection('touches').doc()
-
+		debugger
 		const touch: Touch = {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),
@@ -81,6 +83,7 @@ export const createTouch = async ({
 			id: ref.id,
 			photo: photo ? photo : null,
 			resolved: false,
+			createdBy: uid
 		}
 
 		if (photo) {
@@ -88,7 +91,7 @@ export const createTouch = async ({
 		}
 
 		await ref.set(touch)
-
+		
 		if (cMember) {
 			functions.httpsCallable('addTouchToMember')({
 				memberID: cMember,
@@ -96,6 +99,7 @@ export const createTouch = async ({
 			})
 		}
 	} catch (error) {
+		debugger
 		console.log('error creating touch', error)
 	}
 }
