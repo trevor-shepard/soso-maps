@@ -76,8 +76,9 @@ const Message = styled.div`
 	font-size: 14px;
 	color: #cc0000;
 `
+
 const Container = styled.div`
-	height: 100%;
+	height: auto;
 	width: 100%;
 	display: flex;
 	flex-direction: column;

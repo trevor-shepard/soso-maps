@@ -39,7 +39,6 @@ import {
 	CmemberName,
 	CmemberLocation,
 	ProfileImg,
-	ImgContainer,
 } from 'components/styled'
 import { TagType, TAGS, CommunityMember } from 'types'
 
@@ -224,7 +223,6 @@ export default function Create() {
 					)}
 				</CmemberSearch>
 			)}
-
 			<TagsContainer>
 				{TAGS.map((tag) => (
 					<Tag
@@ -238,6 +236,19 @@ export default function Create() {
 					</Tag>
 				))}
 			</TagsContainer>
+			<ImgContainerWMargin >
+				{fileAsImage ? (
+					<SizedImage src={fileAsImage} />
+				) : (
+					<FileInputLabel>
+						<AddPhoto src={AddImageIcon} />
+						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
+					</FileInputLabel>
+				)}
+			</ImgContainerWMargin>
+
+			
+			
 
 			<OMV hide={selectedTag !== 'omv'} createNote={setNotes} />
 			<Phone hide={selectedTag !== 'phone'} createNote={setNotes} />
@@ -256,16 +267,7 @@ export default function Create() {
 				/>
 			)}
 
-			<ImgContainer height="100px">
-				{fileAsImage ? (
-					<Image src={fileAsImage} />
-				) : (
-					<FileInputLabel>
-						<AddPhoto src={AddImageIcon} />
-						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
-					</FileInputLabel>
-				)}
-			</ImgContainer>
+			
 
 			{loading ? (
 				<BeatLoader />
@@ -314,4 +316,16 @@ const AddPhoto = styled(Image)`
 const SelectedMember = styled.div`
 	display: flex;
 	width: 90%;
+`
+
+const ImgContainerWMargin = styled.div`
+	flex-grow: 1;
+	height: 100%auto;
+`
+
+const SizedImage = styled.img`
+	height: 300px;
+width: auto;
+object-fit: cover;
+border: 5px solid black;
 `

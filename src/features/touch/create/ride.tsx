@@ -33,8 +33,9 @@ export default function Ride({
 	)
 }
 
+
 const Container = styled.div`
-	height: 100%;
+	height: auto;
 	width: 100%;
 	display: flex;
 	flex-direction: column;

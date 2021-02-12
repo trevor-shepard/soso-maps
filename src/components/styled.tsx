@@ -82,7 +82,6 @@ export const FileInput = styled.input`
 export const FileInputLabel = styled.label``
 
 export const ImgContainer = styled.div<{ height: string }>`
-	width: 100%;
 	height: ${({ height }) => height};
 	width: auto;
 `
@@ -147,7 +146,7 @@ export const TagsContainer = styled.div`
 	padding: 2%;
 	margin-bottom: 10px;
 	overflow-y: hidden;
-	height: 60px;
+	height: 70px;
 `
 
 export const Tag = styled.div<{ selected: boolean }>`
