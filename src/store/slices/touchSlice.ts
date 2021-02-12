@@ -67,7 +67,7 @@ export const createTouch = async ({
 	tag,
 	photo,
 	cMember,
-	uid
+	uid,
 }: CreateTouchProps) => {
 	try {
 		const ref = await db.collection('touches').doc()
@@ -83,7 +83,7 @@ export const createTouch = async ({
 			id: ref.id,
 			photo: photo ? photo : null,
 			resolved: false,
-			createdBy: uid
+			createdBy: uid,
 		}
 
 		if (photo) {
@@ -91,7 +91,7 @@ export const createTouch = async ({
 		}
 
 		await ref.set(touch)
-		
+
 		if (cMember) {
 			functions.httpsCallable('addTouchToMember')({
 				memberID: cMember,

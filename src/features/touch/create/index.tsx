@@ -10,10 +10,8 @@ import CreateCommunityMember from './community-member/create'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
 
-
 import TextAreaInput from 'components/inputs/textArea'
 import TextInput from 'components/inputs/text'
-
 
 import OMV from './omv'
 import Phone from './phone'
@@ -60,11 +58,10 @@ export default function Create() {
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
 	const [search, setSearch] = useState('')
 	const [createCommunityMember, setCreateCommunityMember] = useState(false)
-	const user  = useSelector((state: RootState) => state.user)
+	const user = useSelector((state: RootState) => state.user)
 	const communityMemberState = useSelector(
 		(state: RootState) => state.communitymember
 	)
-
 
 	const communityMembers = Object.values(communityMemberState).filter(
 		({ name, notes, location }) =>
@@ -84,7 +81,7 @@ export default function Create() {
 					`touch/${location}-${date}`,
 					imageAsFile
 				)
-				
+
 				await createTouch({
 					lat,
 					lng,
@@ -94,7 +91,7 @@ export default function Create() {
 					date: Date.now(),
 					photo: downloadURL,
 					cMember: cMember ? cMember.id : null,
-					uid: (user && user.uid) ? user.uid : 'unk'
+					uid: user && user.uid ? user.uid : 'unk',
 				})
 			} else {
 				debugger
@@ -107,7 +104,7 @@ export default function Create() {
 					date: Date.now(),
 					photo: null,
 					cMember: cMember ? cMember.id : null,
-					uid: (user && user.uid) ? user.uid : 'unk'
+					uid: user && user.uid ? user.uid : 'unk',
 				})
 			}
 			setLoading(false)
@@ -118,7 +115,6 @@ export default function Create() {
 				'something went wrong, please check your internet connection and try again'
 			)
 		}
-		
 	}
 
 	const handleImageAsFile = (event: FormEvent) => {
@@ -175,19 +171,9 @@ export default function Create() {
 			</PageTitleContainer>
 
 			{error !== '' && <Error>{error}</Error>}
-			<ImgContainer height="100px">
-				{fileAsImage ? (
-					<Image src={fileAsImage} />
-				) : (
-					<FileInputLabel>
-						<AddPhoto src={AddImageIcon} />
-						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
-					</FileInputLabel>
-				)}
-			</ImgContainer>
 
 			{cMember ? (
-				<CMemberListItem>
+				<SelectedMember>
 					{cMember.photo ? (
 						<ProfileImg src={cMember.photo} />
 					) : (
@@ -197,7 +183,7 @@ export default function Create() {
 						<CmemberName>{cMember.name}</CmemberName>
 						{cMember && <CmemberLocation>{cMember.location}</CmemberLocation>}
 					</DetailsContainer>
-				</CMemberListItem>
+				</SelectedMember>
 			) : (
 				<CmemberSearch>
 					<TextInput
@@ -270,7 +256,22 @@ export default function Create() {
 				/>
 			)}
 
-			{loading ? <BeatLoader/> : <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>}
+			<ImgContainer height="100px">
+				{fileAsImage ? (
+					<Image src={fileAsImage} />
+				) : (
+					<FileInputLabel>
+						<AddPhoto src={AddImageIcon} />
+						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
+					</FileInputLabel>
+				)}
+			</ImgContainer>
+
+			{loading ? (
+				<BeatLoader />
+			) : (
+				<SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
+			)}
 		</Container>
 	)
 }
@@ -308,4 +309,9 @@ const CmemberOptionsContainer = styled.div`
 const AddPhoto = styled(Image)`
 	height: 100px;
 	width: auto;
+`
+
+const SelectedMember = styled.div`
+	display: flex;
+	width: 90%;
 `

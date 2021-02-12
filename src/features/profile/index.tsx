@@ -6,11 +6,10 @@ import { GroupIcon } from 'assets/icons'
 import Logout from 'components/Logout'
 import AddProfile from './AddProfile'
 
-
 const Profile: FunctionComponent = () => {
 	const { username, photo } = useSelector((state: RootState) => state.user)
 	const [editPhoto, setEditPhoto] = useState(false)
-	
+
 	return (
 		<Container>
 			<Logout />
@@ -27,7 +26,6 @@ const Profile: FunctionComponent = () => {
 				) : (
 					<ProfileImage src={GroupIcon} />
 				)}
-				
 			</ProfileImageContainer>
 		</Container>
 	)

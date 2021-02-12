@@ -32,7 +32,15 @@ export default function Create(props: {
 	close: () => void
 	setCMember: (id: string) => void
 }) {
-	const { lat, lng } = useSelector((state: RootState) => state.location)
+	const { lat, lng } = useSelector((state: RootState) =>
+		state.user.latlng !== undefined
+			? state.user.latlng
+			: {
+					lat: 29.94639419721249,
+					lng: -90.07472171802686,
+			  }
+	) as { lat: number; lng: number }
+
 	const [lastPress, setlastPress] = useState(0)
 	const [name, setName] = useState(props.name)
 	const [notes, setNotes] = useState('')

@@ -40,7 +40,7 @@ export const PageTitleContainer = styled.div`
 	flex-direction: column;
 	width: 100%;
 	text-align: left;
-	width: 80%;
+	width: 90%;
 `
 
 export const PageTitle = styled.div`
@@ -142,12 +142,12 @@ export const Close = styled.img`
 export const TagsContainer = styled.div`
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: space-around;
+	overflow-x: scroll;
 	width: 90%;
 	padding: 2%;
 	margin-bottom: 10px;
-	height: 150px;
+	overflow-y: hidden;
+	height: 60px;
 `
 
 export const Tag = styled.div<{ selected: boolean }>`

@@ -28,10 +28,7 @@ const MobileNav: FunctionComponent = () => {
 				<TabIcon src={ShoppingIcon} alt=" " />
 				Inventory
 			</Tab>
-			<Tab
-				current={pathname === '/inventory' ? 'true' : 'false'}
-				to="/profile"
-			>
+			<Tab current={pathname === '/inventory' ? 'true' : 'false'} to="/profile">
 				<TabIcon src={GroupIcon} alt=" " />
 				Profile
 			</Tab>

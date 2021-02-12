@@ -36,7 +36,7 @@ const user = createSlice({
 		updateUser(state, action: PayloadAction<UserUpdate>) {
 			return {
 				...state,
-				...action.payload
+				...action.payload,
 			}
 		},
 		userError(state, action: PayloadAction<string>) {
@@ -101,6 +101,10 @@ export const signup = (
 			recieveUser({
 				...user,
 				uid,
+				latlng: {
+					lat: 29.94639419721249,
+					lng: -90.07472171802686,
+				},
 			})
 		)
 	} catch (error) {
@@ -115,17 +119,26 @@ export const addUserPhoto = (photo: string): AppThunk => async (
 	const { user } = getState()
 
 	const uid = user.uid as string
-	await db
-		.collection('users')
-		.doc(uid)
-		.update({
-			photo
-		})
+	await db.collection('users').doc(uid).update({
+		photo,
+	})
 
 	dispatch(updateUser({ photo }))
-
 }
 
+export const updateUserLocation = (latlng: {
+	lat: number
+	lng: number
+}): AppThunk => async (dispatch, getState) => {
+	const state = getState()
+
+	const uid = state.user.uid as string
+	await db.collection('users').doc(uid).update({
+		latlng,
+	})
+
+	dispatch(updateUser({ latlng }))
+}
 
 export const logout = (): AppThunk => async (dispatch) => {
 	dispatch(clear())

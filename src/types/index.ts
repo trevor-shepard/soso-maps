@@ -53,11 +53,19 @@ export interface User {
 	uid: string
 	email: string
 	photo?: string
+	latlng: {
+		lat: number
+		lng: number
+	}
 }
 
 export interface UserUpdate {
 	username?: string
 	photo?: string
+	latlng?: {
+		lat: number
+		lng: number
+	}
 }
 
 export interface UserState {
@@ -65,6 +73,10 @@ export interface UserState {
 	uid?: string | null
 	email?: string | null
 	photo?: string | null
+	latlng?: {
+		lat: number
+		lng: number
+	}
 	error: string | null
 }
 
@@ -103,8 +115,6 @@ export interface LocationState {
 	lng: number
 }
 
-
 export interface UsersState {
 	[uid: string]: User
 }
-

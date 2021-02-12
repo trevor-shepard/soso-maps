@@ -6,25 +6,40 @@ import useSupercluster from 'use-supercluster'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
-import { recieveLocation } from 'store/slices/locationSlice'
 import { CurrentLocationIcon } from 'assets/icons'
 import Marker from 'components/marker'
+import { updateUserLocation } from 'store/slices/userSlice'
+import CircleLoader from 'react-spinners/CircleLoader'
 
 export default function Map() {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	// state
+	const timeRef = useRef(Date.now() - 1000)
 	const mapRef = useRef()
 	const [lastPress, setlastPress] = useState(0)
 	const [bounds, setBounds] = useState<number[] | null>(null)
 	const [zoom, setZoom] = useState(17)
+	const [startLocation, setStartLocation] = useState<null | {
+		lat: number
+		lng: number
+	}>(null)
+	const [pings, setPings] = useState(0)
 
 	const [selectedDayRange, setSelectedDayRange] = useState<DayRange>({
 		from: null,
 		to: null,
 	})
 
-	const location = useSelector((state: RootState) => state.location)
+	const location = useSelector((state: RootState) =>
+		state.user.latlng !== undefined
+			? state.user.latlng
+			: {
+					lat: 29.94639419721249,
+					lng: -90.07472171802686,
+			  }
+	) as { lat: number; lng: number }
+
 	const touches = useSelector((state: RootState) => state.touch)
 
 	const panToCurrentLocation = () => {
@@ -82,9 +97,11 @@ export default function Map() {
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
 			({ coords: { latitude, longitude } }) => {
-				dispatch(recieveLocation({ lat: latitude, lng: longitude }))
+				dispatch(updateUserLocation({ lat: latitude, lng: longitude }))
 			}
 		)
+
+		setStartLocation(location)
 		const yesterday = new Date(Date.now() - 86400000)
 		const tomorrow = new Date()
 		tomorrow.setDate(tomorrow.getDate() + 1)
@@ -100,8 +117,28 @@ export default function Map() {
 				day: tomorrow.getDate(),
 			},
 		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch])
 
+	// ping for new location every 30 seconds
+
+	useEffect(() => {
+		const now = Date.now()
+		const expected = timeRef.current + 10000
+		const delta = expected - now
+		const cleanUp = setTimeout(() => {
+			timeRef.current = now
+			setPings(pings + 1)
+			navigator.geolocation.getCurrentPosition(
+				({ coords: { latitude, longitude } }) => {
+					dispatch(updateUserLocation({ lat: latitude, lng: longitude }))
+				}
+			)
+		}, 10000 + delta)
+		return () => clearTimeout(cleanUp)
+	}, [pings, setPings, dispatch])
+
+	if (!startLocation) return <CircleLoader />
 	return (
 		<Container>
 			<DatePicker
@@ -175,8 +212,8 @@ export default function Map() {
 					key: process.env.REACT_APP_FIREBASE_API_KEY as string,
 				}}
 				defaultCenter={{
-					lat: 29.94639419721249,
-					lng: -90.07472171802686,
+					lat: startLocation.lat,
+					lng: startLocation.lng,
 				}}
 				defaultZoom={17}
 				yesIWantToUseGoogleMapApiInternals
@@ -185,7 +222,6 @@ export default function Map() {
 				}}
 				onChange={({ zoom, bounds }) => {
 					setZoom(zoom)
-					console.log('zoom', zoom)
 					setBounds([
 						bounds.nw.lng,
 						bounds.se.lat,

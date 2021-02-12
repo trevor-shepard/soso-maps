@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, Dispatch } from '@reduxjs/toolkit'
 import { db } from 'utils/firebase'
-import { UsersState, User} from 'types'
+import { UsersState, User } from 'types'
 
 const initialState: UsersState = {}
 
@@ -16,7 +16,6 @@ const users = createSlice({
 		},
 	},
 })
-
 
 export const { recieveUsers, usersClear } = users.actions
 

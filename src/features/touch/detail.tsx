@@ -39,7 +39,9 @@ export default function Detail() {
 		setLoading(true)
 		try {
 			navigator.clipboard.writeText(
-				`${TAGS_DISPLAY[tag] === 'request' ? 'SHOPPER' : TAGS_DISPLAY[tag]}${cMember && ` ${cMember.name}`}\n${notes}`
+				`${TAGS_DISPLAY[tag] === 'request' ? 'SHOPPER' : TAGS_DISPLAY[tag]}${
+					cMember && ` ${cMember.name}`
+				}\n${notes}`
 			)
 		} catch (error) {}
 
@@ -114,11 +116,14 @@ const Tag = styled.div`
 const Photo = styled(Image)`
 	height: 40%;
 	width: auto;
+	border: 2px solid black;
+	border-radius: 10px;
 `
 
 const ProfilePhoto = styled(Image)`
-	height: 20%;
-	width: auto;
+	object-fit: cover;
+	height: 200px;
+	width: 200px;
 	border-radius: 50%;
 	border: 2px solid black;
 `

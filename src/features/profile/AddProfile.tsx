@@ -10,7 +10,7 @@ import {
 	FileInput,
 	FileInputLabel,
 	SubmitButton,
-	PageTitle
+	PageTitle,
 } from 'components/styled'
 interface Props {
 	hideModal: () => void
@@ -19,7 +19,7 @@ interface Props {
 
 const AddActivityModal: FunctionComponent<Props> = ({
 	hideModal,
-	username
+	username,
 }) => {
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
@@ -45,11 +45,11 @@ const AddActivityModal: FunctionComponent<Props> = ({
 		uploadTask.on(
 			'state_changed',
 			// monitor upload
-			snapShot => {
+			(snapShot) => {
 				//takes a snap shot of the process as it is happening
 				console.log(snapShot)
 			},
-			err => {
+			(err) => {
 				//catches the errors
 				setError(
 					'sorry there was a problem. check internet connection and try again'
@@ -77,18 +77,17 @@ const AddActivityModal: FunctionComponent<Props> = ({
 			<PageTitle>upload a profile picture</PageTitle>
 			{error !== '' && error}
 			{fileAsImage ? (
-					<ProfilePhoto src={fileAsImage} />
-				) : (
-					<FileInputLabel>
-						<Image src={AddImageIcon} />
-						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
-					</FileInputLabel>
-				)}
-				<SubmitButton onClick={handleFireBaseUpload}>submit</SubmitButton>
+				<ProfilePhoto src={fileAsImage} />
+			) : (
+				<FileInputLabel>
+					<Image src={AddImageIcon} />
+					<FileInput id="upload" type="file" onChange={handleImageAsFile} />
+				</FileInputLabel>
+			)}
+			<SubmitButton onClick={handleFireBaseUpload}>submit</SubmitButton>
 		</Modal>
 	)
 }
-
 
 const ProfilePhoto = styled(Image)`
 	object-fit: cover;
@@ -97,6 +96,5 @@ const ProfilePhoto = styled(Image)`
 	border-radius: 50%;
 	border: 2px solid black;
 `
-
 
 export default AddActivityModal

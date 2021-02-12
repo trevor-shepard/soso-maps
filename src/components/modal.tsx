@@ -8,12 +8,9 @@ interface Props {
 const Modal: FunctionComponent<Props> = ({ children, hideModal }) => {
 	return (
 		<Container>
-			<Content onClick={e => e.stopPropagation()}>{children}</Content>
+			<Content onClick={(e) => e.stopPropagation()}>{children}</Content>
 			<GreyArea onClick={hideModal} />
-				
-			
 		</Container>
-		
 	)
 }
 
