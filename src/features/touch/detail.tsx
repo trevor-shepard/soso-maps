@@ -7,6 +7,8 @@ import GoogleMapReact from 'google-map-react'
 import BeatLoader from 'react-spinners/BeatLoader'
 import { useParams, useHistory } from 'react-router-dom'
 import { CloseIcon, MarkerIcon } from 'assets/icons'
+import { resolveTouch } from 'store/slices/touchSlice'
+import Modal from 'components/modal'
 import {
 	PageTitle,
 	PageSubTitle,
@@ -18,6 +20,7 @@ import {
 	SubmitButton,
 } from 'components/styled'
 import { TAGS_DISPLAY } from 'types'
+import TextInput from 'components/inputs/text'
 
 export default function Detail() {
 	const history = useHistory()
@@ -26,8 +29,11 @@ export default function Detail() {
 
 	if (!id) history.goBack()
 	const [loading, setLoading] = useState(false)
+	const [showResolve, setShowResolve] = useState(false)
+	const [resolveNote, setResolveNote] = useState('')
 	const touch = useSelector((state: RootState) => state.touch[id])
 	const cMembers = useSelector((state: RootState) => state.communitymember)
+	const uid = useSelector((state: RootState) => state.user.uid) as string
 
 	if (!touch || touch === undefined) history.goBack()
 
@@ -48,9 +54,30 @@ export default function Detail() {
 		setLoading(false)
 	}
 
+	const handleResolve = async () => {
+		setLoading(true)
+		await resolveTouch({
+			uid,
+			touchID: touch.id,
+			note: `${touch.notes}\n\nRESOLVED\n${resolveNote}`
+
+		})
+		setShowResolve(false)
+		setLoading(false)
+	
+	}
+
 	return (
 		<FlexContainer>
 			<Close onClick={history.goBack} src={CloseIcon} />
+
+			{
+				showResolve && <Modal hideModal={() => setShowResolve(false)}>
+					<PageTitle> Resolve Touch</PageTitle>
+					<TextInput value={resolveNote} label={'notes'} handleInput={(e) => setResolveNote(e.target.value)} />
+					{loading ? <BeatLoader /> : <SubmitButton onClick={handleResolve}>Submit</SubmitButton>}
+				</Modal>
+			}
 
 			<PageTitle>
 				<Tag>
@@ -60,7 +87,7 @@ export default function Detail() {
 						month: 'long',
 						year: 'numeric',
 					})}
-					{resolved && 'Resolved'}
+					{resolved && '-Resolved'}
 				</Tag>
 			</PageTitle>
 
@@ -100,7 +127,11 @@ export default function Detail() {
 			{loading ? (
 				<BeatLoader />
 			) : (
-				<SubmitButton onClick={copyNote}>Copy Note</SubmitButton>
+				<Footer>
+					<SubmitButton onClick={copyNote}>Copy Note</SubmitButton>
+					{touch.resolved === '' && <SubmitButton onClick={() => setShowResolve(true)}>Resolve</SubmitButton>}
+				</Footer>
+				
 			)}
 		</FlexContainer>
 	)
@@ -152,4 +183,11 @@ const NotesContainer = styled.div`
 	&:focus {
 		animation: ${select()} 100ms step-end forwards;
 	}
+`
+const Footer = styled.div`
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+
 `

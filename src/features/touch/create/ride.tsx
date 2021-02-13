@@ -33,7 +33,6 @@ export default function Ride({
 	)
 }
 
-
 const Container = styled.div`
 	height: auto;
 	width: 100%;

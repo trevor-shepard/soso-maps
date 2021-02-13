@@ -93,7 +93,7 @@ export default function Create() {
 					uid: user && user.uid ? user.uid : 'unk',
 				})
 			} else {
-				debugger
+				
 				await createTouch({
 					lat,
 					lng,
@@ -236,7 +236,7 @@ export default function Create() {
 					</Tag>
 				))}
 			</TagsContainer>
-			<ImgContainerWMargin >
+			<ImgContainerWMargin>
 				{fileAsImage ? (
 					<SizedImage src={fileAsImage} />
 				) : (
@@ -246,9 +246,6 @@ export default function Create() {
 					</FileInputLabel>
 				)}
 			</ImgContainerWMargin>
-
-			
-			
 
 			<OMV hide={selectedTag !== 'omv'} createNote={setNotes} />
 			<Phone hide={selectedTag !== 'phone'} createNote={setNotes} />
@@ -266,8 +263,6 @@ export default function Create() {
 					height={'200px'}
 				/>
 			)}
-
-			
 
 			{loading ? (
 				<BeatLoader />
@@ -325,7 +320,7 @@ const ImgContainerWMargin = styled.div`
 
 const SizedImage = styled.img`
 	height: 300px;
-width: auto;
-object-fit: cover;
-border: 5px solid black;
+	width: auto;
+	object-fit: cover;
+	border: 5px solid black;
 `

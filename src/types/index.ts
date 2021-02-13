@@ -13,12 +13,12 @@ export type TagType =
 	| 'misc'
 
 export const TAGS: TagType[] = [
-	'omv',
-	'tentRepair',
 	'request',
-	'medical',
-	'ride',
+	'omv',
 	'phone',
+	'medical',
+	'tentRepair',
+	'ride',
 	'outreach',
 	'misc',
 ]
@@ -43,7 +43,7 @@ export interface Touch {
 	location: string
 	tag: TagType
 	photo: string | null
-	resolved: boolean
+	resolved: string
 	cMemeber: string | null
 	createdBy: string
 }

@@ -15,18 +15,21 @@ const Modal: FunctionComponent<Props> = ({ children, hideModal }) => {
 }
 
 const Container = styled.div`
-	position: relative;
+	position: absolute;
 	height: 100%;
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 100;
 `
 
 const GreyArea = styled.div`
-	height: 100vh;
-	width: 100vw;
-	z-index: 50;
+	height: 100%;
+	width: 100%;
+	z-index: 1000;
 	opacity: 0.9;
 	background-color: #777375;
 	position: fixed;
@@ -39,7 +42,7 @@ const GreyArea = styled.div`
 
 const Content = styled.div`
 	position: relative;
-	z-index: 55;
+	z-index: 1100;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

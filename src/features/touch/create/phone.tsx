@@ -69,7 +69,6 @@ export default function Phone({
 	)
 }
 
-
 const Container = styled.div`
 	height: auto;
 	width: 100%;
