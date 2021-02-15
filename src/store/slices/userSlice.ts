@@ -10,7 +10,7 @@ const initialState: UserState = {
 	username: null,
 	email: null,
 	uid: null,
-	error: null,
+	
 }
 
 const user = createSlice({
@@ -30,7 +30,6 @@ const user = createSlice({
 				username: null,
 				email: null,
 				uid: null,
-				error: null,
 			}
 		},
 		updateUser(state, action: PayloadAction<UserUpdate>) {
@@ -39,14 +38,10 @@ const user = createSlice({
 				...action.payload,
 			}
 		},
-		userError(state, action: PayloadAction<string>) {
-			state.error = action.payload
-			return state
-		},
 	},
 })
 
-export const { recieveUser, userError, updateUser, clear } = user.actions
+export const { recieveUser, updateUser, clear } = user.actions
 
 export default user.reducer
 
@@ -71,7 +66,6 @@ export const login = (email: string, password: string): AppThunk => async (
 
 		dispatch(recieveUser(user))
 	} catch (error) {
-		dispatch(userError(error.message))
 	}
 }
 
@@ -108,7 +102,7 @@ export const signup = (
 			})
 		)
 	} catch (error) {
-		dispatch(userError(error.message))
+		
 	}
 }
 

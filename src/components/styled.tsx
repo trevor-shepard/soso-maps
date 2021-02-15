@@ -193,3 +193,9 @@ export const ProfileImg = styled.img`
 	width: 40px;
 	border-radius: 50%;
 `
+export const ListSwitch = styled.div`
+font-family: Poppins;
+position: fixed;
+right: 10px;
+top: 10px
+`

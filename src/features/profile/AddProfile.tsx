@@ -90,9 +90,9 @@ const AddActivityModal: FunctionComponent<Props> = ({
 }
 
 const ProfilePhoto = styled(Image)`
-	object-fit: cover;
+	
 	height: 200px;
-	width: 200px;
+	
 	border-radius: 50%;
 	border: 2px solid black;
 `

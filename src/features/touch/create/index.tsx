@@ -6,7 +6,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { RootState } from 'store/rootReducer'
 import { useSelector } from 'react-redux'
 import BeatLoader from 'react-spinners/BeatLoader'
-import CreateCommunityMember from './community-member/create'
+import CreateCommunityMember from 'features/community-member/create'
 import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import { functions } from 'utils/firebase'
 
@@ -321,6 +321,6 @@ const ImgContainerWMargin = styled.div`
 const SizedImage = styled.img`
 	height: 300px;
 	width: auto;
-	object-fit: cover;
+	object-fit: scale-down;
 	border: 5px solid black;
 `

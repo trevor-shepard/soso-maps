@@ -77,7 +77,6 @@ export interface UserState {
 		lat: number
 		lng: number
 	}
-	error: string | null
 }
 
 export interface UserWithoutId {

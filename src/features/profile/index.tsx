@@ -50,7 +50,7 @@ const ProfileImage = styled.img`
 	height: 178px;
 	width: 178px;
 	border-radius: 100px;
-	object-fit: cover;
+	object-fit: scale-down;
 `
 const Username = styled.div`
 	font-family: Amsi Pro Narw;

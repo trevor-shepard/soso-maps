@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import TextInput from 'components/inputs/text'
-import { PageTitle, FlexContainer } from 'components/styled'
+import { PageTitle, FlexContainer, ListSwitch } from 'components/styled'
 import { TAGS } from 'types'
 
 export default function TouchList() {
@@ -18,6 +18,7 @@ export default function TouchList() {
 	return (
 		<FlexContainer>
 			<PageTitle>Touches</PageTitle>
+			<ListSwitch onClick={()=> history.push('/community-member-list')}>Members</ListSwitch>
 			<TextInput
 				value={search}
 				handleInput={(e) => setSearch(e.target.value.toLocaleLowerCase())}
@@ -100,7 +101,7 @@ const List = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	width: 80%;
+	width: 90%;
 `
 
 const ListItem = styled.div`
@@ -113,3 +114,4 @@ const ListItem = styled.div`
 		color: #6eb8da;
 	}
 `
+
