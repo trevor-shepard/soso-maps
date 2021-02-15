@@ -15,7 +15,6 @@ export default function Map() {
 	const history = useHistory()
 	const dispatch = useDispatch()
 	// state
-	const timeRef = useRef(Date.now() - 1000)
 	const mapRef = useRef()
 	const [lastPress, setlastPress] = useState(0)
 	const [bounds, setBounds] = useState<number[] | null>(null)
@@ -24,7 +23,6 @@ export default function Map() {
 		lat: number
 		lng: number
 	}>(null)
-	const [pings, setPings] = useState(0)
 
 	const [selectedDayRange, setSelectedDayRange] = useState<DayRange>({
 		from: null,
@@ -95,7 +93,7 @@ export default function Map() {
 
 	// on mount effects
 	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
+		navigator.geolocation.watchPosition(
 			({ coords: { latitude, longitude } }) => {
 				dispatch(updateUserLocation({ lat: latitude, lng: longitude }))
 			}
@@ -119,24 +117,6 @@ export default function Map() {
 		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch])
-
-	// ping for new location every 30 seconds
-
-	useEffect(() => {
-		const now = Date.now()
-		const expected = timeRef.current + 10000
-		const delta = expected - now
-		const cleanUp = setTimeout(() => {
-			timeRef.current = now
-			setPings(pings + 1)
-			navigator.geolocation.getCurrentPosition(
-				({ coords: { latitude, longitude } }) => {
-					dispatch(updateUserLocation({ lat: latitude, lng: longitude }))
-				}
-			)
-		}, 10000 + delta)
-		return () => clearTimeout(cleanUp)
-	}, [pings, setPings, dispatch])
 
 	if (!startLocation) return <CircleLoader />
 	return (
