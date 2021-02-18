@@ -59,25 +59,31 @@ export default function Detail() {
 		await resolveTouch({
 			uid,
 			touchID: touch.id,
-			note: `${touch.notes}\n\nRESOLVED\n${resolveNote}`
-
+			note: `${touch.notes}\n\nRESOLVED\n${resolveNote}`,
 		})
 		setShowResolve(false)
 		setLoading(false)
-	
 	}
 
 	return (
 		<FlexContainer>
 			<Close onClick={history.goBack} src={CloseIcon} />
 
-			{
-				showResolve && <Modal hideModal={() => setShowResolve(false)}>
+			{showResolve && (
+				<Modal hideModal={() => setShowResolve(false)}>
 					<PageTitle> Resolve Touch</PageTitle>
-					<TextInput value={resolveNote} label={'notes'} handleInput={(e) => setResolveNote(e.target.value)} />
-					{loading ? <BeatLoader /> : <SubmitButton onClick={handleResolve}>Submit</SubmitButton>}
+					<TextInput
+						value={resolveNote}
+						label={'notes'}
+						handleInput={(e) => setResolveNote(e.target.value)}
+					/>
+					{loading ? (
+						<BeatLoader />
+					) : (
+						<SubmitButton onClick={handleResolve}>Submit</SubmitButton>
+					)}
 				</Modal>
-			}
+			)}
 
 			<PageTitle>
 				<Tag>
@@ -129,9 +135,12 @@ export default function Detail() {
 			) : (
 				<Footer>
 					<SubmitButton onClick={copyNote}>Copy Note</SubmitButton>
-					{touch.resolved === '' && <SubmitButton onClick={() => setShowResolve(true)}>Resolve</SubmitButton>}
+					{touch.resolved === '' && (
+						<SubmitButton onClick={() => setShowResolve(true)}>
+							Resolve
+						</SubmitButton>
+					)}
 				</Footer>
-				
 			)}
 		</FlexContainer>
 	)
@@ -152,9 +161,8 @@ const Photo = styled(Image)`
 `
 
 const ProfilePhoto = styled(Image)`
-	
 	height: 200px;
-	
+
 	border-radius: 50%;
 	border: 2px solid black;
 `
@@ -189,5 +197,4 @@ const Footer = styled.div`
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
-
 `

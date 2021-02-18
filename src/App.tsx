@@ -12,6 +12,7 @@ import CreateTouch from 'features/touch/create'
 import DetailTouch from 'features/touch/detail'
 import DetailList from 'features/touch/list'
 import CommunityMemberList from 'features/community-member/list'
+import CommunityMemberDetail from 'features/community-member/detail'
 import Profile from 'features/profile'
 import store from 'store'
 import { AuthRoute, ProtectedRoute } from 'utils/routeUtils'
@@ -41,6 +42,11 @@ function App() {
 								path="/touch-list"
 								exact={true}
 								component={DetailList}
+							/>
+							<ProtectedRoute
+								path="/community-member-detail/:id"
+								exact={true}
+								component={CommunityMemberDetail}
 							/>
 							<ProtectedRoute
 								path="/community-member-list"

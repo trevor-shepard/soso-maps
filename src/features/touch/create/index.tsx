@@ -93,7 +93,6 @@ export default function Create() {
 					uid: user && user.uid ? user.uid : 'unk',
 				})
 			} else {
-				
 				await createTouch({
 					lat,
 					lng,

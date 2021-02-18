@@ -10,7 +10,7 @@ import { GroupIcon } from 'assets/icons'
 export default function TouchList() {
 	const history = useHistory()
 	const [search, setSearch] = useState('')
-	
+
 	const communityMembers = useSelector(
 		(state: RootState) => state.communitymember
 	)
@@ -18,7 +18,9 @@ export default function TouchList() {
 	return (
 		<FlexContainer>
 			<PageTitle>Community Members</PageTitle>
-			<ListSwitch onClick={()=> history.push('/touch-list')}>Members</ListSwitch>
+			<ListSwitch onClick={() => history.push('/touch-list')}>
+				Members
+			</ListSwitch>
 			<TextInput
 				value={search}
 				handleInput={(e) => setSearch(e.target.value.toLocaleLowerCase())}
@@ -28,8 +30,13 @@ export default function TouchList() {
 			<List>
 				{Object.values(communityMembers)
 					.filter(({ notes, location, name }) => {
-                        if (notes.includes(search) || location?.includes(search) || name.includes(search)) return true
-                        return false
+						if (
+							notes.includes(search) ||
+							location?.includes(search) ||
+							name.includes(search)
+						)
+							return true
+						return false
 					})
 					.sort((a, b) => {
 						return a.name < b.name ? 1 : -1
@@ -38,9 +45,14 @@ export default function TouchList() {
 						return (
 							<ListItem
 								key={`touch-${id}`}
-								
+								onClick={() => history.push(`/community-member-detail/${id}`)}
 							>
-								{photo ? <SearchListItemPhoto src={photo} /> : <SearchListItemPhoto src={GroupIcon} />} {name}
+								{photo ? (
+									<SearchListItemPhoto src={photo} />
+								) : (
+									<SearchListItemPhoto src={GroupIcon} />
+								)}{' '}
+								{name}
 							</ListItem>
 						)
 					})}{' '}
@@ -68,10 +80,9 @@ const ListItem = styled.div`
 `
 
 const SearchListItemPhoto = styled.img`
-    height: 30px;
-    width: 30px;
-    border: 2px solid black;
-    border-radius: 50%;
-    object-fit: scale-down;
-
+	height: 30px;
+	width: 30px;
+	border: 2px solid black;
+	border-radius: 50%;
+	object-fit: scale-down;
 `

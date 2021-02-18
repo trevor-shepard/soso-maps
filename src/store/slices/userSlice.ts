@@ -10,7 +10,6 @@ const initialState: UserState = {
 	username: null,
 	email: null,
 	uid: null,
-	
 }
 
 const user = createSlice({
@@ -65,8 +64,7 @@ export const login = (email: string, password: string): AppThunk => async (
 			.then((doc) => doc.data())) as User
 
 		dispatch(recieveUser(user))
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export const signup = (
@@ -101,9 +99,7 @@ export const signup = (
 				},
 			})
 		)
-	} catch (error) {
-		
-	}
+	} catch (error) {}
 }
 
 export const addUserPhoto = (photo: string): AppThunk => async (

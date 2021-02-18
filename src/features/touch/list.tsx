@@ -18,7 +18,9 @@ export default function TouchList() {
 	return (
 		<FlexContainer>
 			<PageTitle>Touches</PageTitle>
-			<ListSwitch onClick={()=> history.push('/community-member-list')}>Members</ListSwitch>
+			<ListSwitch onClick={() => history.push('/community-member-list')}>
+				Members
+			</ListSwitch>
 			<TextInput
 				value={search}
 				handleInput={(e) => setSearch(e.target.value.toLocaleLowerCase())}
@@ -88,10 +90,10 @@ export default function TouchList() {
 									day: 'numeric',
 									month: 'numeric',
 									year: 'numeric',
-								})}{' '}
+								})}
 							</ListItem>
 						)
-					})}{' '}
+					})}
 			</List>
 		</FlexContainer>
 	)
@@ -114,4 +116,3 @@ const ListItem = styled.div`
 		color: #6eb8da;
 	}
 `
-

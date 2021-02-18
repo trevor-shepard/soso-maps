@@ -71,7 +71,7 @@ export const createTouch = async ({
 }: CreateTouchProps) => {
 	try {
 		const ref = await db.collection('touches').doc()
-		
+
 		const touch: Touch = {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),
@@ -99,16 +99,23 @@ export const createTouch = async ({
 			})
 		}
 	} catch (error) {
-		
 		console.log('error creating touch', error)
 	}
 }
 
-export const resolveTouch = async ({ uid, touchID, note}: {uid: string, touchID: string, note: string})=> {
+export const resolveTouch = async ({
+	uid,
+	touchID,
+	note,
+}: {
+	uid: string
+	touchID: string
+	note: string
+}) => {
 	try {
 		await db.collection('touches').doc(touchID).update({
 			resolved: uid,
-			note
+			note,
 		})
 	} catch (error) {
 		console.log('error resolving touch', error)
