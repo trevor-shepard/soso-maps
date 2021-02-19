@@ -45,9 +45,11 @@ export default function Detail() {
 		setLoading(true)
 		try {
 			navigator.clipboard.writeText(
-				`${TAGS_DISPLAY[tag] === 'request' ? 'SHOPPER' : TAGS_DISPLAY[tag]}${
+				`${TAGS_DISPLAY[tag] === 'REQUEST ' ? 'SHOPPER' : TAGS_DISPLAY[tag]}${
 					cMember && ` ${cMember.name}`
-				}\n${notes}`
+				}\n${
+					location && `${location}\n`
+		}${notes}`
 			)
 		} catch (error) {}
 

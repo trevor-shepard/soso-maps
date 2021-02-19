@@ -150,15 +150,15 @@ export const TagsContainer = styled.div`
 `
 
 export const Tag = styled.div<{ selected: boolean }>`
-	border: ${({ selected }) =>
-		selected ? '4px solid#6eb8da' : '2px solid #666666 '};
+	border: 2px solid #666666;
 	border-radius: 5px;
 	padding: 4px;
 	margin-top: 10px;
 	margin-left: 5px;
 	margin-right: 5px;
-	color: ${({ selected }) => (selected ? '#000000' : '#666666')};
-	font-weight: ${({ selected }) => (selected ? 'bold' : '400')};
+	color: ${({ selected }) => (selected ? '#000000' : '#fffff')};
+	background-color: ${({ selected }) => (selected ? '#fff' : '#666666'  )};
+	
 	height: 25px;
 `
 
@@ -198,4 +198,30 @@ export const ListSwitch = styled.div`
 	position: fixed;
 	right: 10px;
 	top: 10px;
+`
+
+export const ItemList = styled.div`
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-top: 2px solid black;
+	overflow: scroll;
+	overflow-x: hidden;
+`
+
+export const ListItem = styled.div`
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	border-bottom: 2px solid black;
+	border-radius: 3px;
+	&:active {
+		box-shadow: 1px 0px 33px 43px rgba(133, 127, 127, 0.75) inset;
+	}
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 `

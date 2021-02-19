@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import TextInput from 'components/inputs/text'
-import { PageTitle, FlexContainer, SubmitButton } from 'components/styled'
+import { PageTitle, FlexContainer, SubmitButton, ListItem, ItemList, ListSwitch } from 'components/styled'
 import { createItem, updateAmount } from 'store/slices/inventorySlice'
 export default function Inventory() {
 	const [search, setSearch] = useState('')
@@ -17,7 +17,7 @@ export default function Inventory() {
 	const [loading, setLoading] = useState(false)
 
 	const items = Object.values(inventory).map(({ name, ideal, current }) => (
-		<Item
+		<ListItem
 			key={`inventory-item-${name}`}
 			onClick={(e) => {
 				e.stopPropagation()
@@ -31,14 +31,24 @@ export default function Inventory() {
 				<Current enough={current >= ideal}>{current}</Current>/
 				<Ideal>{ideal}</Ideal>
 			</Amount>
-		</Item>
+		</ListItem>
 	))
 
 	items.push(
-		<Item onClick={() => setCreateToggle(true)}>
+		<ListItem onClick={() => setCreateToggle(true)}>
 			<Name>Add Item</Name>
-		</Item>
+		</ListItem>
 	)
+
+	const copyShoppersNote = () => {
+		let note = 'SHOPPER'
+		for (const {current, ideal, name} of Object.values(inventory)) {
+			if (current < ideal) {
+				note = `${note}\n${name}: ${ideal - current}`
+			}
+		}
+		return navigator.clipboard.writeText(note)
+	}
 
 	return (
 		<FlexContainer
@@ -47,6 +57,9 @@ export default function Inventory() {
 				if (createToggle) setCreateToggle(false)
 			}}
 		>
+			<ListSwitch onClick={copyShoppersNote}>
+				Copy Shopper Note
+			</ListSwitch>
 			<PageTitle>Inventory</PageTitle>
 			<TextInput
 				label={'search'}
@@ -69,9 +82,9 @@ export default function Inventory() {
 						onClick={async () => {
 							setLoading(true)
 							await updateAmount({ item, current: amount })
-
+							
 							setLoading(false)
-							setCreateToggle(false)
+							setItem(null)
 						}}
 					>
 						Update Amount
@@ -105,7 +118,6 @@ export default function Inventory() {
 						onClick={async () => {
 							setLoading(true)
 							await createItem({ name, ideal, current })
-
 							setLoading(false)
 							setCreateToggle(false)
 						}}
@@ -117,29 +129,6 @@ export default function Inventory() {
 		</FlexContainer>
 	)
 }
-
-const ItemList = styled.div`
-	width: 100%;
-	height: auto;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-`
-
-const Item = styled.div`
-	width: 100%;
-	height: auto;
-	padding: 10px;
-	border: 2px solid black;
-	border-radius: 3px;
-	&:active {
-		box-shadow: 1px 0px 33px 43px rgba(133, 127, 127, 0.75) inset;
-	}
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-`
 
 const Name = styled.div`
 	font-family: Poppins;
@@ -191,3 +180,4 @@ const Modal = styled.div`
 	justify-content: space-around;
 	align-items: center;
 `
+

@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
-import styled from '@emotion/styled'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import TextInput from 'components/inputs/text'
-import { PageTitle, FlexContainer, ListSwitch } from 'components/styled'
+import { PageTitle, FlexContainer, ListSwitch, ItemList, ListItem} from 'components/styled'
 import { TAGS } from 'types'
 
 export default function TouchList() {
@@ -27,7 +26,7 @@ export default function TouchList() {
 				label="search"
 				width="80%"
 			/>
-			<List>
+			<ItemList>
 				{Object.values(touches)
 					.filter(({ notes, location, tag, cMemeber }) => {
 						const searchTerms = search.split(' ')
@@ -94,25 +93,7 @@ export default function TouchList() {
 							</ListItem>
 						)
 					})}
-			</List>
+			</ItemList>
 		</FlexContainer>
 	)
 }
-
-const List = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	width: 90%;
-`
-
-const ListItem = styled.div`
-	border: 1px solid black;
-	border-radius: 2px;
-	margin-top: 10px;
-	padding: 4px;
-	cursor: pointer;
-	&:hover {
-		color: #6eb8da;
-	}
-`
