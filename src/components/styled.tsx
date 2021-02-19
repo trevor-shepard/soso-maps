@@ -157,8 +157,8 @@ export const Tag = styled.div<{ selected: boolean }>`
 	margin-left: 5px;
 	margin-right: 5px;
 	color: ${({ selected }) => (selected ? '#000000' : '#fffff')};
-	background-color: ${({ selected }) => (selected ? '#fff' : '#666666'  )};
-	
+	background-color: ${({ selected }) => (selected ? '#fff' : '#666666')};
+
 	height: 25px;
 `
 

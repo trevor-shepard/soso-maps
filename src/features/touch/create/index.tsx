@@ -12,7 +12,6 @@ import { functions } from 'utils/firebase'
 
 import TextAreaInput from 'components/inputs/textArea'
 import TextInput from 'components/inputs/text'
-
 import OMV from './omv'
 import Phone from './phone'
 import Medical from './medical'

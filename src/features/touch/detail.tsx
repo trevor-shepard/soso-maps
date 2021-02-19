@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import styled from '@emotion/styled'
 import { keyframes } from 'emotion'
 import { useSelector } from 'react-redux'
@@ -9,6 +9,8 @@ import { useParams, useHistory } from 'react-router-dom'
 import { CloseIcon, MarkerIcon } from 'assets/icons'
 import { resolveTouch } from 'store/slices/touchSlice'
 import Modal from 'components/modal'
+import { functions } from 'utils/firebase'
+
 import {
 	PageTitle,
 	PageSubTitle,
@@ -23,6 +25,7 @@ import { TAGS_DISPLAY } from 'types'
 import TextInput from 'components/inputs/text'
 
 export default function Detail() {
+	const ref = useRef<HTMLDivElement>(null);
 	const history = useHistory()
 
 	const { id } = useParams<{ id: string }>()
@@ -33,9 +36,33 @@ export default function Detail() {
 	const [resolveNote, setResolveNote] = useState('')
 	const touch = useSelector((state: RootState) => state.touch[id])
 	const cMembers = useSelector((state: RootState) => state.communitymember)
-	const uid = useSelector((state: RootState) => state.user.uid) as string
+	const uid = useSelector((state: RootState) => state.user.uid as string)
+	const latlng = useSelector(
+		(state: RootState) => state.user.latlng as { lat: number; lng: number }
+	)
+	const username = useSelector(
+		(state: RootState) => state.user.username as string
+	)
 
-	if (!touch || touch === undefined) history.goBack()
+	const [currentLocationAddress, setcurrentLocationAddress] = useState('')
+	if (!touch || touch === undefined || latlng === undefined) history.goBack()
+
+	const getAddress = useCallback(async () => {
+		const result = await functions.httpsCallable('getAddress')({
+			lat: latlng.lat,
+			lng: latlng.lng,
+		})
+		const { address } = result.data
+		setcurrentLocationAddress(address)
+	}, [latlng.lat, latlng.lng])
+
+	useEffect(() => {
+		getAddress()
+	}, [getAddress])
+
+	useEffect(() => {
+		if (ref.current) ref.current.scrollTo({top: 0, behavior: 'smooth'})
+	}, [showResolve])
 
 	const cMember = touch.cMemeber ? cMembers[touch.cMemeber] : false
 
@@ -47,9 +74,7 @@ export default function Detail() {
 			navigator.clipboard.writeText(
 				`${TAGS_DISPLAY[tag] === 'REQUEST ' ? 'SHOPPER' : TAGS_DISPLAY[tag]}${
 					cMember && ` ${cMember.name}`
-				}\n${
-					location && `${location}\n`
-		}${notes}`
+				}\n${location && `${location}\n`}${notes}`
 			)
 		} catch (error) {}
 
@@ -67,13 +92,30 @@ export default function Detail() {
 		setLoading(false)
 	}
 
+	const handlePhoneGiven = async () => {
+		setLoading(true)
+		const response = await functions.httpsCallable('PhoneGiven')({
+			user: username,
+			community_member: cMember ? cMember.name : 'unk',
+			date: new Date(date).toLocaleString('en-US', {
+				day: 'numeric',
+				month: 'numeric',
+				year: 'numeric',
+			}),
+			location: currentLocationAddress,
+		})
+
+		console.log('response', response)
+		await handleResolve()
+	}
+
 	return (
-		<FlexContainer>
+		<FlexContainer ref={ref}>
 			<Close onClick={history.goBack} src={CloseIcon} />
 
-			{showResolve && (
+			{showResolve && ( tag === 'phone' ? (
 				<Modal hideModal={() => setShowResolve(false)}>
-					<PageTitle> Resolve Touch</PageTitle>
+					<PageTitle>Resolve Touch</PageTitle>
 					<TextInput
 						value={resolveNote}
 						label={'notes'}
@@ -85,7 +127,22 @@ export default function Detail() {
 						<SubmitButton onClick={handleResolve}>Submit</SubmitButton>
 					)}
 				</Modal>
-			)}
+			) : (
+				<Modal hideModal={() => setShowResolve(false)}>
+					<PageTitle>Record Phone Given</PageTitle>
+					<PageSubTitle>{currentLocationAddress}</PageSubTitle>
+					<TextInput
+						value={resolveNote}
+						label={'notes'}
+						handleInput={(e) => setResolveNote(e.target.value)}
+					/>
+					{loading ? (
+						<BeatLoader />
+					) : (
+						<SubmitButton onClick={handlePhoneGiven}>Submit</SubmitButton>
+					)}
+				</Modal>
+			))}
 
 			<PageTitle>
 				<Tag>

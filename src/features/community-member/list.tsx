@@ -4,7 +4,13 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import { useHistory } from 'react-router-dom'
 import TextInput from 'components/inputs/text'
-import { PageTitle, FlexContainer, ListSwitch, ItemList, ListItem } from 'components/styled'
+import {
+	PageTitle,
+	FlexContainer,
+	ListSwitch,
+	ItemList,
+	ListItem,
+} from 'components/styled'
 import { GroupIcon } from 'assets/icons'
 
 export default function TouchList() {

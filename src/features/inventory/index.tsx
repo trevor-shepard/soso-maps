@@ -3,7 +3,14 @@ import styled from '@emotion/styled'
 import { useSelector } from 'react-redux'
 import { RootState } from 'store/rootReducer'
 import TextInput from 'components/inputs/text'
-import { PageTitle, FlexContainer, SubmitButton, ListItem, ItemList, ListSwitch } from 'components/styled'
+import {
+	PageTitle,
+	FlexContainer,
+	SubmitButton,
+	ListItem,
+	ItemList,
+	ListSwitch,
+} from 'components/styled'
 import { createItem, updateAmount } from 'store/slices/inventorySlice'
 export default function Inventory() {
 	const [search, setSearch] = useState('')
@@ -42,7 +49,7 @@ export default function Inventory() {
 
 	const copyShoppersNote = () => {
 		let note = 'SHOPPER'
-		for (const {current, ideal, name} of Object.values(inventory)) {
+		for (const { current, ideal, name } of Object.values(inventory)) {
 			if (current < ideal) {
 				note = `${note}\n${name}: ${ideal - current}`
 			}
@@ -57,9 +64,7 @@ export default function Inventory() {
 				if (createToggle) setCreateToggle(false)
 			}}
 		>
-			<ListSwitch onClick={copyShoppersNote}>
-				Copy Shopper Note
-			</ListSwitch>
+			<ListSwitch onClick={copyShoppersNote}>Copy Shopper Note</ListSwitch>
 			<PageTitle>Inventory</PageTitle>
 			<TextInput
 				label={'search'}
@@ -82,7 +87,7 @@ export default function Inventory() {
 						onClick={async () => {
 							setLoading(true)
 							await updateAmount({ item, current: amount })
-							
+
 							setLoading(false)
 							setItem(null)
 						}}
@@ -180,4 +185,3 @@ const Modal = styled.div`
 	justify-content: space-around;
 	align-items: center;
 `
-
