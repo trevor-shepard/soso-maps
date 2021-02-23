@@ -7,7 +7,7 @@ import {
 } from 'store/slices/inventorySlice'
 import {
 	subscribeToCommunityMembers,
-	cMemberClear,
+	communityMemberClear,
 } from 'store/slices/communitymemberSlice'
 import { subscribeToUsers, usersClear } from 'store/slices/usersSlice'
 
@@ -22,7 +22,7 @@ export default function Subscribe() {
 		return () => {
 			touchClear()
 			inventoryClear()
-			cMemberClear()
+			communityMemberClear()
 			usersClear()
 		}
 	}, [dispatch])

@@ -25,7 +25,7 @@ import { TAGS_DISPLAY } from 'types'
 import TextInput from 'components/inputs/text'
 
 export default function Detail() {
-	const ref = useRef<HTMLDivElement>(null);
+	const ref = useRef<HTMLDivElement>(null)
 	const history = useHistory()
 
 	const { id } = useParams<{ id: string }>()
@@ -35,7 +35,7 @@ export default function Detail() {
 	const [showResolve, setShowResolve] = useState(false)
 	const [resolveNote, setResolveNote] = useState('')
 	const touch = useSelector((state: RootState) => state.touch[id])
-	const cMembers = useSelector((state: RootState) => state.communitymember)
+	const communityMembers = useSelector((state: RootState) => state.communitymember)
 	const uid = useSelector((state: RootState) => state.user.uid as string)
 	const latlng = useSelector(
 		(state: RootState) => state.user.latlng as { lat: number; lng: number }
@@ -61,10 +61,10 @@ export default function Detail() {
 	}, [getAddress])
 
 	useEffect(() => {
-		if (ref.current) ref.current.scrollTo({top: 0, behavior: 'smooth'})
+		if (ref.current) ref.current.scrollTo({ top: 0, behavior: 'smooth' })
 	}, [showResolve])
 
-	const cMember = touch.cMemeber ? cMembers[touch.cMemeber] : false
+	const communityMember = touch.cMemeber ? communityMembers[touch.cMemeber] : false
 
 	const { photo, location, tag, notes, resolved, lat, lng, date } = touch
 
@@ -73,7 +73,7 @@ export default function Detail() {
 		try {
 			navigator.clipboard.writeText(
 				`${TAGS_DISPLAY[tag] === 'REQUEST ' ? 'SHOPPER' : TAGS_DISPLAY[tag]}${
-					cMember && ` ${cMember.name}`
+					communityMember && ` ${communityMember.name}`
 				}\n${location && `${location}\n`}${notes}`
 			)
 		} catch (error) {}
@@ -96,7 +96,7 @@ export default function Detail() {
 		setLoading(true)
 		const response = await functions.httpsCallable('PhoneGiven')({
 			user: username,
-			community_member: cMember ? cMember.name : 'unk',
+			community_member: communityMember ? communityMember.name : 'unk',
 			date: new Date(date).toLocaleString('en-US', {
 				day: 'numeric',
 				month: 'numeric',
@@ -108,41 +108,42 @@ export default function Detail() {
 		console.log('response', response)
 		await handleResolve()
 	}
-
+	console.log('tag', tag === 'phone')
 	return (
 		<FlexContainer ref={ref}>
 			<Close onClick={history.goBack} src={CloseIcon} />
 
-			{showResolve && ( tag === 'phone' ? (
-				<Modal hideModal={() => setShowResolve(false)}>
-					<PageTitle>Resolve Touch</PageTitle>
-					<TextInput
-						value={resolveNote}
-						label={'notes'}
-						handleInput={(e) => setResolveNote(e.target.value)}
-					/>
-					{loading ? (
-						<BeatLoader />
-					) : (
-						<SubmitButton onClick={handleResolve}>Submit</SubmitButton>
-					)}
-				</Modal>
-			) : (
-				<Modal hideModal={() => setShowResolve(false)}>
-					<PageTitle>Record Phone Given</PageTitle>
-					<PageSubTitle>{currentLocationAddress}</PageSubTitle>
-					<TextInput
-						value={resolveNote}
-						label={'notes'}
-						handleInput={(e) => setResolveNote(e.target.value)}
-					/>
-					{loading ? (
-						<BeatLoader />
-					) : (
-						<SubmitButton onClick={handlePhoneGiven}>Submit</SubmitButton>
-					)}
-				</Modal>
-			))}
+			{showResolve &&
+				(tag === 'phone' ? (
+					<Modal hideModal={() => setShowResolve(false)}>
+						<PageTitle>Record Phone Given</PageTitle>
+						<PageSubTitle>{currentLocationAddress}</PageSubTitle>
+						<TextInput
+							value={resolveNote}
+							label={'notes'}
+							handleInput={(e) => setResolveNote(e.target.value)}
+						/>
+						{loading ? (
+							<BeatLoader />
+						) : (
+							<SubmitButton onClick={handlePhoneGiven}>Submit</SubmitButton>
+						)}
+					</Modal>
+				) : (
+					<Modal hideModal={() => setShowResolve(false)}>
+						<PageTitle>Resolve Touch</PageTitle>
+						<TextInput
+							value={resolveNote}
+							label={'notes'}
+							handleInput={(e) => setResolveNote(e.target.value)}
+						/>
+						{loading ? (
+							<BeatLoader />
+						) : (
+							<SubmitButton onClick={handleResolve}>Submit</SubmitButton>
+						)}
+					</Modal>
+				))}
 
 			<PageTitle>
 				<Tag>
@@ -156,8 +157,8 @@ export default function Detail() {
 				</Tag>
 			</PageTitle>
 
-			{cMember && cMember.photo && <ProfilePhoto src={cMember.photo} />}
-			{cMember && cMember.name && <PageSubTitle>{cMember.name}</PageSubTitle>}
+			{communityMember && communityMember.photo && <ProfilePhoto src={communityMember.photo} />}
+			{communityMember && communityMember.name && <PageSubTitle>{communityMember.name}</PageSubTitle>}
 
 			<MapsContainer>
 				<GoogleMapReact

@@ -54,7 +54,7 @@ interface CreateTouchProps {
 	location: string
 	date: number
 	photo: string | null
-	cMember: string | null
+	communityMember: string | null
 	uid: string
 }
 
@@ -66,7 +66,7 @@ export const createTouch = async ({
 	notes,
 	tag,
 	photo,
-	cMember,
+	communityMember,
 	uid,
 }: CreateTouchProps) => {
 	try {
@@ -75,7 +75,7 @@ export const createTouch = async ({
 		const touch: Touch = {
 			lat: parseFloat(lat),
 			lng: parseFloat(lng),
-			cMemeber: cMember ? cMember : null,
+			cMemeber: communityMember ? communityMember : null,
 			location,
 			date,
 			notes,
@@ -92,9 +92,9 @@ export const createTouch = async ({
 
 		await ref.set(touch)
 
-		if (cMember) {
+		if (communityMember) {
 			functions.httpsCallable('addTouchToMember')({
-				memberID: cMember,
+				memberID: communityMember,
 				touchID: ref.id,
 			})
 		}

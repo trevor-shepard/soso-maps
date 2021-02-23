@@ -5,7 +5,10 @@ import { AppThunk } from '..'
 import firebase, { auth, db } from 'utils/firebase'
 
 import { UserState, User, UserWithoutId, UserUpdate } from 'types'
-
+import { communityMemberClear } from "./communitymemberSlice";
+import { inventoryClear } from "./inventorySlice";
+import { touchClear } from "./touchSlice";
+import { usersClear } from "./usersSlice";
 const initialState: UserState = {
 	username: null,
 	email: null,
@@ -129,5 +132,10 @@ export const updateUserLocation = (latlng: {
 }
 
 export const logout = (): AppThunk => async (dispatch) => {
+
 	dispatch(clear())
+	dispatch(communityMemberClear())
+	dispatch(inventoryClear())
+	dispatch(touchClear())
+	dispatch(usersClear())
 }

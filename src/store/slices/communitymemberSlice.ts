@@ -11,16 +11,16 @@ const communitymember = createSlice({
 	initialState,
 	reducers: {
 		recieveCommunityMember(state, action: PayloadAction<CommunityMember>) {
-			const cMember = action.payload
+			const communityMember = action.payload
 			return {
-				[cMember.id]: cMember,
+				[communityMember.id]: communityMember,
 				...state,
 			}
 		},
 		recieveCommunityMembers(_, action: PayloadAction<CommunityMemberState>) {
 			return action.payload
 		},
-		cMemberClear() {
+		communityMemberClear() {
 			return {}
 		},
 	},
@@ -29,7 +29,7 @@ const communitymember = createSlice({
 export const {
 	recieveCommunityMember,
 	recieveCommunityMembers,
-	cMemberClear,
+	communityMemberClear,
 } = communitymember.actions
 
 export default communitymember.reducer
@@ -38,13 +38,13 @@ export const subscribeToCommunityMembers = (dispatch: Dispatch<any>) => {
 	const unsubscribe = db
 		.collection('community-members')
 		.onSnapshot((querySnapshot) => {
-			const cMembers: { [id: string]: CommunityMember } = {}
+			const communityMembers: { [id: string]: CommunityMember } = {}
 
 			querySnapshot.forEach((doc) => {
-				const cMember = doc.data() as CommunityMember
-				cMembers[cMember.id] = cMember
+				const communityMember = doc.data() as CommunityMember
+				communityMembers[communityMember.id] = communityMember
 			})
-			dispatch(recieveCommunityMembers(cMembers))
+			dispatch(recieveCommunityMembers(communityMembers))
 		})
 
 	return unsubscribe
@@ -60,7 +60,7 @@ export const createCommunityMember = async (
 	try {
 		const ref = await db.collection('community-members').doc()
 
-		const cMember: CommunityMember = {
+		const communityMember: CommunityMember = {
 			name,
 			photo: photo ? photo : null,
 			notes,
@@ -71,7 +71,7 @@ export const createCommunityMember = async (
 			touches: [],
 		}
 
-		await ref.set(cMember)
+		await ref.set(communityMember)
 
 		return ref.id
 	} catch (error) {}

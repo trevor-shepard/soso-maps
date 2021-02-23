@@ -48,7 +48,7 @@ export default function Create() {
 	const [loading, setLoading] = useState(false)
 	const [notes, setNotes] = useState('')
 	const [location, setLocation] = useState('')
-	const [cMember, setCMember] = useState<CommunityMember | null>(null)
+	const [communityMember, setCMember] = useState<CommunityMember | null>(null)
 	const [newMemberID, setNewMemberIDMember] = useState<string | null>(null)
 	const [selectedTag, setSelectedTag] = useState<TagType>('misc')
 	const [error, setError] = useState('')
@@ -88,7 +88,7 @@ export default function Create() {
 					location,
 					date: Date.now(),
 					photo: downloadURL,
-					cMember: cMember ? cMember.id : null,
+					communityMember: communityMember ? communityMember.id : null,
 					uid: user && user.uid ? user.uid : 'unk',
 				})
 			} else {
@@ -100,7 +100,7 @@ export default function Create() {
 					location,
 					date: Date.now(),
 					photo: null,
-					cMember: cMember ? cMember.id : null,
+					communityMember: communityMember ? communityMember.id : null,
 					uid: user && user.uid ? user.uid : 'unk',
 				})
 			}
@@ -169,16 +169,16 @@ export default function Create() {
 
 			{error !== '' && <Error>{error}</Error>}
 
-			{cMember ? (
+			{communityMember ? (
 				<SelectedMember>
-					{cMember.photo ? (
-						<ProfileImg src={cMember.photo} />
+					{communityMember.photo ? (
+						<ProfileImg src={communityMember.photo} />
 					) : (
 						<ProfileImg src={GroupIcon} />
 					)}
 					<DetailsContainer>
-						<CmemberName>{cMember.name}</CmemberName>
-						{cMember && <CmemberLocation>{cMember.location}</CmemberLocation>}
+						<CmemberName>{communityMember.name}</CmemberName>
+						{communityMember && <CmemberLocation>{communityMember.location}</CmemberLocation>}
 					</DetailsContainer>
 				</SelectedMember>
 			) : (
