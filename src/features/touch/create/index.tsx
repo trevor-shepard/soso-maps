@@ -127,12 +127,16 @@ export default function Create() {
 	// callbacks
 	if (!lat || !lng) history.push('/')
 	const getAddress = useCallback(async () => {
-		const result = await functions.httpsCallable('getAddress')({
-			lat,
-			lng,
-		})
-		const { address } = result.data
-		setLocation(address)
+		try {
+			const result = await functions.httpsCallable('getAddress')({
+				lat,
+				lng,
+			})
+			const { address } = result.data
+			setLocation(address)
+		} catch (error) {
+			console.log('error getting addess', error)
+		}
 	}, [lat, lng])
 
 	// hooks

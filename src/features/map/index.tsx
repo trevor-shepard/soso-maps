@@ -118,6 +118,7 @@ export default function Map() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [dispatch])
 
+
 	if (!startLocation) return <CircleLoader />
 	return (
 		<Container>

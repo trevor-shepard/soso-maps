@@ -48,12 +48,17 @@ export default function Detail() {
 	if (!touch || touch === undefined || latlng === undefined) history.goBack()
 
 	const getAddress = useCallback(async () => {
-		const result = await functions.httpsCallable('getAddress')({
-			lat: latlng.lat,
-			lng: latlng.lng,
-		})
-		const { address } = result.data
-		setcurrentLocationAddress(address)
+		try {
+			const result = await functions.httpsCallable('getAddress')({
+				lat: latlng.lat,
+				lng: latlng.lng,
+			})
+			const { address } = result.data
+			setcurrentLocationAddress(address)
+		} catch (error) {
+			console.log('error getting address', error)
+		}
+		
 	}, [latlng.lat, latlng.lng])
 
 	useEffect(() => {

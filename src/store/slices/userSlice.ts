@@ -125,6 +125,7 @@ export const updateUserLocation = (latlng: {
 }): AppThunk => async (dispatch, getState) => {
 	const state = getState()
 	const uid = state.user.uid as string
+
 	await db.collection('users').doc(uid).update({
 		latlng,
 	})

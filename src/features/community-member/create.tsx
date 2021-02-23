@@ -15,10 +15,8 @@ import {
 	PageTitleContainer,
 	SubmitButton,
 	FlexContainer,
-	Image,
 	FileInput,
 	FileInputLabel,
-	ImgContainer,
 	Error,
 	Close,
 	Marker,
@@ -106,12 +104,17 @@ export default function Create(props: {
 
 	// hooks
 	const getAddress = async (lat: number, lng: number) => {
-		const result = await functions.httpsCallable('getAddress')({
-			lat,
-			lng,
-		})
-		const { address } = result.data
-		setLocation(address)
+		try {
+			const result = await functions.httpsCallable('getAddress')({
+				lat,
+				lng,
+			})
+			const { address } = result.data
+			setLocation(address)
+		} catch (error) {
+			console.log('error getting addess', error)
+		}
+		
 	}
 
 	return (
@@ -128,8 +131,9 @@ export default function Create(props: {
 
 			{error !== '' && <Error>{error}</Error>}
 
-			<ImgContainer height={'20%'}>
-				{fileAsImage ? (
+			
+
+			{fileAsImage ? (
 					<Image src={fileAsImage} />
 				) : (
 					<FileInputLabel>
@@ -137,8 +141,6 @@ export default function Create(props: {
 						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
 					</FileInputLabel>
 				)}
-			</ImgContainer>
-
 			<MapsContainer>
 				<GoogleMapReact
 					onClick={async (values) => {
@@ -195,4 +197,10 @@ const Container = styled(FlexContainer)`
 const MapsContainer = styled.div`
 	height: 30%;
 	width: 80%;
+`
+
+export const Image = styled.img`
+	height: 200px;
+	width: auto;
+	object-fit: cover;
 `
