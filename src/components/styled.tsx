@@ -73,6 +73,7 @@ export const FlexContainer = styled.div`
 export const Image = styled.img`
 	height: 100%;
 	width: auto;
+	object-fit: cover;
 `
 
 export const FileInput = styled.input`

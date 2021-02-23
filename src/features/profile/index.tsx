@@ -19,7 +19,6 @@ const Profile: FunctionComponent = () => {
 					hideModal={() => setEditPhoto(false)}
 				/>
 			)}
-			<Username>{username}</Username>
 			<ProfileImageContainer onClick={() => setEditPhoto(true)}>
 				{photo ? (
 					<ProfileImage src={photo} />
@@ -27,19 +26,18 @@ const Profile: FunctionComponent = () => {
 					<ProfileImage src={GroupIcon} />
 				)}
 			</ProfileImageContainer>
+			<Username>{username}</Username>
 		</Container>
 	)
 }
 
 const Container = styled.div`
-	height: calc(100vh - 60px);
-	overflow: scroll;
-	display: flex;
-	flex-direction: column;
-	padding-top: 10%;
+	height: calc(${() => window.innerHeight}px - 60px);
+	width: 100%;
+	position: relative;
 `
+
 const ProfileImageContainer = styled.div`
-	position: absolute;
 	margin-top: 10%;
 	width: 100%;
 	overflow: hidden;
