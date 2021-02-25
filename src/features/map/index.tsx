@@ -186,9 +186,9 @@ export default function Map() {
 						setlastPress(Date.now())
 					}
 				}}
-				style={{
-					playsInline: true,
-				}}
+				// style={{
+				// 	playsInline: true,
+				// }}
 				bootstrapURLKeys={{
 					key: process.env.REACT_APP_FIREBASE_API_KEY as string,
 				}}

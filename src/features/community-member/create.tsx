@@ -42,7 +42,7 @@ export default function Create(props: {
 	const [lastPress, setlastPress] = useState(0)
 	const [name, setName] = useState(props.name)
 	const [notes, setNotes] = useState('')
-	const [latLng, setLatLng] = useState<[number, number] | null>(null)
+	const [latLng, setLatLng] = useState<[number, number] | null>([lat, lng])
 	const [location, setLocation] = useState<string | null>(null)
 	const [Currentlat, setCurrentLat] = useState(29.94639419721249)
 	const [Currentlng, setCurrentLng] = useState(-90.07472171802686)
@@ -51,6 +51,8 @@ export default function Create(props: {
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
 	const [loading, setLoading] = useState(false)
 	// methods
+	
+	
 	const handleSubmit = async () => {
 		setLoading(true)
 		try {
@@ -162,6 +164,9 @@ export default function Create(props: {
 						lng: Currentlng,
 					}}
 					defaultZoom={15}
+					style={{
+						playsInline: true,
+					}}
 				>
 					{latLng && (
 						<Marker lat={latLng[0]} lng={latLng[1]}>
@@ -192,10 +197,11 @@ export default function Create(props: {
 
 const Container = styled(FlexContainer)`
 	justify-content: space-between;
+	overflow: scroll;
 `
 
 const MapsContainer = styled.div`
-	height: 30%;
+	height: 300px;
 	width: 80%;
 `
 
