@@ -20,6 +20,7 @@ import Login from 'features/login'
 export const persistor = persistStore(store)
 
 function App() {
+
 	return (
 		<div className="App">
 			<Provider store={store}>

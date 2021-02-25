@@ -11,7 +11,10 @@ import Marker from 'components/marker'
 import { updateUserLocation } from 'store/slices/userSlice'
 import CircleLoader from 'react-spinners/CircleLoader'
 
+
+
 export default function Map() {
+
 	const history = useHistory()
 	const dispatch = useDispatch()
 	// state
@@ -186,9 +189,9 @@ export default function Map() {
 						setlastPress(Date.now())
 					}
 				}}
-				// style={{
-				// 	playsInline: true,
-				// }}
+				style={{
+					playsInline: true,
+				}}
 				bootstrapURLKeys={{
 					key: process.env.REACT_APP_FIREBASE_API_KEY as string,
 				}}
