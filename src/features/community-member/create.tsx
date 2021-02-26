@@ -143,7 +143,7 @@ export default function Create(props: {
 						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
 					</FileInputLabel>
 				)}
-			<MapsContainer>
+			{/* <MapsContainer>
 				<GoogleMapReact
 					onClick={async (values) => {
 						const { lat, lng } = values
@@ -164,9 +164,7 @@ export default function Create(props: {
 						lng: Currentlng,
 					}}
 					defaultZoom={15}
-					style={{
-						playsInline: true,
-					}}
+				
 				>
 					{latLng && (
 						<Marker lat={latLng[0]} lng={latLng[1]}>
@@ -177,7 +175,7 @@ export default function Create(props: {
 						</Marker>
 					)}
 				</GoogleMapReact>
-			</MapsContainer>
+			</MapsContainer> */}
 
 			<TextAreaInput
 				value={notes}
@@ -195,8 +193,14 @@ export default function Create(props: {
 	)
 }
 
-const Container = styled(FlexContainer)`
-	justify-content: space-between;
+const Container = styled.div`
+	height: calc(${() => window.innerHeight}px - 60px);
+	width: auto;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+	overflow: scroll;
 	overflow: scroll;
 `
 
