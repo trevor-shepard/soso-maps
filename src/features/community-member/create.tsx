@@ -1,12 +1,11 @@
 import React, { useState, FormEvent, useEffect } from 'react'
 import styled from '@emotion/styled'
-import GoogleMapReact from 'google-map-react'
 import { createCommunityMember } from 'store/slices/communitymemberSlice'
 import { handleFireBaseImageUpload } from 'utils/firebase'
 import { functions } from 'utils/firebase'
 import TextInput from 'components/inputs/text'
 import TextAreaInput from 'components/inputs/textArea'
-import { AddImageIcon, CloseIcon, MarkerIcon } from 'assets/icons'
+import { AddImageIcon, CloseIcon } from 'assets/icons'
 import { RootState } from 'store/rootReducer'
 import { useSelector } from 'react-redux'
 import BeatLoader from 'react-spinners/BeatLoader'
@@ -14,15 +13,11 @@ import {
 	PageTitle,
 	PageTitleContainer,
 	SubmitButton,
-	FlexContainer,
 	FileInput,
 	FileInputLabel,
 	Error,
 	Close,
-	Marker,
-	MapMarkerIcon,
-	MarkerTitle,
-	MarkerTitleHeader,
+	PageSubTitle,
 } from 'components/styled'
 
 export default function Create(props: {
@@ -39,13 +34,9 @@ export default function Create(props: {
 			  }
 	) as { lat: number; lng: number }
 
-	const [lastPress, setlastPress] = useState(0)
 	const [name, setName] = useState(props.name)
 	const [notes, setNotes] = useState('')
-	const [latLng, setLatLng] = useState<[number, number] | null>([lat, lng])
 	const [location, setLocation] = useState<string | null>(null)
-	const [Currentlat, setCurrentLat] = useState(29.94639419721249)
-	const [Currentlng, setCurrentLng] = useState(-90.07472171802686)
 	const [error, setError] = useState('')
 	const [imageAsFile, setImageAsFile] = useState<null | File>(null)
 	const [fileAsImage, setFileAsImage] = useState<null | string>(null)
@@ -85,15 +76,6 @@ export default function Create(props: {
 		setLoading(false)
 	}
 
-	useEffect(() => {
-		navigator.geolocation.getCurrentPosition(
-			({ coords: { latitude, longitude } }) => {
-				setCurrentLat(latitude)
-				setCurrentLng(longitude)
-			}
-		)
-	}, [])
-
 	const handleImageAsFile = (event: FormEvent) => {
 		const target = event.target as HTMLInputElement
 		const files = target.files
@@ -119,12 +101,24 @@ export default function Create(props: {
 		
 	}
 
+	useEffect(() => {
+		navigator.geolocation.watchPosition(
+			({ coords: { latitude, longitude } }) => {
+				getAddress(latitude, longitude)
+			}
+		)
+		
+		
+	}, [])
+
 	return (
 		<Container>
 			<Close onClick={props.close} src={CloseIcon} />
 			<PageTitleContainer>
 				<PageTitle>Add a Community Member</PageTitle>
+				{location && <PageSubTitle>{location}</PageSubTitle>}
 			</PageTitleContainer>
+			
 			<TextInput
 				value={name}
 				label={'name'}
@@ -132,8 +126,6 @@ export default function Create(props: {
 			/>
 
 			{error !== '' && <Error>{error}</Error>}
-
-			
 
 			{fileAsImage ? (
 					<Image src={fileAsImage} />
@@ -143,39 +135,7 @@ export default function Create(props: {
 						<FileInput id="upload" type="file" onChange={handleImageAsFile} />
 					</FileInputLabel>
 				)}
-			{/* <MapsContainer>
-				<GoogleMapReact
-					onClick={async (values) => {
-						const { lat, lng } = values
-						const now = Date.now()
-
-						if (now - lastPress < 1000) {
-							getAddress(lat, lng)
-							setLatLng([lat, lng])
-						} else {
-							setlastPress(Date.now())
-						}
-					}}
-					bootstrapURLKeys={{
-						key: process.env.REACT_APP_FIREBASE_API_KEY as string,
-					}}
-					defaultCenter={{
-						lat: Currentlat,
-						lng: Currentlng,
-					}}
-					defaultZoom={15}
-				
-				>
-					{latLng && (
-						<Marker lat={latLng[0]} lng={latLng[1]}>
-							<MapMarkerIcon src={MarkerIcon} />
-							<MarkerTitle>
-								{location && <MarkerTitleHeader>{location}</MarkerTitleHeader>}
-							</MarkerTitle>
-						</Marker>
-					)}
-				</GoogleMapReact>
-			</MapsContainer> */}
+			
 
 			<TextAreaInput
 				value={notes}
@@ -203,12 +163,6 @@ const Container = styled.div`
 	overflow: scroll;
 	overflow: scroll;
 `
-
-const MapsContainer = styled.div`
-	height: 300px;
-	width: 80%;
-`
-
 export const Image = styled.img`
 	height: 200px;
 	width: auto;
